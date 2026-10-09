@@ -18,7 +18,12 @@ export const Library = () => {
   useEffect(() => {
     const loadLibrary = async () => {
       try {
-        const response = await fetch(API_URLS.library.list);
+        const token = localStorage.getItem('futurework_token');
+        if (!token) throw new Error('Please log in again to access the library.');
+
+        const response = await fetch(API_URLS.library.list, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const result = await response.json();
         if (!response.ok || !result.success) throw new Error(result.message || 'Unable to load the library.');
         const data = result.data as LibraryCourse[];

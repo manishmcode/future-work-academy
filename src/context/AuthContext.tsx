@@ -25,14 +25,31 @@ type AuthContextType = {
 
 const hasActivePlan = (user?: AuthUser | null) => {
   const planId = user?.user_meta?.plan_id ?? user?.plan_id;
-  const hasActiveSubscription = user?.subscriptions?.some(
-    (subscription) => subscription.status === 'active' && subscription.payment_status === 'active',
-  ) ?? user?.user_meta?.subscription_status === 'active';
+  const subscriptions = user?.subscriptions ?? [];
+  const hasSubscriptionRecords = subscriptions.length > 0;
+  const hasActiveSubscription = hasSubscriptionRecords
+    ? subscriptions.some(
+      (subscription) => subscription.status === 'active' && subscription.payment_status === 'active',
+    )
+    : user?.user_meta?.subscription_status
+      ? user.user_meta.subscription_status === 'active'
+      : true;
 
   return Boolean(planId) && hasActiveSubscription;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const authCookieOptions = () => `Path=/; SameSite=Lax${window.location.protocol === 'https:' ? '; Secure' : ''}`;
+
+function setAuthCookies(token: string) {
+  document.cookie = `futurework_auth_hint=1; ${authCookieOptions()}`;
+  document.cookie = `futurework_auth_token=${encodeURIComponent(token)}; ${authCookieOptions()}`;
+}
+
+function clearAuthCookies() {
+  document.cookie = `futurework_auth_hint=; Path=/; Max-Age=0; SameSite=Lax${window.location.protocol === 'https:' ? '; Secure' : ''}`;
+  document.cookie = `futurework_auth_token=; Path=/; Max-Age=0; SameSite=Lax${window.location.protocol === 'https:' ? '; Secure' : ''}`;
+}
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -41,6 +58,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   const clearAuth = useCallback(() => {
+    clearAuthCookies();
     localStorage.removeItem('futurework_token');
     localStorage.removeItem('futurework_auth');
     localStorage.removeItem('futurework_user');
@@ -80,6 +98,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const initialiseAuth = async () => {
       const token = localStorage.getItem('futurework_token');
       if (token) {
+        setAuthCookies(token);
         setIsLoggedIn(true);
         setIsAdmin(localStorage.getItem('futurework_is_admin') === 'true');
         const user = localStorage.getItem('futurework_user');
@@ -103,6 +122,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const login = (token: string, user?: AuthUser) => {
     localStorage.setItem('futurework_token', token);
     localStorage.setItem('futurework_auth', 'true');
+    setAuthCookies(token);
     if (user) {
       localStorage.setItem('futurework_user', JSON.stringify(user));
       localStorage.setItem('futurework_is_admin', String(user.is_admin === true));

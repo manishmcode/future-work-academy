@@ -1,0 +1,95 @@
+
+Options -MultiViews
+DirectoryIndex index.html
+ErrorDocument 404 /404/index.html
+
+RewriteEngine On
+
+# ==========================================
+# 1. SECURITY HEADERS
+# ==========================================
+
+<IfModule mod_headers.c>
+  Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: https://images.unsplash.com https://www.gstatic.com https://fonts.gstatic.com https://www.google.com https://translate.googleapis.com https://translate.google.com; font-src 'self' data: https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://translate.googleapis.com https://www.gstatic.com; script-src 'self' 'unsafe-inline' https://translate.google.com https://translate.googleapis.com https://www.gstatic.com https://translate-pa.googleapis.com https://static.cloudflareinsights.com; connect-src 'self' https://translate.googleapis.com https://translate-pa.googleapis.com; frame-src 'self' https://translate.google.com https://translate.googleapis.com; worker-src 'self' blob:; upgrade-insecure-requests"
+  Header always set X-Frame-Options "DENY"
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "accelerometer=(), camera=(), geolocation=(), gyroscope=(), microphone=(), payment=(), usb=()"
+</IfModule>
+
+
+# ==========================================
+# 2. LIBRARY ACCESS REDIRECT
+# ==========================================
+
+RewriteCond %{HTTP:Cookie} !(^|;\s*)futurework_auth_hint=1(;|$) [NC]
+RewriteRule ^library/?$ /pricing [R=302,L,NE]
+
+
+# ==========================================
+# 3. BLOCK DIRECT LIBRARY ASSET ACCESS
+# ==========================================
+
+# Uploaded library assets must not be
+# accessed directly through /assets/.
+
+RewriteRule ^assets/[0-9]+/ - [R=404,L]
+
+
+# ==========================================
+# 4. SIGNED ASSET ROUTING
+# ==========================================
+
+# Rewrite /v/TOKEN internally to the
+# existing Passenger Node.js application.
+#
+# Browser URL remains /v/TOKEN.
+#
+# This requires Passenger to accept
+# internally rewritten requests.
+
+RewriteRule ^v/(.+)$ /future-work-api/v/$1 [L,NC,NE]
+
+
+# ==========================================
+# 5. BACKEND API ROUTING
+# ==========================================
+
+# Keep existing Passenger application
+# requests out of frontend routing.
+
+RewriteRule ^future-work-api(?:/|$) - [L,NC]
+
+
+# ==========================================
+# 6. FRONTEND 404 ROUTE
+# ==========================================
+
+RewriteRule ^404/?$ - [R=404,L]
+
+
+# ==========================================
+# 7. SERVE EXISTING STATIC FILES
+# ==========================================
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+
+# ==========================================
+# 8. FRONTEND ROUTES
+# ==========================================
+
+# React routes should load index.html when opened
+# directly or after a hard refresh.
+
+RewriteRule ^(courses|library|schedule|live-room|pricing|unsubscribe|login|signup|privacy-policy|terms-conditions|imprint|account|checkout)/?$ /index.html [L,NC]
+
+
+# ==========================================
+# 9. UNKNOWN ROUTES RETURN 404
+# ==========================================
+
+RewriteRule ^ - [R=404,L]
