@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Settings, 
-  User, 
-  Mail, 
-  CreditCard, 
+import {
+  User,
+  Mail,
+  CreditCard,
   AlertTriangle,
   ArrowRight
 } from 'lucide-react';
@@ -14,7 +13,7 @@ export const Unsubscribe = () => {
 
   return (
     <main className="min-h-screen font-sans bg-[#FAF9F6] flex flex-col justify-center py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      <div className="absolute inset-0 w-full h-full pointer-events-none bg-right-bottom bg-no-repeat fixed" style={{ backgroundImage: "url('/images/card-bg.png')", backgroundAttachment: 'fixed' }}></div>
+      <div className="absolute inset-0 w-full h-full pointer-events-none bg-right-bottom bg-no-repeat fixed" style={{ backgroundImage: "url('/images/card-bg.webp')", backgroundAttachment: 'fixed' }}></div>
       {/* Ambient Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-pink-400/5 blur-[120px] rounded-full pointer-events-none -z-10"></div>
 

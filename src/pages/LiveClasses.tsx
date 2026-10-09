@@ -1,11 +1,15 @@
 import React from 'react';
-import { Video, Mic, Share2, Hand, MessageSquare, PhoneOff, MapPin, Download, FileText, ExternalLink, AlignLeft, Bold, Italic, Underline, Strikethrough, ChevronDown, Check, Clock, Calendar, Users, Bookmark, ChevronLeft } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Video, Mic, Hand, MessageSquare, PhoneOff, Download, FileText, ExternalLink, Bold, Italic, Underline, Strikethrough, ChevronDown, Check, Users, Bookmark, ChevronLeft } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { COMPANY } from '../config/company';
 
 export const LiveClasses = () => {
+  const [searchParams] = useSearchParams();
+  const joinUrl = searchParams.get('join');
+
   return (
     <div className="bg-white min-h-screen font-sans pb-20 relative">
-      <div className="absolute inset-0 w-full h-full pointer-events-none bg-right-bottom bg-no-repeat fixed" style={{ backgroundImage: "url('/images/card-bg.png')", backgroundAttachment: 'fixed' }}></div>
+      <div className="absolute inset-0 w-full h-full pointer-events-none bg-right-bottom bg-no-repeat fixed" style={{ backgroundImage: "url('/images/card-bg.webp')", backgroundAttachment: 'fixed' }}></div>
       {/* Top Header */}
       <div className="border-b border-slate-200">
         <div className="max-w-[1400px] mx-auto px-6 h-[88px] flex items-center justify-between">
@@ -25,9 +29,15 @@ export const LiveClasses = () => {
             <button className="px-5 py-2 text-[13px] font-bold text-slate-600 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors flex items-center gap-2">
               <Bookmark className="w-4 h-4" /> Save Notes
             </button>
-            <button className="px-6 py-2 text-[13px] font-bold text-white bg-red-500 rounded-full hover:bg-red-600 transition-colors shadow-sm flex items-center gap-2">
-              <PhoneOff className="w-4 h-4" /> Leave Class
-            </button>
+            {joinUrl ? (
+              <Link to={joinUrl} target="_blank" rel="noopener noreferrer" className="px-6 py-2 text-[13px] font-bold text-white bg-pink-500 rounded-full hover:bg-pink-600 transition-colors shadow-sm flex items-center gap-2">
+                <ExternalLink className="w-4 h-4" /> Open Meeting
+              </Link>
+            ) : (
+              <button className="px-6 py-2 text-[13px] font-bold text-white bg-red-500 rounded-full hover:bg-red-600 transition-colors shadow-sm flex items-center gap-2">
+                <PhoneOff className="w-4 h-4" /> Leave Class
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -126,7 +136,7 @@ export const LiveClasses = () => {
               <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150" alt="Instructor" className="w-14 h-14 rounded-full object-cover border-2 border-white shadow-sm" />
               <div>
                 <h4 className="text-sm font-bold text-slate-900">Dr. Sarah Chen</h4>
-                <p className="text-[12px] text-slate-500 font-medium">Lead AI Architect &middot; FutureWork</p>
+                <p className="text-[12px] text-slate-500 font-medium">Lead AI Architect &middot; {COMPANY.brandName}</p>
               </div>
             </div>
 

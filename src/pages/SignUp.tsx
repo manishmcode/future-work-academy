@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { API_URLS } from '../api';
+import { COMPANY } from '../config/company';
 
 export const SignUp = () => {
   const [name, setName] = useState('');
@@ -33,7 +34,7 @@ export const SignUp = () => {
 
           <div className="relative z-10 max-w-lg">
             <h2 className="text-4xl lg:text-5xl font-black leading-tight mb-8 tracking-tight">
-              Start your journey with <span className="text-pink-500">FutureWork.</span>
+              Start your journey with <span className="text-pink-500">{COMPANY.brandName}.</span>
             </h2>
             
             <div className="space-y-6">

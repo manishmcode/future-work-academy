@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Search, Sparkles } from 'lucide-react';
+import { Menu, X, Search } from 'lucide-react';
 import { Logo } from './Logo';
 import { useAuth } from '../context/AuthContext';
 import { LanguageSelector } from './LanguageSelector';
+import { COMPANY } from '../config/company';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,7 +50,7 @@ export const Navbar = () => {
             <Link to="/" translate="no" className="notranslate flex items-center gap-2.5 group">
               <Logo className="w-10 h-10 transition-transform group-hover:scale-105" />
               <span className="text-[22px] font-black text-slate-900 tracking-tight group-hover:text-pink-600 transition-colors">
-                FutureWork
+                {COMPANY.brandName}
               </span>
             </Link>
           </div>

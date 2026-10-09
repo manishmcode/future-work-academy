@@ -33,7 +33,7 @@ export const GrowthPlanSection = () => (
               key={index}
               className="group relative bg-white rounded-[2rem] p-6 sm:p-8 lg:p-10 border border-slate-200 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] hover:border-slate-300 hover:-translate-y-1 transition-all duration-500 overflow-hidden flex flex-col h-full"
             >
-              <div className="absolute inset-0 w-full h-full opacity-[0.03] group-hover:opacity-[0.08] mix-blend-multiply transition-opacity bg-right-bottom bg-no-repeat pointer-events-none" style={{ backgroundImage: "url('/src/assets/card-bg.png')" }}></div>
+              <div className="absolute inset-0 w-full h-full opacity-[0.03] group-hover:opacity-[0.08] mix-blend-multiply transition-opacity bg-right-bottom bg-no-repeat pointer-events-none" style={{ backgroundImage: "url('/images/card-bg.webp')" }}></div>
               <div className="relative z-10">
                 <div className="flex justify-between items-start mb-6 sm:mb-8">
                   <span className="text-5xl sm:text-6xl font-black text-slate-200 group-hover:text-pink-100 transition-colors duration-500 tracking-tighter">

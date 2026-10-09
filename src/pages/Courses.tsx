@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { courses } from '../data/courses';
 import { Video } from 'lucide-react';
 
@@ -45,14 +46,14 @@ export const Courses = () => {
                   <div className="flex items-center text-sm font-semibold text-slate-500">
                     <Video className="w-4 h-4 mr-2" /> 12 Video Modules
                   </div>
-                  <a
-                    href={course.url}
+                  <Link
+                    to={course.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center px-6 py-4 bg-slate-50 text-black font-bold rounded-lg hover:bg-slate-100 border border-slate-200 transition-colors group-hover:bg-black group-hover:text-white group-hover:border-black"
                   >
                     View Course Details
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>

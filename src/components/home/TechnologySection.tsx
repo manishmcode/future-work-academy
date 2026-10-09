@@ -38,20 +38,20 @@ export const TechnologySection = () => (
 
         <div className="grid sm:grid-cols-2 gap-6">
           <div className="bg-white rounded-2xl p-8 hover:shadow-xl transition-all border border-slate-100 mt-0 sm:mt-12 relative overflow-hidden group">
-            <div className="absolute inset-0 w-full h-full opacity-30 mix-blend-multiply pointer-events-none bg-right-bottom bg-no-repeat" style={{ backgroundImage: "url('/images/card-bg.png')" }}></div>
+            <div className="absolute inset-0 w-full h-full opacity-30 mix-blend-multiply pointer-events-none bg-right-bottom bg-no-repeat" style={{ backgroundImage: "url('/images/card-bg.webp')" }}></div>
             <div className="relative z-10">
               <div className="mb-6">
-                <img src="/images/icon1.png" alt="Video Vision" className="w-16 h-16 object-contain filter sepia saturate-[3] hue-rotate-[-15deg] contrast-125" />
+                <img src="/images/icon1.webp" alt="Video Vision" className="w-16 h-16 object-contain filter sepia saturate-[3] hue-rotate-[-15deg] contrast-125" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">Video Vision</h3>
               <p className="text-slate-500 text-sm leading-relaxed">Simple easy distinguish when our power right.</p>
             </div>
           </div>
           <div className="bg-white rounded-2xl p-8 hover:shadow-xl transition-all border border-slate-100 relative overflow-hidden group">
-            <div className="absolute inset-0 w-full h-full opacity-30 mix-blend-multiply pointer-events-none bg-right-bottom bg-no-repeat" style={{ backgroundImage: "url('/images/card-bg.png')" }}></div>
+            <div className="absolute inset-0 w-full h-full opacity-30 mix-blend-multiply pointer-events-none bg-right-bottom bg-no-repeat" style={{ backgroundImage: "url('/images/card-bg.webp')" }}></div>
             <div className="relative z-10">
               <div className="mb-6">
-                <img src="/images/icon2.png" alt="Computer Vision" className="w-16 h-16 object-contain filter sepia saturate-[3] hue-rotate-[-15deg] contrast-125" />
+                <img src="/images/icon2.webp" alt="Computer Vision" className="w-16 h-16 object-contain filter sepia saturate-[3] hue-rotate-[-15deg] contrast-125" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-3">Computer Vision</h3>
               <p className="text-slate-500 text-sm leading-relaxed">Claims duty the obligations of business it will occur.</p>

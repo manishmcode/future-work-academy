@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, TrendingUp, Video, ArrowRight } from 'lucide-react';
+import { Video, ArrowRight } from 'lucide-react';
 
 export const HeroSection = () => {
   return (
@@ -29,7 +29,7 @@ export const HeroSection = () => {
 
         {/* Left Graphic - Dashboard UI Mockup */}
         <div className="lg:col-span-2 bg-[#F8F7F4] rounded-[2rem] p-6 sm:p-10 h-[350px] sm:h-[450px] relative overflow-hidden shadow-sm border border-slate-200 group">
-          <img src="/images/live-class-mockup.jpg" alt="Live Class Dashboard" className="absolute inset-0 w-full h-full object-cover rounded-[2rem]" />
+          <img src="/images/live-class-mockup.webp" alt="Live Class Dashboard" className="absolute inset-0 w-full h-full object-cover rounded-[2rem]" />
         </div>
 
         {/* Right Graphic */}

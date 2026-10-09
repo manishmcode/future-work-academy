@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Lock, Shield, CheckCircle2 } from 'lucide-react';
+import { Lock, Shield } from 'lucide-react';
 
 export const Checkout = () => {
   return (

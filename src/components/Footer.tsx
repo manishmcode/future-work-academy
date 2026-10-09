@@ -21,7 +21,7 @@ export const Footer = () => {
           <div>
             <div className="flex items-center gap-2.5 text-2xl font-black text-slate-900 tracking-tight mb-6 group">
               <Logo className="w-10 h-10 group-hover:scale-105 transition-transform" />
-              <span>FutureWork</span>
+              <span>{COMPANY.brandName}</span>
             </div>
             <p className="text-[14px] leading-relaxed text-slate-500 font-medium max-w-[310px] mb-8">
               Helping professionals build practical AI skills through self-paced courses and instructor-led live learning.
@@ -52,14 +52,14 @@ export const Footer = () => {
             <div className="space-y-3 text-[13px] leading-relaxed text-slate-500 font-medium">
               <p><strong className="text-slate-700">Company Name:</strong> {COMPANY.name}</p>
               <p><strong className="text-slate-700">Company Address:</strong> {COMPANY.address}</p>
-              <p><strong className="text-slate-700">Email:</strong> <a href={companyEmailLink} className="text-pink-600 hover:underline">{COMPANY.supportEmail}</a></p>
+              <p><strong className="text-slate-700">Email:</strong> <Link to={companyEmailLink} className="text-pink-600 hover:underline">{COMPANY.supportEmail}</Link></p>
             </div>
           </div>
           
         </div>
         
         <div className="border-t border-slate-200 pt-6 text-[12px] font-bold text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p>&copy; {new Date().getFullYear()} FutureWork. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {COMPANY.brandName}. All rights reserved.</p>
           <div className="flex gap-6">
             <Link to="/privacy-policy" className="hover:text-slate-900 transition-colors">Privacy</Link>
             <Link to="/terms-conditions" className="hover:text-slate-900 transition-colors">Terms</Link>

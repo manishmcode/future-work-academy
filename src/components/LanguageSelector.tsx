@@ -32,7 +32,8 @@ export const LanguageSelector = () => {
     setIsOpen(false);
     if (language.code === 'en') {
       document.cookie = 'googtrans=; Max-Age=0; path=/';
-      window.location.reload();
+      setSelected(language);
+      document.documentElement.lang = language.code;
       return;
     }
 

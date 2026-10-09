@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const coursesList = [
-  { title: 'Launch Your Consulting Business', cat: 'Consulting', desc: 'Master proven client advisory frameworks, land high-ticket corporate retainers, and scale your consulting practice.', tag: 'Advisory & Strategy', icon: '/images/icon1.png', staggered: false },
-  { title: 'Virtual Networking Success', cat: 'Networking', desc: 'Turn digital events and online networking into high-converting professional relationships and client pipelines.', tag: 'Client Pipelines', icon: '/images/icon2.png', staggered: true },
-  { title: 'WordPress Master Kit', cat: 'Web Dev', desc: 'Design, build, and optimize high-speed WordPress sites, custom sales funnels, and secure architectures.', tag: 'Funnel Architecture', icon: '/images/icon1.png', staggered: false },
-  { title: 'Video Marketing Profit Kit', cat: 'Marketing', desc: 'Produce high-converting video campaigns, optimize organic reach, and convert viewers into paying customers.', tag: 'Video Campaigns', icon: '/images/icon2.png', staggered: true },
-  { title: 'Start Your Own Coaching Business', cat: 'Coaching', desc: 'Structure high-impact 1-on-1 and group coaching programs with scalable recurring revenue systems.', tag: 'Recurring Revenue', icon: '/images/icon1.png', staggered: false },
-  { title: 'Mastering E-Commerce Sales', cat: 'E-Commerce', desc: 'Build and scale profitable online stores using proven conversion strategies, paid traffic, and automated fulfillment.', tag: 'Online Retail', icon: '/images/icon2.png', staggered: true }
+  { title: 'Launch Your Consulting Business', cat: 'Consulting', desc: 'Master proven client advisory frameworks, land high-ticket corporate retainers, and scale your consulting practice.', tag: 'Advisory & Strategy', icon: '/images/icon1.webp', staggered: false },
+  { title: 'Virtual Networking Success', cat: 'Networking', desc: 'Turn digital events and online networking into high-converting professional relationships and client pipelines.', tag: 'Client Pipelines', icon: '/images/icon2.webp', staggered: true },
+  { title: 'WordPress Master Kit', cat: 'Web Dev', desc: 'Design, build, and optimize high-speed WordPress sites, custom sales funnels, and secure architectures.', tag: 'Funnel Architecture', icon: '/images/icon1.webp', staggered: false },
+  { title: 'Video Marketing Profit Kit', cat: 'Marketing', desc: 'Produce high-converting video campaigns, optimize organic reach, and convert viewers into paying customers.', tag: 'Video Campaigns', icon: '/images/icon2.webp', staggered: true },
+  { title: 'Start Your Own Coaching Business', cat: 'Coaching', desc: 'Structure high-impact 1-on-1 and group coaching programs with scalable recurring revenue systems.', tag: 'Recurring Revenue', icon: '/images/icon1.webp', staggered: false },
+  { title: 'Mastering E-Commerce Sales', cat: 'E-Commerce', desc: 'Build and scale profitable online stores using proven conversion strategies, paid traffic, and automated fulfillment.', tag: 'Online Retail', icon: '/images/icon2.webp', staggered: true }
 ];
 
 export const CoursesSection = () => {
@@ -36,7 +36,7 @@ export const CoursesSection = () => {
               key={i}
               className={`bg-white rounded-2xl p-8 hover:shadow-xl transition-all border border-slate-100 relative overflow-hidden group flex flex-col h-full ${card.staggered ? 'mt-0 md:mt-12' : ''}`}
             >
-              <div className="absolute inset-0 w-full h-full opacity-30 mix-blend-multiply pointer-events-none bg-right-bottom bg-no-repeat" style={{ backgroundImage: "url('/images/card-bg.png')" }}></div>
+              <div className="absolute inset-0 w-full h-full opacity-30 mix-blend-multiply pointer-events-none bg-right-bottom bg-no-repeat" style={{ backgroundImage: "url('/images/card-bg.webp')" }}></div>
               <div className="relative z-10 flex flex-col h-full">
                 <div className="flex justify-between items-start mb-6">
                   <div className="w-14 h-14">

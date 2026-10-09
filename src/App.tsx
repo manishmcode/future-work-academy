@@ -4,6 +4,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { Library } from './pages/Library';
+import { Courses } from './pages/Courses';
 import { LiveSchedule } from './pages/LiveSchedule';
 import { LiveClasses } from './pages/LiveClasses';
 import { AdminLiveClasses } from './pages/AdminLiveClasses';
@@ -45,9 +46,10 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/courses" element={<Courses />} />
             <Route path="/library" element={<MemberAccess><Library /></MemberAccess>} />
             <Route path="/schedule" element={<LiveClassesAccess />} />
-            <Route path="/live-room" element={<LiveClasses />} />
+            <Route path="/live-room" element={<MemberAccess><LiveClasses /></MemberAccess>} />
             <Route path="/pricing" element={<PricingAccess />} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/login" element={<Login />} />
@@ -57,6 +59,7 @@ function App() {
             <Route path="/imprint" element={<Legal title="Imprint" />} />
             <Route path="/account" element={<Account />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </main>
         <Footer />

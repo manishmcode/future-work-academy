@@ -20,7 +20,7 @@ export const Legal = ({ title }: { title: string }) => {
         </h1>
         
         <p className="max-w-2xl text-[17px] leading-relaxed text-slate-600 font-medium">
-          Please review the detailed terms and information regarding your use of the FutureWork platform and services.
+          Please review the detailed terms and information regarding your use of the {COMPANY.brandName} platform and services.
         </p>
 
       </section>
