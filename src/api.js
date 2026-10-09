@@ -1,6 +1,6 @@
 // Set REACT_APP_API_URL in .env to override this value for another environment.
 export const API_BASE_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:4000/future-work-api";
+  process.env.REACT_APP_API_URL || "https://futureworkacademy.net/future-work-api";
 
 export const API_URLS = {
   auth: {
