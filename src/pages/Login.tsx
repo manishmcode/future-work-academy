@@ -1,18 +1,35 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Mail, Lock, ArrowRight, CheckCircle2, LoaderCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { API_URLS } from '../api';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [error, setError] = useState('');
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    login();
-    navigate('/account');
+    if (isLoggingIn) return;
+
+    try {
+      setIsLoggingIn(true);
+      setError('');
+      const response = await fetch(API_URLS.auth.login, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }) });
+      const result = await response.json();
+      if (!response.ok || !result.success || !result.data?.token) throw new Error(result.message || 'Unable to log in.');
+
+      login(result.data.token, result.data.user);
+      navigate(result.data.user?.is_admin === true ? '/schedule' : '/library');
+    } catch (loginError) {
+      setError(loginError instanceof Error ? loginError.message : 'Unable to log in.');
+    } finally {
+      setIsLoggingIn(false);
+    }
   };
 
   return (
@@ -59,7 +76,7 @@ export const Login = () => {
               </p>
             </div>
 
-            <form className="space-y-5" onSubmit={handleLogin}>
+            <form className="space-y-5" onSubmit={handleLogin}>{error && <p role="alert" className="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm font-medium text-red-700">{error}</p>}
               <div className="space-y-2">
                 <label className="text-[13px] font-bold text-slate-700 tracking-wide uppercase">Email Address</label>
                 <div className="relative group">
@@ -93,9 +110,10 @@ export const Login = () => {
 
               <button 
                 type="submit"
-                className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-[15px] font-bold transition-all shadow-sm flex items-center justify-center gap-2 mt-8 group"
+                disabled={isLoggingIn}
+                className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-[15px] font-bold transition-all shadow-sm flex items-center justify-center gap-2 mt-8 group disabled:cursor-wait disabled:opacity-70"
               >
-                Log In <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                {isLoggingIn ? <><LoaderCircle className="w-5 h-5 animate-spin" /> Logging in...</> : <>Log In <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" /></>}
               </button>
             </form>
           </div>

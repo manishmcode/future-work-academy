@@ -1,11 +1,12 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { Home } from './pages/Home';
 import { Library } from './pages/Library';
 import { LiveSchedule } from './pages/LiveSchedule';
 import { LiveClasses } from './pages/LiveClasses';
+import { AdminLiveClasses } from './pages/AdminLiveClasses';
 import { Pricing } from './pages/Pricing';
 import { Unsubscribe } from './pages/Unsubscribe';
 import { Legal } from './pages/Legal';
@@ -13,10 +14,27 @@ import { Login } from './pages/Login';
 import { SignUp } from './pages/SignUp';
 import { Account } from './pages/Account';
 import { Checkout } from './pages/Checkout';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import { ScrollToTop } from './components/ScrollToTop';
 import './App.css';
 
+const MemberAccess = ({ children }: { children: React.ReactElement }) => {
+  const { isLoggedIn, hasLibraryAccess, isAuthLoading } = useAuth();
+  if (isAuthLoading) return null;
+  return isLoggedIn && hasLibraryAccess ? children : <Navigate to="/pricing" replace />;
+};
+
+const LiveClassesAccess = () => {
+  const { isLoggedIn, hasLibraryAccess, isAdmin, isAuthLoading } = useAuth();
+  if (isAuthLoading) return null;
+  if (isAdmin) return <AdminLiveClasses />;
+  return isLoggedIn && hasLibraryAccess ? <LiveSchedule /> : <Navigate to="/pricing" replace />;
+};
+const PricingAccess = () => {
+  const { isAdmin, isAuthLoading } = useAuth();
+  if (isAuthLoading) return null;
+  return isAdmin ? <Navigate to="/schedule" replace /> : <Pricing />;
+};
 function App() {
   return (
     <AuthProvider>
@@ -27,10 +45,10 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/library" element={<Library />} />
-            <Route path="/schedule" element={<LiveSchedule />} />
+            <Route path="/library" element={<MemberAccess><Library /></MemberAccess>} />
+            <Route path="/schedule" element={<LiveClassesAccess />} />
             <Route path="/live-room" element={<LiveClasses />} />
-            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/pricing" element={<PricingAccess />} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />

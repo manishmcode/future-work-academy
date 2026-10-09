@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+  <defs>
+    <linearGradient id="primary" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ec4899"/>
+      <stop offset="1" stop-color="#db2777"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="40" y1="0" x2="0" y2="40" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fbcfe8"/>
+      <stop offset="1" stop-color="#fce7f3"/>
+    </linearGradient>
+  </defs>
+  <rect width="40" height="40" rx="12" fill="url(#primary)"/>
+  <path d="M14 12c0-1.105 0-2 2-2h10c1.105 0 2 .895 2 2s-.895 2-2 2h-8v4h5c1.105 0 2 .895 2 2s-.895 2-2 2h-5v6c0 1.105-.895 2-2 2s-2-.895-2-2V12Z" fill="#fff"/>
+  <circle cx="27" cy="27" r="4" fill="url(#accent)"/>
+</svg>

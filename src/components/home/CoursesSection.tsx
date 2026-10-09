@@ -1,5 +1,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const coursesList = [
   { title: 'Launch Your Consulting Business', cat: 'Consulting', desc: 'Master proven client advisory frameworks, land high-ticket corporate retainers, and scale your consulting practice.', tag: 'Advisory & Strategy', icon: '/images/icon1.png', staggered: false },
@@ -10,7 +12,11 @@ const coursesList = [
   { title: 'Mastering E-Commerce Sales', cat: 'E-Commerce', desc: 'Build and scale profitable online stores using proven conversion strategies, paid traffic, and automated fulfillment.', tag: 'Online Retail', icon: '/images/icon2.png', staggered: true }
 ];
 
-export const CoursesSection = () => (
+export const CoursesSection = () => {
+  const { hasLibraryAccess } = useAuth();
+  const courseDestination = hasLibraryAccess ? '/library' : '/pricing';
+
+  return (
   <section className="py-24 border-b border-slate-100">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div className="text-center max-w-3xl mx-auto mb-16">
@@ -46,9 +52,9 @@ export const CoursesSection = () => (
                   <div className="flex items-center gap-2 text-slate-600 text-[11px] font-bold uppercase tracking-wider">
                     <div className="w-1.5 h-1.5 rounded-full bg-slate-400"></div> {card.tag}
                   </div>
-                  <div className="w-8 h-8 rounded-full border border-slate-300 flex items-center justify-center text-slate-500 group-hover:bg-pink-600 group-hover:text-white group-hover:border-pink-600 transition-colors">
+                  <Link to={courseDestination} aria-label={`View ${card.title}`} className="w-8 h-8 rounded-full border border-slate-300 flex items-center justify-center text-slate-500 group-hover:bg-pink-600 group-hover:text-white group-hover:border-pink-600 transition-colors">
                     <ArrowRight className="w-4 h-4" />
-                  </div>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -57,4 +63,5 @@ export const CoursesSection = () => (
       </div>
     </div>
   </section>
-);
+  );
+};

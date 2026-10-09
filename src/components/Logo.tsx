@@ -2,7 +2,7 @@ import React from 'react';
 
 export const Logo = ({ className = "w-10 h-10" }: { className?: string }) => {
   return (
-    <div className={`relative flex items-center justify-center ${className}`}>
+    <div translate="no" className={`notranslate relative flex items-center justify-center ${className}`}>
       <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-md">
         <defs>
           <linearGradient id="logoGradPrimary" x1="0" y1="0" x2="40" y2="40" gradientUnits="userSpaceOnUse">

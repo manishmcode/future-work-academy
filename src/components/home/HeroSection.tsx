@@ -1,11 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Sparkles, TrendingUp, Video, ArrowRight } from 'lucide-react';
-import { useAuth } from '../../context/AuthContext';
 
 export const HeroSection = () => {
-  const { isLoggedIn } = useAuth();
-  
   return (
   <section className="pt-24 pb-20 lg:pt-32 lg:pb-24 overflow-hidden relative">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full">
@@ -24,20 +21,6 @@ export const HeroSection = () => {
           <p className="text-[17px] leading-relaxed text-slate-600 font-medium mb-8 max-w-md">
             Orchestrate your entire learning journey—from beginner concepts to advanced execution—on one unified surface. The only OS that gets smarter with every course.
           </p>
-          <div className="flex flex-wrap items-center gap-4">
-            {isLoggedIn ? (
-              <Link to="/account" className="h-14 px-8 inline-flex items-center justify-center rounded-xl bg-slate-900 text-[15px] font-bold text-white transition-all hover:bg-slate-800 shadow-md">
-                My Account
-              </Link>
-            ) : (
-              <Link to="/courses" className="h-14 px-8 inline-flex items-center justify-center rounded-xl bg-pink-600 text-[15px] font-bold text-white transition-all hover:bg-pink-700 shadow-md">
-                Get Started
-              </Link>
-            )}
-            <Link to="/demo" className="h-14 px-8 inline-flex items-center justify-center rounded-xl bg-black text-[15px] font-bold text-white transition-all hover:bg-slate-800 shadow-md">
-              Schedule Demo
-            </Link>
-          </div>
         </div>
       </div>
 

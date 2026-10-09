@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { API_URLS } from '../api';
 
 export const SignUp = () => {
   const [name, setName] = useState('');
@@ -10,10 +11,14 @@ export const SignUp = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    login();
-    navigate('/account');
+    const response = await fetch(API_URLS.auth.signup, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password }) });
+    const result = await response.json();
+    if (response.ok && result.success && result.data?.token) {
+      login(result.data.token);
+      navigate('/library');
+    }
   };
 
   return (

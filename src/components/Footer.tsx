@@ -1,9 +1,12 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
+import { COMPANY, companyEmailLink } from '../config/company';
+import { useAuth } from '../context/AuthContext';
 
 export const Footer = () => {
   const location = useLocation();
+  const { hasLibraryAccess } = useAuth();
   if (['/live-room'].includes(location.pathname)) return null;
 
   return (
@@ -30,7 +33,7 @@ export const Footer = () => {
             <ul className="space-y-4">
               <li><Link to="/" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Home</Link></li>
               <li><Link to="/library" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Library</Link></li>
-              <li><Link to="/pricing" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Pricing</Link></li>
+              {!hasLibraryAccess && <li><Link to="/pricing" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Pricing</Link></li>}
               <li><Link to="/unsubscribe" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Unsubscribe</Link></li>
             </ul>
           </div>
@@ -47,9 +50,9 @@ export const Footer = () => {
           <div>
             <h4 className="text-slate-900 font-bold text-[11px] uppercase tracking-wider mb-6">Company Details</h4>
             <div className="space-y-3 text-[13px] leading-relaxed text-slate-500 font-medium">
-              <p><strong className="text-slate-700">Company Name:</strong> Zenaria Ltd</p>
-              <p><strong className="text-slate-700">Company Address:</strong> Str A15 Stadiou, 2867 Oikos, Nicosia, Cyprus</p>
-              <p><strong className="text-slate-700">Email:</strong> <a href="mailto:support@learntechlive.net" className="text-pink-600 hover:underline">support@learntechlive.net</a></p>
+              <p><strong className="text-slate-700">Company Name:</strong> {COMPANY.name}</p>
+              <p><strong className="text-slate-700">Company Address:</strong> {COMPANY.address}</p>
+              <p><strong className="text-slate-700">Email:</strong> <a href={companyEmailLink} className="text-pink-600 hover:underline">{COMPANY.supportEmail}</a></p>
             </div>
           </div>
           

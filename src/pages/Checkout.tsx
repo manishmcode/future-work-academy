@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Lock, Shield, CheckCircle2 } from 'lucide-react';
 
 export const Checkout = () => {
@@ -137,7 +138,7 @@ export const Checkout = () => {
               </div>
 
               <div className="text-sm text-slate-500 mb-8">
-                Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="/privacy-policy" className="text-slate-900 font-bold hover:underline">privacy policy</a>.
+                Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <Link to="/privacy-policy" className="text-slate-900 font-bold hover:underline">privacy policy</Link>.
               </div>
 
               <button className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-4 rounded-xl shadow-md transition-all hover:-translate-y-1 flex items-center justify-center gap-2">

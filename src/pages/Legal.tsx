@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sparkles } from 'lucide-react';
 import { PrivacyContent, TermsContent, ImprintContent } from './LegalContent';
+import { COMPANY } from '../config/company';
 
 export const Legal = ({ title }: { title: string }) => {
   return (
@@ -32,7 +33,7 @@ export const Legal = ({ title }: { title: string }) => {
           {title === "Terms & Conditions" && <TermsContent />}
           
           <div className="mt-12 pt-8 border-t border-slate-200 flex items-center justify-between text-[13px] text-slate-400 font-bold uppercase tracking-widest px-4">
-            <span>Zenaria Ltd</span>
+            <span>{COMPANY.name}</span>
             <span>Last updated: September 2026</span>
           </div>
         </div>

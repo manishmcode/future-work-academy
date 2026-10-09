@@ -3,12 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Search, Sparkles } from 'lucide-react';
 import { Logo } from './Logo';
 import { useAuth } from '../context/AuthContext';
+import { LanguageSelector } from './LanguageSelector';
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, hasLibraryAccess, isAdmin } = useAuth();
 
   // Add scroll detection for glassmorphism effect
   useEffect(() => {
@@ -21,12 +22,17 @@ export const Navbar = () => {
 
   if (['/live-room'].includes(location.pathname)) return null;
 
-  const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Library', path: '/library' },
-    { name: 'Pricing', path: '/pricing' },
-    { name: 'Unsubscribe', path: '/unsubscribe' },
-  ];
+  const navLinks = isAdmin
+    ? [
+      { name: 'Live Classes', path: '/schedule' },
+      { name: 'Profile', path: '/account' },
+    ]
+    : [
+      { name: 'Home', path: '/' },
+      { name: 'Library', path: '/library' },
+      ...(!hasLibraryAccess ? [{ name: 'Pricing', path: '/pricing' }] : []),
+      { name: 'Unsubscribe', path: '/unsubscribe' },
+    ];
 
   return (
     <header
@@ -40,7 +46,7 @@ export const Navbar = () => {
 
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/" className="flex items-center gap-2.5 group">
+            <Link to="/" translate="no" className="notranslate flex items-center gap-2.5 group">
               <Logo className="w-10 h-10 transition-transform group-hover:scale-105" />
               <span className="text-[22px] font-black text-slate-900 tracking-tight group-hover:text-pink-600 transition-colors">
                 FutureWork
@@ -69,8 +75,8 @@ export const Navbar = () => {
           </div>
 
           {/* Desktop Right Side (Search & CTA) */}
-          <div className="hidden md:flex items-center space-x-5">
-            {isLoggedIn ? (
+          <div className="hidden md:flex items-center space-x-3">            <LanguageSelector />
+            {isAdmin ? null : isLoggedIn ? (
               <Link
                 to="/account"
                 className="h-11 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 flex items-center justify-center text-white text-[15px] font-bold transition-all shadow-sm"
@@ -81,17 +87,17 @@ export const Navbar = () => {
               <>
                 
                 <Link
-                  to="/signup"
+                  to="/login"
                   className="h-11 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 flex items-center justify-center text-white text-[15px] font-bold transition-all shadow-sm"
                 >
-                  Get Started
+                  Log In
                 </Link>
               </>
             )}
           </div>
 
           {/* Mobile Menu Toggle */}
-          <div className="flex items-center md:hidden gap-4">
+          <div className="flex items-center md:hidden gap-2">           <LanguageSelector />
             <button className="text-slate-500 hover:text-slate-900 p-2">
               <Search className="w-5 h-5" />
             </button>
@@ -128,7 +134,7 @@ export const Navbar = () => {
             );
           })}
           <div className="pt-2 pb-1 px-1 flex flex-col gap-2">
-            {isLoggedIn ? (
+            {isAdmin ? null : isLoggedIn ? (
               <Link
                 to="/account"
                 onClick={() => setIsOpen(false)}
@@ -138,19 +144,13 @@ export const Navbar = () => {
               </Link>
             ) : (
               <>
+
                 <Link
                   to="/login"
                   onClick={() => setIsOpen(false)}
-                  className="w-full h-12 rounded-xl border border-slate-200 flex items-center justify-center text-slate-700 text-[15px] font-bold hover:bg-slate-50 transition-colors"
-                >
-                  Log in
-                </Link>
-                <Link
-                  to="/signup"
-                  onClick={() => setIsOpen(false)}
                   className="w-full h-12 rounded-xl bg-slate-900 hover:bg-slate-800 transition-colors flex items-center justify-center text-white text-[15px] font-bold shadow-sm"
                 >
-                  Get Started
+                  Log In
                 </Link>
               </>
             )}
