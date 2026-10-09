@@ -16,6 +16,7 @@ import { Login } from './pages/Login';
 import { SignUp } from './pages/SignUp';
 import { Account } from './pages/Account';
 import { Checkout } from './pages/Checkout';
+import { NotFound } from './pages/NotFound';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import { ScrollToTop } from './components/ScrollToTop';
@@ -62,7 +63,7 @@ function App() {
             <Route path="/imprint" element={<Legal title="Imprint" />} />
             <Route path="/account" element={<Account />} />
             <Route path="/checkout" element={<Checkout />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
         <Footer />

@@ -19,7 +19,7 @@ export const Checkout = () => {
               
               <h2 className="text-2xl font-bold text-slate-900 mb-8 relative z-10">Billing Details</h2>
               
-              <form className="space-y-6 relative z-10">
+              <form method="post" className="space-y-6 relative z-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <label htmlFor="firstName" className="block text-sm font-semibold text-slate-700 mb-2">First name *</label>

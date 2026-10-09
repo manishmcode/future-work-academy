@@ -38,7 +38,7 @@ export const Unsubscribe = () => {
           {/* Subtle decorative background piece */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-slate-50 to-transparent rounded-bl-[4rem] pointer-events-none"></div>
           
-          <form className="relative z-10 space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form method="post" className="relative z-10 space-y-6" onSubmit={(e) => e.preventDefault()}>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* First Name */}

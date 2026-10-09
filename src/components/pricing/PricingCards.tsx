@@ -45,7 +45,7 @@ export const PricingCards = ({ plans }: { plans: Plan[] }) => {
               })}
             </ul>
           </div>
-          <div className={`p-6 sm:p-8 pt-4 border-t ${featured ? 'border-slate-800' : 'border-slate-100'}`}><Link to={`/signup?planId=${plan.id}`} className={`w-full h-11 rounded-xl text-sm font-bold flex items-center justify-center ${featured ? 'bg-pink-600 hover:bg-pink-500 text-white' : 'bg-slate-900 hover:bg-slate-800 text-white'}`}>Start Reading</Link></div>
+          <div className={`p-6 sm:p-8 pt-4 border-t ${featured ? 'border-slate-800' : 'border-slate-100'}`}><Link to="/checkout" className={`w-full h-11 rounded-xl text-sm font-bold flex items-center justify-center ${featured ? 'bg-pink-600 hover:bg-pink-500 text-white' : 'bg-slate-900 hover:bg-slate-800 text-white'}`}>Start Reading</Link></div>
         </div>;
       })}
     </div>
