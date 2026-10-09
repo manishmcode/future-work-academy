@@ -4,21 +4,34 @@ import { Mail, Lock, User, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { API_URLS } from '../api';
 import { COMPANY } from '../config/company';
+import { useToast } from '../context/ToastContext';
 
 export const SignUp = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isSigningUp, setIsSigningUp] = useState(false);
   const { login } = useAuth();
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    const response = await fetch(API_URLS.auth.signup, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password }) });
-    const result = await response.json();
-    if (response.ok && result.success && result.data?.token) {
-      login(result.data.token);
+    if (isSigningUp) return;
+
+    try {
+      setIsSigningUp(true);
+      const response = await fetch(API_URLS.auth.signup, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password }) });
+      const result = await response.json();
+      if (!response.ok || !result.success || !result.data?.token) throw new Error(result.message || 'Unable to create your account.');
+
+      showToast('success', result.message || 'Account created successfully.');
+      login(result.data.token, result.data.user);
       navigate('/library');
+    } catch (signupError) {
+      showToast('error', signupError instanceof Error ? signupError.message : 'Unable to create your account.');
+    } finally {
+      setIsSigningUp(false);
     }
   };
 
@@ -111,9 +124,10 @@ export const SignUp = () => {
 
               <button 
                 type="submit"
-                className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-[15px] font-bold transition-all shadow-sm flex items-center justify-center gap-2 mt-8 group"
+                disabled={isSigningUp}
+                className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-[15px] font-bold transition-all shadow-sm flex items-center justify-center gap-2 mt-8 group disabled:cursor-wait disabled:opacity-70"
               >
-                Create Account <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                {isSigningUp ? 'Creating account...' : <>Create Account <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" /></>}
               </button>
             </form>
           </div>

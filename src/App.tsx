@@ -16,6 +16,7 @@ import { SignUp } from './pages/SignUp';
 import { Account } from './pages/Account';
 import { Checkout } from './pages/Checkout';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
 import { ScrollToTop } from './components/ScrollToTop';
 import './App.css';
 
@@ -39,6 +40,7 @@ const PricingAccess = () => {
 function App() {
   return (
     <AuthProvider>
+      <ToastProvider>
       <Router>
       <ScrollToTop />
       <div className="flex flex-col min-h-screen">
@@ -65,6 +67,7 @@ function App() {
         <Footer />
       </div>
     </Router>
+    </ToastProvider>
     </AuthProvider>
   );
 }
