@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { CreditCard, Lock, LogOut, User } from 'lucide-react';
 import { API_URLS } from '../api';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
+import { Loader } from '../components/Loader';
 
 type TabType = 'billing' | 'profile' | 'security';
 
@@ -34,11 +36,6 @@ type ProfileForm = {
   firstname: string;
   lastname: string;
   display_name: string;
-  phone: string;
-  address: string;
-  city: string;
-  postal_code: string;
-  country: string;
 };
 type PasswordForm = {
   current_password: string;
@@ -47,7 +44,7 @@ type PasswordForm = {
 };
 
 const emptyForm: ProfileForm = {
-  firstname: '', lastname: '', display_name: '', phone: '', address: '', city: '', postal_code: '', country: '',
+  firstname: '', lastname: '', display_name: '',
 };
 const emptyPasswordForm: PasswordForm = {
   current_password: '', new_password: '', confirm_password: '',
@@ -72,6 +69,7 @@ export const Account = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const { isLoggedIn, isAdmin, isAuthLoading, logout } = useAuth();
+  const { showToast } = useToast();
   const navigate = useNavigate();
 
   const applyDashboard = (data: DashboardData) => {
@@ -80,15 +78,12 @@ export const Account = () => {
       firstname: data.firstname,
       lastname: data.lastname,
       display_name: data.user_meta.display_name || `${data.firstname} ${data.lastname}`.trim(),
-      phone: data.phone || '',
-      address: data.address || '',
-      city: data.city || '',
-      postal_code: data.postal_code || '',
-      country: data.country || '',
     });
   };
 
   useEffect(() => {
+    if (isAuthLoading) return;
+
     if (!isLoggedIn) {
       navigate('/login');
       return;
@@ -113,17 +108,24 @@ export const Account = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         const result = await response.json();
-        if (!response.ok || !result.success) throw new Error(result.message || 'Unable to load account details.');
+        if (response.status === 401 || response.status === 403) {
+          logout();
+          navigate('/login');
+          return;
+        }
+        if (!response.ok || !result.success || !result.data) throw new Error(result.message || 'Unable to load account details.');
         applyDashboard(result.data);
       } catch (loadError) {
-        setError(loadError instanceof Error ? loadError.message : 'Unable to load account details.');
+        const message = loadError instanceof Error ? loadError.message : 'Unable to load account details.';
+        setError(message);
+        showToast('error', message);
       } finally {
         setIsLoading(false);
       }
     };
 
     void loadDashboard();
-  }, [isAuthLoading, isLoggedIn, navigate]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [isAuthLoading, isLoggedIn, isAdmin, navigate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleLogout = () => {
     logout();
@@ -141,7 +143,6 @@ export const Account = () => {
       setIsSaving(true);
       setError('');
       setSuccess('');
-      const nullable = (value: string) => value.trim() || null;
       const response = await fetch(API_URLS.user.profile, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
@@ -149,19 +150,37 @@ export const Account = () => {
           firstname: form.firstname.trim(),
           lastname: form.lastname.trim(),
           display_name: form.display_name.trim(),
-          phone: nullable(form.phone),
-          address: nullable(form.address),
-          city: nullable(form.city),
-          postal_code: nullable(form.postal_code),
-          country: nullable(form.country),
         }),
       });
       const result = await response.json();
+      if (response.status === 401 || response.status === 403) {
+        logout();
+        navigate('/login');
+        return;
+      }
       if (!response.ok || !result.success) throw new Error(result.message || 'Unable to save profile changes.');
-      applyDashboard(result.data);
-      setSuccess('Your profile has been updated.');
+
+      if (result.data) {
+        applyDashboard(result.data);
+      } else {
+        setDashboard((current) => current ? ({
+          ...current,
+          firstname: form.firstname.trim(),
+          lastname: form.lastname.trim(),
+          user_meta: {
+            ...current.user_meta,
+            display_name: form.display_name.trim(),
+          },
+        }) : current);
+      }
+
+      const message = result.message || 'Profile updated successfully.';
+      setSuccess(message);
+      showToast('success', message);
     } catch (saveError) {
-      setError(saveError instanceof Error ? saveError.message : 'Unable to save profile changes.');
+      const message = saveError instanceof Error ? saveError.message : 'Unable to save profile changes.';
+      setError(message);
+      showToast('error', message);
     } finally {
       setIsSaving(false);
     }
@@ -173,8 +192,10 @@ export const Account = () => {
     if (!token) return handleLogout();
 
     if (passwordForm.new_password !== passwordForm.confirm_password) {
-      setError('New password and confirmation password must match.');
+      const message = 'New password and confirmation password must match.';
+      setError(message);
       setSuccess('');
+      showToast('error', message);
       return;
     }
 
@@ -191,16 +212,26 @@ export const Account = () => {
         }),
       });
       const result = await response.json();
+      if (response.status === 401 || response.status === 403) {
+        logout();
+        navigate('/login');
+        return;
+      }
       if (!response.ok || !result.success) throw new Error(result.message || 'Unable to change password.');
       setPasswordForm(emptyPasswordForm);
-      setSuccess('Your password has been changed successfully.');
+      const message = result.message || 'Your password has been changed successfully.';
+      setSuccess(message);
+      showToast('success', message);
     } catch (passwordError) {
-      setError(passwordError instanceof Error ? passwordError.message : 'Unable to change password.');
+      const message = passwordError instanceof Error ? passwordError.message : 'Unable to change password.';
+      setError(message);
+      showToast('error', message);
     } finally {
       setIsChangingPassword(false);
     }
   };
-  if (isAuthLoading || !isLoggedIn) return null;
+  if (isAuthLoading) return <Loader variant="page" label="Checking your session..." />;
+  if (!isLoggedIn) return null;
 
   if (isAdmin) return (
     <main className="min-h-screen bg-[#F8F7F4] font-sans pt-32 pb-24 px-4 sm:px-6">
@@ -216,7 +247,7 @@ export const Account = () => {
             <PasswordInput label="Confirm Password" value={passwordForm.confirm_password} onChange={(value) => setPasswordForm((current) => ({ ...current, confirm_password: value }))} />
             <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-4 pt-6 border-t border-slate-100">
               <button type="button" onClick={handleLogout} className="h-12 px-6 rounded-xl border-2 border-red-100 text-red-600 text-[13px] font-black uppercase tracking-widest flex items-center justify-center gap-2"><LogOut className="w-4 h-4" /> Sign Out</button>
-              <button disabled={isChangingPassword} className="h-12 px-8 rounded-xl bg-slate-900 text-white text-[15px] font-bold disabled:opacity-60">{isChangingPassword ? 'Updating...' : 'Update Password'}</button>
+              <button disabled={isChangingPassword} className="h-12 px-8 rounded-xl bg-slate-900 text-white text-[15px] font-bold disabled:opacity-60">{isChangingPassword ? <Loader variant="inline" label="Updating..." /> : 'Update Password'}</button>
             </div>
           </form>
         </section>
@@ -236,7 +267,7 @@ export const Account = () => {
   return (
     <main className="min-h-screen bg-[#F8F7F4] font-sans pt-32 pb-24 px-4 sm:px-6">
       <div className="max-w-[800px] mx-auto">
-        {isLoading ? <div className="text-center text-slate-500 font-medium py-24">Loading your account...</div> : <>
+        {isLoading ? <Loader label="Loading your account..." /> : <>
           <header className="flex flex-col items-center text-center mb-10">
             <div className="w-28 h-28 rounded-full bg-slate-900 text-white flex items-center justify-center text-5xl font-black shadow-lg mb-6">{initial}</div>
             <h1 className="text-4xl font-black text-slate-900 tracking-tight mb-2">{displayName || 'My Account'}</h1>
@@ -285,14 +316,8 @@ export const Account = () => {
               <ProfileInput label="Last Name" value={form.lastname} onChange={(value) => updateField('lastname', value)} />
               <ProfileInput label="Display Name" value={form.display_name} onChange={(value) => updateField('display_name', value)} required />
               <div className="space-y-3"><label className="block text-[11px] font-black text-slate-500 uppercase tracking-[0.2em] ml-2">Email Address</label><div className="relative"><input type="email" value={dashboard?.email || ''} disabled className="w-full h-14 px-6 rounded-2xl border-2 border-slate-100 bg-slate-100 text-[15px] font-bold text-slate-400 cursor-not-allowed" /><Lock className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300" /></div></div>
-              <ProfileInput label="Phone" value={form.phone || ''} onChange={(value) => updateField('phone', value)} />
-              <ProfileInput label="Address" value={form.address || ''} onChange={(value) => updateField('address', value)} />
-              <ProfileInput label="City" value={form.city || ''} onChange={(value) => updateField('city', value)} />
-              <ProfileInput label="Postal Code" value={form.postal_code || ''} onChange={(value) => updateField('postal_code', value)} />
-              <ProfileInput label="Country" value={form.country || ''} onChange={(value) => updateField('country', value)} />
-
             </div>
-            <div className="flex justify-end pt-8 mt-8 border-t border-slate-100"><button disabled={isSaving} className="h-12 px-8 rounded-xl bg-slate-900 text-white text-[15px] font-bold disabled:opacity-60">{isSaving ? 'Saving...' : 'Save Changes'}</button></div>
+            <div className="flex justify-end pt-8 mt-8 border-t border-slate-100"><button disabled={isSaving} className="h-12 px-8 rounded-xl bg-slate-900 text-white text-[15px] font-bold disabled:opacity-60">{isSaving ? <Loader variant="inline" label="Saving..." /> : 'Save Changes'}</button></div>
           </form>}
 
           {activeTab === 'security' && <section className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-sm border border-slate-200">
@@ -304,7 +329,7 @@ export const Account = () => {
               <PasswordInput label="Confirm Password" value={passwordForm.confirm_password} onChange={(value) => setPasswordForm((current) => ({ ...current, confirm_password: value }))} />
               <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-4 pt-6 border-t border-slate-100">
                 <button type="button" onClick={handleLogout} className="h-12 px-6 rounded-xl border-2 border-red-100 text-red-600 text-[13px] font-black uppercase tracking-widest flex items-center justify-center gap-2"><LogOut className="w-4 h-4" /> Sign Out</button>
-                <button disabled={isChangingPassword} className="h-12 px-8 rounded-xl bg-slate-900 text-white text-[15px] font-bold disabled:opacity-60">{isChangingPassword ? 'Updating...' : 'Update Password'}</button>
+                <button disabled={isChangingPassword} className="h-12 px-8 rounded-xl bg-slate-900 text-white text-[15px] font-bold disabled:opacity-60">{isChangingPassword ? <Loader variant="inline" label="Updating..." /> : 'Update Password'}</button>
               </div>
             </form>
           </section>}

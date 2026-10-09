@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
+import { Loader } from './components/Loader';
 import { Home } from './pages/Home';
 import { Library } from './pages/Library';
 import { Courses } from './pages/Courses';
@@ -22,19 +23,19 @@ import './App.css';
 
 const MemberAccess = ({ children }: { children: React.ReactElement }) => {
   const { isLoggedIn, hasLibraryAccess, isAuthLoading } = useAuth();
-  if (isAuthLoading) return null;
+  if (isAuthLoading) return <Loader variant="page" label="Checking your session..." />;
   return isLoggedIn && hasLibraryAccess ? children : <Navigate to="/pricing" replace />;
 };
 
 const LiveClassesAccess = () => {
   const { isLoggedIn, hasLibraryAccess, isAdmin, isAuthLoading } = useAuth();
-  if (isAuthLoading) return null;
+  if (isAuthLoading) return <Loader variant="page" label="Checking your session..." />;
   if (isAdmin) return <AdminLiveClasses />;
   return isLoggedIn && hasLibraryAccess ? <LiveSchedule /> : <Navigate to="/pricing" replace />;
 };
 const PricingAccess = () => {
   const { isAdmin, isAuthLoading } = useAuth();
-  if (isAuthLoading) return null;
+  if (isAuthLoading) return <Loader variant="page" label="Checking your session..." />;
   return isAdmin ? <Navigate to="/schedule" replace /> : <Pricing />;
 };
 function App() {

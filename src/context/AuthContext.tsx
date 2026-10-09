@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { API_URLS } from '../api';
 
 type AuthUser = {
@@ -40,29 +40,46 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  const refreshLibraryAccess = async (token: string) => {
+  const clearAuth = useCallback(() => {
+    localStorage.removeItem('futurework_token');
+    localStorage.removeItem('futurework_auth');
+    localStorage.removeItem('futurework_user');
+    localStorage.removeItem('futurework_is_admin');
+    setIsLoggedIn(false);
+    setHasLibraryAccess(false);
+    setIsAdmin(false);
+  }, []);
+
+  const refreshLibraryAccess = useCallback(async (token: string) => {
     try {
       const response = await fetch(API_URLS.user.dashboard, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const result = await response.json();
-      if (!response.ok || !result.success) return;
+      if (response.status === 401 || response.status === 403) {
+        clearAuth();
+        return;
+      }
+      if (!response.ok || !result.success || !result.data) return;
 
       const storedUser = localStorage.getItem('futurework_user');
       const priorUser = storedUser ? JSON.parse(storedUser) : {};
       const user = { ...priorUser, ...result.data };
       localStorage.setItem('futurework_user', JSON.stringify(user));
+      localStorage.setItem('futurework_auth', 'true');
+      localStorage.setItem('futurework_is_admin', String(user.is_admin === true));
+      setIsLoggedIn(true);
+      setIsAdmin(user.is_admin === true);
       setHasLibraryAccess(hasActivePlan(user));
     } catch {
       // Keep the last known access state when the dashboard cannot be reached.
     }
-  };
+  }, [clearAuth]);
 
   useEffect(() => {
     const initialiseAuth = async () => {
-      const stored = localStorage.getItem('futurework_auth');
       const token = localStorage.getItem('futurework_token');
-      if (stored === 'true' && token) {
+      if (token) {
         setIsLoggedIn(true);
         setIsAdmin(localStorage.getItem('futurework_is_admin') === 'true');
         const user = localStorage.getItem('futurework_user');
@@ -74,12 +91,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           }
         }
         await refreshLibraryAccess(token);
+      } else {
+        clearAuth();
       }
       setIsAuthLoading(false);
     };
 
     void initialiseAuth();
-  }, []);
+  }, [clearAuth, refreshLibraryAccess]);
 
   const login = (token: string, user?: AuthUser) => {
     localStorage.setItem('futurework_token', token);
@@ -99,13 +118,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('futurework_token');
-    localStorage.removeItem('futurework_auth');
-    localStorage.removeItem('futurework_user');
-    localStorage.removeItem('futurework_is_admin');
-    setIsLoggedIn(false);
-    setHasLibraryAccess(false);
-    setIsAdmin(false);
+    clearAuth();
     setIsAuthLoading(false);
   };
 

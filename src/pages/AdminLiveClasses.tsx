@@ -1,6 +1,9 @@
 import React, { FormEvent, useEffect, useMemo, useState } from 'react';
 import { Calendar, Pencil, Trash2, X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { API_URLS } from '../api';
+import { useAuth } from '../context/AuthContext';
+import { Loader } from '../components/Loader';
 
 type LiveClass = {
   id: number;
@@ -36,6 +39,13 @@ export const AdminLiveClasses = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleAuthExpired = () => {
+    logout();
+    navigate('/login');
+  };
 
   const request = async (url: string, init?: RequestInit) => {
     const token = localStorage.getItem('futurework_token');
@@ -45,6 +55,10 @@ export const AdminLiveClasses = () => {
       headers: { Authorization: `Bearer ${token}`, ...(init?.headers || {}) },
     });
     const result = await response.json();
+    if (response.status === 401 || response.status === 403) {
+      handleAuthExpired();
+      throw new Error('Please log in again.');
+    }
     if (!response.ok || !result.success) throw new Error(result.message || 'Request failed.');
     return result.data;
   };
@@ -111,8 +125,8 @@ export const AdminLiveClasses = () => {
     <form onSubmit={save} className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm mb-10"><div className="flex items-center justify-between gap-4 mb-7"><h2 className="text-2xl font-black text-slate-900">{editingId ? 'Edit live class' : 'Create live class'}</h2>{editingId && <button type="button" onClick={resetForm} className="text-sm font-bold text-slate-500 hover:text-slate-900 flex items-center gap-1"><X className="w-4 h-4" /> Cancel edit</button>}</div>
       <div className="grid md:grid-cols-2 gap-5"><Field label="Class name"><input required value={form.name} onChange={(e) => update('name', e.target.value)} className="input" /></Field><Field label="Live meeting URL"><input required type="url" value={form.url} onChange={(e) => update('url', e.target.value)} className="input" /></Field><Field label="Start date and time"><input required type="datetime-local" value={form.class_date} onChange={(e) => update('class_date', e.target.value)} className="input" /></Field><Field label="End date and time"><input required type="datetime-local" value={form.end_date} onChange={(e) => update('end_date', e.target.value)} className="input" /></Field><label className="flex items-end gap-3 pb-3 font-bold text-slate-700"><input type="checkbox" checked={form.is_active} onChange={(e) => update('is_active', e.target.checked)} className="w-4 h-4 accent-pink-600" /> Active and visible</label></div>
       <fieldset className="mt-6"><legend className="text-sm font-black text-slate-700 mb-3">Available to plans</legend><div className="flex flex-wrap gap-3">{plans.map((plan) => <label key={plan.id} className="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2.5 text-sm font-bold text-slate-700 cursor-pointer"><input type="checkbox" checked={form.plan_ids.includes(plan.id)} onChange={() => togglePlan(plan.id)} className="accent-pink-600" />{plan.name}</label>)}{!plans.length && <span className="text-sm text-slate-500">No active plans found.</span>}</div></fieldset>
-      <div className="mt-8 pt-6 border-t border-slate-100 flex justify-end"><button disabled={isSaving} className="h-11 px-6 rounded-xl bg-slate-900 text-white font-bold disabled:opacity-60">{isSaving ? 'Saving...' : editingId ? 'Save changes' : 'Create class'}</button></div></form>
-    <section className="space-y-10">{isLoading ? <p className="text-slate-500">Loading classes...</p> : <><ClassSection title="Upcoming classes" classes={upcomingClasses} onEdit={editClass} onDelete={remove} emptyMessage="No upcoming live classes." /><ClassSection title="Past classes" classes={pastClasses} onEdit={editClass} onDelete={remove} emptyMessage="No past live classes." /></>}</section>
+      <div className="mt-8 pt-6 border-t border-slate-100 flex justify-end"><button disabled={isSaving} className="h-11 px-6 rounded-xl bg-slate-900 text-white font-bold disabled:opacity-60">{isSaving ? <Loader variant="inline" label="Saving..." /> : editingId ? 'Save changes' : 'Create class'}</button></div></form>
+    <section className="space-y-10">{isLoading ? <Loader label="Loading classes..." /> : <><ClassSection title="Upcoming classes" classes={upcomingClasses} onEdit={editClass} onDelete={remove} emptyMessage="No upcoming live classes." /><ClassSection title="Past classes" classes={pastClasses} onEdit={editClass} onDelete={remove} emptyMessage="No past live classes." /></>}</section>
   </div></main>;
 };
 

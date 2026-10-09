@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, ArrowRight, CheckCircle2, LoaderCircle } from 'lucide-react';
+import { Mail, Lock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { API_URLS } from '../api';
+import { Loader } from '../components/Loader';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -113,7 +114,7 @@ export const Login = () => {
                 disabled={isLoggingIn}
                 className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-[15px] font-bold transition-all shadow-sm flex items-center justify-center gap-2 mt-8 group disabled:cursor-wait disabled:opacity-70"
               >
-                {isLoggingIn ? <><LoaderCircle className="w-5 h-5 animate-spin" /> Logging in...</> : <>Log In <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" /></>}
+                {isLoggingIn ? <Loader variant="inline" label="Logging in..." /> : <>Log In <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" /></>}
               </button>
             </form>
           </div>

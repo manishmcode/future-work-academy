@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { PricingHeader } from '../components/pricing/PricingHeader';
 import { Plan, PricingCards } from '../components/pricing/PricingCards';
 import { API_URLS } from '../api';
+import { Loader } from '../components/Loader';
 
 export const Pricing = () => {
   const [plans, setPlans] = useState<Plan[]>([]);
@@ -24,7 +25,7 @@ export const Pricing = () => {
     loadPlans();
   }, []);
 
-  return <main className="min-h-screen font-sans bg-[#FAF9F6] overflow-hidden pb-24 relative"><div className="absolute inset-0 w-full h-full pointer-events-none bg-right-bottom bg-no-repeat fixed" style={{ backgroundImage: "url('/images/card-bg.webp')", backgroundAttachment: 'fixed' }} /><PricingHeader />{isLoading ? <p className="relative text-center text-slate-500 font-medium py-20">Loading plans...</p> : error ? <p className="relative text-center text-red-600 font-medium py-20">{error}</p> : plans.length ? <PricingCards plans={plans} /> : <p className="relative text-center text-slate-500 font-medium py-20">No plans are currently available.</p>}</main>;
+  return <main className="min-h-screen font-sans bg-[#FAF9F6] overflow-hidden pb-24 relative"><div className="absolute inset-0 w-full h-full pointer-events-none bg-right-bottom bg-no-repeat fixed" style={{ backgroundImage: "url('/images/card-bg.webp')", backgroundAttachment: 'fixed' }} /><PricingHeader />{isLoading ? <Loader label="Loading plans..." className="relative" /> : error ? <p className="relative text-center text-red-600 font-medium py-20">{error}</p> : plans.length ? <PricingCards plans={plans} /> : <p className="relative text-center text-slate-500 font-medium py-20">No plans are currently available.</p>}</main>;
 };
 
 export default Pricing;

@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { API_URLS } from '../api';
 import { COMPANY } from '../config/company';
 import { useToast } from '../context/ToastContext';
+import { Loader } from '../components/Loader';
 
 export const SignUp = () => {
   const [name, setName] = useState('');
@@ -127,7 +128,7 @@ export const SignUp = () => {
                 disabled={isSigningUp}
                 className="w-full h-14 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-[15px] font-bold transition-all shadow-sm flex items-center justify-center gap-2 mt-8 group disabled:cursor-wait disabled:opacity-70"
               >
-                {isSigningUp ? 'Creating account...' : <>Create Account <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" /></>}
+                {isSigningUp ? <Loader variant="inline" label="Creating account..." /> : <>Create Account <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" /></>}
               </button>
             </form>
           </div>
