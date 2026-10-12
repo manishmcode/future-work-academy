@@ -1,5 +1,5 @@
 export const COMPANY = {
-  brandName: 'Futureworkacademy',
+  brandName: 'FutureWorkAcademy',
   name: 'Elqavora Ltd',
   address: 'Suite F, Ground Floor, Breakspear Park, Breakspear Way, Hemel Hempstead, Hertfordshire, HP2 4TZ, United Kingdom',
   supportEmail: 'support@futureworkacademy.net',
