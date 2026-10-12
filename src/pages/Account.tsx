@@ -95,7 +95,7 @@ export const Account = () => {
     }
 
     const loadDashboard = async () => {
-      const token = localStorage.getItem('futurework_token');
+      const token = localStorage.getItem('futureworkacademy_token');
       if (!token) {
         logout();
         navigate('/login');
@@ -136,7 +136,7 @@ export const Account = () => {
 
   const handleProfileSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const token = localStorage.getItem('futurework_token');
+    const token = localStorage.getItem('futureworkacademy_token');
     if (!token) return handleLogout();
 
     try {
@@ -188,7 +188,7 @@ export const Account = () => {
 
   const handlePasswordSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const token = localStorage.getItem('futurework_token');
+    const token = localStorage.getItem('futureworkacademy_token');
     if (!token) return handleLogout();
 
     if (passwordForm.new_password !== passwordForm.confirm_password) {

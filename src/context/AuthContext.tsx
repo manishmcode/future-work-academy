@@ -42,13 +42,13 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const authCookieOptions = () => `Path=/; SameSite=Lax${window.location.protocol === 'https:' ? '; Secure' : ''}`;
 
 function setAuthCookies(token: string) {
-  document.cookie = `futurework_auth_hint=1; ${authCookieOptions()}`;
-  document.cookie = `futurework_auth_token=${encodeURIComponent(token)}; ${authCookieOptions()}`;
+  document.cookie = `futureworkacademy_auth_hint=1; ${authCookieOptions()}`;
+  document.cookie = `futureworkacademy_auth_token=${encodeURIComponent(token)}; ${authCookieOptions()}`;
 }
 
 function clearAuthCookies() {
-  document.cookie = `futurework_auth_hint=; Path=/; Max-Age=0; SameSite=Lax${window.location.protocol === 'https:' ? '; Secure' : ''}`;
-  document.cookie = `futurework_auth_token=; Path=/; Max-Age=0; SameSite=Lax${window.location.protocol === 'https:' ? '; Secure' : ''}`;
+  document.cookie = `futureworkacademy_auth_hint=; Path=/; Max-Age=0; SameSite=Lax${window.location.protocol === 'https:' ? '; Secure' : ''}`;
+  document.cookie = `futureworkacademy_auth_token=; Path=/; Max-Age=0; SameSite=Lax${window.location.protocol === 'https:' ? '; Secure' : ''}`;
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -59,10 +59,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const clearAuth = useCallback(() => {
     clearAuthCookies();
-    localStorage.removeItem('futurework_token');
-    localStorage.removeItem('futurework_auth');
-    localStorage.removeItem('futurework_user');
-    localStorage.removeItem('futurework_is_admin');
+    localStorage.removeItem('futureworkacademy_token');
+    localStorage.removeItem('futureworkacademy_auth');
+    localStorage.removeItem('futureworkacademy_user');
+    localStorage.removeItem('futureworkacademy_is_admin');
     setIsLoggedIn(false);
     setHasLibraryAccess(false);
     setIsAdmin(false);
@@ -80,12 +80,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
       if (!response.ok || !result.success || !result.data) return;
 
-      const storedUser = localStorage.getItem('futurework_user');
+      const storedUser = localStorage.getItem('futureworkacademy_user');
       const priorUser = storedUser ? JSON.parse(storedUser) : {};
       const user = { ...priorUser, ...result.data };
-      localStorage.setItem('futurework_user', JSON.stringify(user));
-      localStorage.setItem('futurework_auth', 'true');
-      localStorage.setItem('futurework_is_admin', String(user.is_admin === true));
+      localStorage.setItem('futureworkacademy_user', JSON.stringify(user));
+      localStorage.setItem('futureworkacademy_auth', 'true');
+      localStorage.setItem('futureworkacademy_is_admin', String(user.is_admin === true));
       setIsLoggedIn(true);
       setIsAdmin(user.is_admin === true);
       setHasLibraryAccess(hasActivePlan(user));
@@ -96,17 +96,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const initialiseAuth = async () => {
-      const token = localStorage.getItem('futurework_token');
+      const token = localStorage.getItem('futureworkacademy_token');
       if (token) {
         setAuthCookies(token);
         setIsLoggedIn(true);
-        setIsAdmin(localStorage.getItem('futurework_is_admin') === 'true');
-        const user = localStorage.getItem('futurework_user');
+        setIsAdmin(localStorage.getItem('futureworkacademy_is_admin') === 'true');
+        const user = localStorage.getItem('futureworkacademy_user');
         if (user) {
           try {
             setHasLibraryAccess(hasActivePlan(JSON.parse(user)));
           } catch {
-            localStorage.removeItem('futurework_user');
+            localStorage.removeItem('futureworkacademy_user');
           }
         }
         await refreshLibraryAccess(token);
@@ -120,15 +120,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [clearAuth, refreshLibraryAccess]);
 
   const login = (token: string, user?: AuthUser) => {
-    localStorage.setItem('futurework_token', token);
-    localStorage.setItem('futurework_auth', 'true');
+    localStorage.setItem('futureworkacademy_token', token);
+    localStorage.setItem('futureworkacademy_auth', 'true');
     setAuthCookies(token);
     if (user) {
-      localStorage.setItem('futurework_user', JSON.stringify(user));
-      localStorage.setItem('futurework_is_admin', String(user.is_admin === true));
+      localStorage.setItem('futureworkacademy_user', JSON.stringify(user));
+      localStorage.setItem('futureworkacademy_is_admin', String(user.is_admin === true));
     } else {
-      localStorage.removeItem('futurework_user');
-      localStorage.removeItem('futurework_is_admin');
+      localStorage.removeItem('futureworkacademy_user');
+      localStorage.removeItem('futureworkacademy_is_admin');
     }
     setIsLoggedIn(true);
     setIsAdmin(user?.is_admin === true);

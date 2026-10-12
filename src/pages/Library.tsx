@@ -18,7 +18,7 @@ export const Library = () => {
   useEffect(() => {
     const loadLibrary = async () => {
       try {
-        const token = localStorage.getItem('futurework_token');
+        const token = localStorage.getItem('futureworkacademy_token');
         if (!token) throw new Error('Please log in again to access the library.');
 
         const response = await fetch(API_URLS.library.list, {

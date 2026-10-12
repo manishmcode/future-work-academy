@@ -48,7 +48,7 @@ export const AdminLiveClasses = () => {
   };
 
   const request = async (url: string, init?: RequestInit) => {
-    const token = localStorage.getItem('futurework_token');
+    const token = localStorage.getItem('futureworkacademy_token');
     if (!token) throw new Error('Please log in again.');
     const response = await fetch(url, {
       ...init,

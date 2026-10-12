@@ -11,7 +11,7 @@ import { LiveClasses } from './pages/LiveClasses';
 import { AdminLiveClasses } from './pages/AdminLiveClasses';
 import { Pricing } from './pages/Pricing';
 import { Unsubscribe } from './pages/Unsubscribe';
-import { Legal } from './pages/Legal';
+import { Imprint, PrivacyPolicy, TermsAndConditions } from './pages/Legal';
 import { Login } from './pages/Login';
 import { SignUp } from './pages/SignUp';
 import { Account } from './pages/Account';
@@ -58,9 +58,9 @@ function App() {
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/privacy-policy" element={<Legal title="Privacy Policy" />} />
-            <Route path="/terms-conditions" element={<Legal title="Terms & Conditions" />} />
-            <Route path="/imprint" element={<Legal title="Imprint" />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-conditions" element={<TermsAndConditions />} />
+            <Route path="/imprint" element={<Imprint />} />
             <Route path="/account" element={<Account />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="*" element={<NotFound />} />

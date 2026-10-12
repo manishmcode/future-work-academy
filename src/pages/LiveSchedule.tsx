@@ -26,7 +26,7 @@ export const LiveSchedule = () => {
 
   useEffect(() => {
     const loadClasses = async () => {
-      const token = localStorage.getItem('futurework_token');
+      const token = localStorage.getItem('futureworkacademy_token');
       if (!token) { setError('Please log in to view live classes.'); setIsLoading(false); return; }
       try {
         const response = await fetch(API_URLS.classes.list, { headers: { Authorization: `Bearer ${token}` } });
@@ -55,7 +55,7 @@ export const LiveSchedule = () => {
   }, [classes, currentTime]);
 
   const joinClass = async (id: number) => {
-    const token = localStorage.getItem('futurework_token');
+    const token = localStorage.getItem('futureworkacademy_token');
     if (!token) return;
     try {
       setJoiningId(id); setError('');

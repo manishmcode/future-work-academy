@@ -31,9 +31,7 @@ export const TechnologySection = () => (
               </li>
             ))}
           </ul>
-          <Link to="/services" className="h-12 px-8 inline-flex items-center justify-center rounded-lg bg-pink-600 text-[14px] font-bold text-white shadow-lg shadow-pink-600/30 hover:bg-pink-700 transition-all">
-            More Services
-          </Link>
+      
         </div>
 
         <div className="grid sm:grid-cols-2 gap-6">
