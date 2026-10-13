@@ -52,6 +52,8 @@ const imprintData = [
 
 type InfoCardProps = LegalItem & {
   index?: number;
+  /** Imprint grid: equal card size in 2×2 layout */
+  imprintGrid?: boolean;
 };
 
 const formatParagraph = (paragraph: string) => {
@@ -62,14 +64,18 @@ const formatParagraph = (paragraph: string) => {
   ));
 };
 
-const InfoCard = ({ title, content, index, icon }: InfoCardProps) => {
+const InfoCard = ({ title, content, index, icon, imprintGrid }: InfoCardProps) => {
   const paragraphs = content.split(/\n+/).filter(Boolean);
 
   return (
-    <article className="group relative bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] hover:border-slate-200 transition-all duration-300">
+    <article
+      className={`group relative bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] hover:border-slate-200 transition-all duration-300 ${
+        imprintGrid ? 'h-full min-h-[280px] flex flex-col' : ''
+      }`}
+    >
       <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-50 to-transparent rounded-tr-3xl rounded-bl-[4rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
-      <div className="flex items-start gap-4 relative z-10">
+      <div className={`flex items-start gap-4 relative z-10 ${imprintGrid ? 'flex-1' : ''}`}>
         {icon ? (
           <div className="w-12 h-12 rounded-2xl bg-pink-50 border border-pink-100/50 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
             {icon}
@@ -80,7 +86,7 @@ const InfoCard = ({ title, content, index, icon }: InfoCardProps) => {
           </div>
         )}
 
-        <div>
+        <div className={imprintGrid ? 'flex-1 min-w-0' : ''}>
           <h3 className="text-lg font-bold text-slate-900 mb-3">{title}</h3>
           <div className="space-y-4">
             {paragraphs.map((paragraph, paragraphIndex) => (
@@ -127,20 +133,31 @@ export const TermsContent = () => (
   </div>
 );
 
-export const ImprintContent = () => (
-  <div className="space-y-6">
-    <section className="bg-slate-900 text-white p-8 rounded-3xl mb-8 relative overflow-hidden" aria-labelledby="legal-content-title">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-      <h2 id="legal-content-title" className="text-2xl font-bold mb-2">Imprint & Legal Disclosure</h2>
-      <p className="text-slate-400">Official company information, registration details, and legal disclosures for transparency.</p>
-    </section>
+export const ImprintContent = () => {
+  const imprintCards = imprintData.filter((item) => item.title !== 'Disclaimer');
+  const disclaimer = imprintData.find((item) => item.title === 'Disclaimer');
 
-    <div className="grid sm:grid-cols-2 gap-6">
-      {imprintData.map((item, i) => (
-        <div key={i} className={item.title === "Disclaimer" ? "sm:col-span-2" : ""}>
-          <InfoCard icon={item.icon} title={item.title} content={item.content} />
+  return (
+    <div className="space-y-6">
+      <section className="bg-slate-900 text-white p-8 rounded-3xl mb-8 relative overflow-hidden" aria-labelledby="legal-content-title">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+        <h2 id="legal-content-title" className="text-2xl font-bold mb-2">Imprint & Legal Disclosure</h2>
+        <p className="text-slate-400">Official company information, registration details, and legal disclosures for transparency.</p>
+      </section>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
+        {imprintCards.map((item, i) => (
+          <div key={i} className="h-full min-h-[280px]">
+            <InfoCard icon={item.icon} title={item.title} content={item.content} imprintGrid />
+          </div>
+        ))}
+      </div>
+
+      {disclaimer && (
+        <div className="min-h-[280px]">
+          <InfoCard icon={disclaimer.icon} title={disclaimer.title} content={disclaimer.content} imprintGrid />
         </div>
-      ))}
+      )}
     </div>
-  </div>
-);
+  );
+};
