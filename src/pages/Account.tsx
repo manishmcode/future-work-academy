@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CreditCard, Lock, LogOut, User } from 'lucide-react';
+import { CreditCard, FileText, Lock, LogOut, User } from 'lucide-react';
 import { API_URLS } from '../api';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { Loader } from '../components/Loader';
 
-type TabType = 'billing' | 'profile' | 'security';
+type TabType = 'billing' | 'subscription' | 'profile' | 'security';
 
 type DashboardData = {
   firstname: string;
@@ -28,7 +28,9 @@ type DashboardData = {
     billing_frequency: string;
     status: string;
     payment_status: string;
+    starts_at: string | null;
     ends_at: string | null;
+    created_at: string | null;
   }>;
 };
 
@@ -57,6 +59,8 @@ const formatMoney = (amount: number, currency = 'EUR') => new Intl.NumberFormat(
 const formatDate = (date: string | null) => date
   ? new Intl.DateTimeFormat(undefined, { day: 'numeric', month: 'short', year: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(date))
   : 'Not scheduled';
+
+const displayValue = (value?: string | null) => value?.trim() || '-';
 
 export const Account = () => {
   const [activeTab, setActiveTab] = useState<TabType>('billing');
@@ -258,10 +262,14 @@ export const Account = () => {
   const subscription = dashboard?.subscriptions.find((item) => item.status === 'active') || dashboard?.subscriptions[0];
   const displayName = dashboard?.user_meta.display_name || `${dashboard?.firstname || ''} ${dashboard?.lastname || ''}`.trim();
   const initial = displayName.charAt(0).toUpperCase() || 'U';
+  const subscriptionCurrency = subscription?.currency || 'EUR';
+  const subscriptionTotal = subscription ? formatMoney(Number(subscription.price), subscriptionCurrency) : '-';
+  const subscriptionStartDate = subscription?.starts_at || subscription?.created_at || null;
   const tabs = [
     { id: 'billing' as const, label: 'Payments', icon: CreditCard },
-    { id: 'profile' as const, label: 'Personal Info', icon: User },
-    { id: 'security' as const, label: 'Security', icon: Lock },
+    { id: 'subscription' as const, label: 'My Subscriptions', icon: FileText },
+    { id: 'profile' as const, label: 'Account Details', icon: User },
+    { id: 'security' as const, label: 'Change Password', icon: Lock },
   ];
 
   return (
@@ -279,12 +287,12 @@ export const Account = () => {
             </div>
           </header>
 
-          <nav className="bg-white p-2 rounded-full shadow-sm border border-slate-200/60 flex items-center gap-2 mb-8">
+          <nav className="bg-white p-2 rounded-full shadow-sm border border-slate-200/60 flex items-center gap-2 mb-8 overflow-x-auto">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
-              return <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-full text-[13px] font-black uppercase tracking-widest ${isActive ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100'}`}>
-                <Icon className="w-4 h-4" /><span className="hidden sm:inline">{tab.label}</span>
+              return <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`flex-1 min-w-[140px] sm:min-w-0 flex items-center justify-center gap-2 py-3 rounded-full text-[12px] lg:text-[13px] font-black uppercase tracking-widest whitespace-nowrap ${isActive ? 'bg-slate-900 text-white shadow-md' : 'text-slate-500 hover:bg-slate-100'}`}>
+                <Icon className="w-4 h-4" /><span>{tab.label}</span>
               </button>;
             })}
           </nav>
@@ -307,6 +315,44 @@ export const Account = () => {
                 </tr>)}</tbody>
               </table>
             </div> : <p className="text-slate-500 font-medium">No payments yet.</p>}
+          </section>}
+
+          {activeTab === 'subscription' && <section className="bg-white rounded-[2rem] sm:rounded-[2.5rem] p-5 sm:p-8 shadow-sm border border-slate-200">
+            <h2 className="border-l-4 border-pink-500 pl-3 text-2xl sm:text-3xl font-black text-slate-900 uppercase tracking-tight mb-8">My Subscriptions</h2>
+
+            {subscription ? <div className="space-y-10">
+              <div className="rounded-[1.25rem] border border-slate-200 overflow-hidden">
+                <SubscriptionDetailRow label="Status" value={<StatusBadge status={subscription.status} />} />
+                <SubscriptionDetailRow label="Start Date" value={formatDate(subscriptionStartDate)} />
+                <SubscriptionDetailRow label="End Date" value={formatDate(subscription.ends_at)} />
+                <SubscriptionDetailRow label="Payment" value={<StatusBadge status={subscription.payment_status} />} />
+              </div>
+
+              <div>
+                <h3 className="text-xl font-black text-slate-900 mb-5">Subscription totals</h3>
+                <div className="rounded-[1.25rem] border border-slate-200 overflow-hidden">
+                  <div className="grid grid-cols-[1fr_auto] gap-4 bg-slate-50 border-b border-slate-200 px-5 sm:px-6 py-4 text-[10px] font-black text-slate-500 uppercase tracking-wider">
+                    <span>Product</span>
+                    <span>Total</span>
+                  </div>
+                  <SubscriptionTotalRow label={subscription.plan_name || 'Subscription'} value={subscriptionTotal} />
+                  <SubscriptionTotalRow label="SubTotal:" value={subscriptionTotal} />
+                  <SubscriptionTotalRow label="Totals:" value={subscriptionTotal} strong accent />
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-xl font-black text-slate-900 mb-5">Billing address</h3>
+                <div className="rounded-[1.25rem] border border-slate-200 overflow-hidden">
+                  <SubscriptionDetailRow label="Address" value={displayValue(dashboard?.address)} />
+                  <SubscriptionDetailRow label="Country" value={displayValue(dashboard?.country)} />
+                  <SubscriptionDetailRow label="City" value={displayValue(dashboard?.city)} />
+                  <SubscriptionDetailRow label="Postcode / ZIP" value={displayValue(dashboard?.postal_code)} />
+                  <SubscriptionDetailRow label="Phone" value={displayValue(dashboard?.phone)} />
+                  <SubscriptionDetailRow label="Email" value={displayValue(dashboard?.email)} />
+                </div>
+              </div>
+            </div> : <p className="text-slate-500 font-medium">No subscription found.</p>}
           </section>}
 
           {activeTab === 'profile' && <form onSubmit={handleProfileSubmit} className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-sm border border-slate-200">
@@ -345,6 +391,32 @@ const PasswordInput = ({ label, value, onChange, hint }: { label: string; value:
     <input type="password" value={value} required minLength={label === 'Current Password' ? 1 : 6} onChange={(event) => onChange(event.target.value)} placeholder={hint} autoComplete={label === 'Current Password' ? 'current-password' : 'new-password'} className="w-full h-14 px-6 rounded-2xl border-2 border-slate-200 bg-slate-50 text-[15px] font-bold text-slate-900 focus:outline-none focus:border-slate-900 focus:bg-white transition-all placeholder:text-slate-400" />
   </div>
 );
+
+const StatusBadge = ({ status }: { status: string }) => {
+  const normalizedStatus = status.toLowerCase();
+  const isActive = ['active', 'paid', 'approved'].includes(normalizedStatus);
+
+  return (
+    <span className={`inline-flex rounded-full px-3 py-1 text-[10px] font-black uppercase ${isActive ? 'bg-pink-50 text-pink-600 ring-1 ring-pink-200' : 'bg-slate-100 text-slate-500'}`}>
+      {status}
+    </span>
+  );
+};
+
+const SubscriptionDetailRow = ({ label, value }: { label: string; value: React.ReactNode }) => (
+  <div className="grid grid-cols-[1fr_auto] gap-4 items-center px-5 sm:px-6 py-4 border-b border-slate-100 last:border-b-0 min-h-[54px]">
+    <span className="text-[10px] font-black text-slate-500 uppercase tracking-wider">{label}</span>
+    <span className="text-right text-sm font-black text-slate-900">{value}</span>
+  </div>
+);
+
+const SubscriptionTotalRow = ({ label, value, strong = false, accent = false }: { label: string; value: string; strong?: boolean; accent?: boolean }) => (
+  <div className="grid grid-cols-[1fr_auto] gap-4 items-center px-5 sm:px-6 py-4 border-b border-slate-100 last:border-b-0">
+    <span className={`${strong ? 'text-base font-black' : 'text-sm font-bold'} text-slate-900`}>{label}</span>
+    <span className={`text-right text-sm font-black ${accent ? 'text-pink-600' : 'text-slate-900'}`}>{value}</span>
+  </div>
+);
+
 const ProfileInput = ({ label, value, onChange, required = false, wide = false }: { label: string; value: string; onChange: (value: string) => void; required?: boolean; wide?: boolean }) => (
   <div className={`space-y-3 ${wide ? 'md:col-span-2' : ''}`}>
     <label className="block text-[11px] font-black text-slate-500 uppercase tracking-[0.2em] ml-2">{label}</label>

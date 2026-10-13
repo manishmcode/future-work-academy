@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight, Video, Monitor, FileText, Award } from 'lucide-react';
 
 const liveTrainingFeatures = [
@@ -24,9 +25,9 @@ export const LiveTrainingSection = () => (
           <p className="text-slate-500 text-[15px] leading-relaxed mb-6">
             Take part in guided online sessions where you can ask questions, follow practical demonstrations and receive clear feedback as you learn.
           </p>
-          <button className="h-11 px-8 rounded-lg bg-slate-900 text-[13px] font-bold text-white tracking-wide hover:bg-pink-600 transition-colors flex items-center gap-2">
+          <Link to="/schedule/" className="h-11 px-8 rounded-lg bg-slate-900 text-[13px] font-bold text-white tracking-wide hover:bg-pink-600 transition-colors inline-flex items-center gap-2">
             See Class Schedule <ArrowRight className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
       </div>
 

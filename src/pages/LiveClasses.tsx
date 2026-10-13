@@ -1,5 +1,5 @@
 import React from 'react';
-import { Video, Mic, Hand, MessageSquare, PhoneOff, Download, FileText, ExternalLink, Bold, Italic, Underline, Strikethrough, ChevronDown, Check, Users, Bookmark, ChevronLeft } from 'lucide-react';
+import { Video, Mic, Hand, MessageSquare, PhoneOff, FileText, ExternalLink, Bold, Italic, Underline, Strikethrough, ChevronDown, Check, Users, Bookmark, ChevronLeft } from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { COMPANY } from '../config/company';
 
@@ -26,7 +26,7 @@ export const LiveClasses = () => {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="px-5 py-2 text-[13px] font-bold text-slate-600 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors flex items-center gap-2">
+            <button type="button" className="px-5 py-2 text-[13px] font-bold text-slate-600 bg-slate-100 rounded-full hover:bg-slate-200 transition-colors flex items-center gap-2">
               <Bookmark className="w-4 h-4" /> Save Notes
             </button>
             {joinUrl ? (
@@ -34,7 +34,7 @@ export const LiveClasses = () => {
                 <ExternalLink className="w-4 h-4" /> Open Meeting
               </Link>
             ) : (
-              <button className="px-6 py-2 text-[13px] font-bold text-white bg-red-500 rounded-full hover:bg-red-600 transition-colors shadow-sm flex items-center gap-2">
+              <button type="button" className="px-6 py-2 text-[13px] font-bold text-white bg-red-500 rounded-full hover:bg-red-600 transition-colors shadow-sm flex items-center gap-2">
                 <PhoneOff className="w-4 h-4" /> Leave Class
               </button>
             )}
@@ -146,7 +146,7 @@ export const LiveClasses = () => {
               <div className="space-y-3">
 
                 {/* Resource 1 */}
-                <div className="flex items-center justify-between p-4 bg-white border border-slate-200 hover:border-pink-300 rounded-2xl shadow-sm transition-colors group cursor-pointer">
+                <Link to="/library/" className="flex items-center justify-between p-4 bg-white border border-slate-200 hover:border-pink-300 rounded-2xl shadow-sm transition-colors group">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-red-50 text-red-500 flex items-center justify-center group-hover:bg-red-500 group-hover:text-white transition-colors">
                       <FileText className="w-5 h-5" />
@@ -156,13 +156,13 @@ export const LiveClasses = () => {
                       <p className="text-[12px] text-slate-500">PDF Document &middot; 2.4 MB</p>
                     </div>
                   </div>
-                  <button className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-pink-50 group-hover:text-pink-600 transition-colors">
-                    <Download className="w-4 h-4" />
-                  </button>
-                </div>
+                  <span className="text-[12px] font-bold text-slate-500 group-hover:text-pink-600 transition-colors">
+                    View in Library
+                  </span>
+                </Link>
 
                 {/* Resource 2 */}
-                <div className="flex items-center justify-between p-4 bg-white border border-slate-200 hover:border-pink-300 rounded-2xl shadow-sm transition-colors group cursor-pointer">
+                <Link to="/library/" className="flex items-center justify-between p-4 bg-white border border-slate-200 hover:border-pink-300 rounded-2xl shadow-sm transition-colors group">
                   <div className="flex items-center gap-4">
                     <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-500 flex items-center justify-center group-hover:bg-purple-500 group-hover:text-white transition-colors">
                       <ExternalLink className="w-5 h-5" />
@@ -172,10 +172,10 @@ export const LiveClasses = () => {
                       <p className="text-[12px] text-slate-500">Notion Workspace</p>
                     </div>
                   </div>
-                  <button className="text-[12px] font-bold text-slate-500 group-hover:text-pink-600 transition-colors">
-                    Open Link
-                  </button>
-                </div>
+                  <span className="text-[12px] font-bold text-slate-500 group-hover:text-pink-600 transition-colors">
+                    Open Library
+                  </span>
+                </Link>
 
               </div>
             </div>
@@ -189,13 +189,13 @@ export const LiveClasses = () => {
               <div className="border border-slate-200 rounded-[1.5rem] bg-white overflow-hidden shadow-sm focus-within:border-pink-400 focus-within:ring-4 focus-within:ring-pink-500/10 transition-all">
                 <div className="flex items-center gap-4 px-5 py-3 border-b border-slate-100 bg-slate-50/80">
                   <div className="flex gap-4 text-slate-400 font-serif">
-                    <button className="hover:text-slate-800 transition-colors"><Bold className="w-4 h-4" /></button>
-                    <button className="hover:text-slate-800 transition-colors"><Italic className="w-4 h-4" /></button>
-                    <button className="hover:text-slate-800 transition-colors"><Underline className="w-4 h-4" /></button>
-                    <button className="hover:text-slate-800 transition-colors"><Strikethrough className="w-4 h-4" /></button>
+                    <button type="button" className="hover:text-slate-800 transition-colors"><Bold className="w-4 h-4" /></button>
+                    <button type="button" className="hover:text-slate-800 transition-colors"><Italic className="w-4 h-4" /></button>
+                    <button type="button" className="hover:text-slate-800 transition-colors"><Underline className="w-4 h-4" /></button>
+                    <button type="button" className="hover:text-slate-800 transition-colors"><Strikethrough className="w-4 h-4" /></button>
                   </div>
                   <div className="w-px h-4 bg-slate-200"></div>
-                  <button className="text-[13px] font-medium text-slate-500 flex items-center gap-2 hover:text-slate-800 transition-colors">
+                  <button type="button" className="text-[13px] font-medium text-slate-500 flex items-center gap-2 hover:text-slate-800 transition-colors">
                     Normal <ChevronDown className="w-3.5 h-3.5" />
                   </button>
                 </div>
