@@ -7,7 +7,7 @@ import { useAuth } from '../context/AuthContext';
 export const Footer = () => {
   const location = useLocation();
   const { hasLibraryAccess } = useAuth();
-  if (['/live-room'].includes(location.pathname)) return null;
+  if (['/live-room', '/live-room/'].includes(location.pathname)) return null;
 
   return (
     <footer className="bg-white border-t border-slate-200 pt-20 pb-8 text-slate-500 relative overflow-hidden font-sans">
@@ -32,18 +32,18 @@ export const Footer = () => {
             <h4 className="text-slate-900 font-bold text-[11px] uppercase tracking-wider mb-6">Quick links</h4>
             <ul className="space-y-4">
               <li><Link to="/" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Home</Link></li>
-              <li><Link to="/library" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Library</Link></li>
-              {!hasLibraryAccess && <li><Link to="/pricing" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Pricing</Link></li>}
-              <li><Link to="/unsubscribe" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Unsubscribe</Link></li>
+              <li><Link to="/library/" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Library</Link></li>
+              {!hasLibraryAccess && <li><Link to="/pricing/" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Pricing</Link></li>}
+              <li><Link to="/unsubscribe/" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Unsubscribe</Link></li>
             </ul>
           </div>
           
           <div>
             <h4 className="text-slate-900 font-bold text-[11px] uppercase tracking-wider mb-6">Legal</h4>
             <ul className="space-y-4">
-              <li><Link to="/privacy-policy" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/terms-conditions" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Terms & Conditions</Link></li>
-              <li><Link to="/imprint" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Imprint</Link></li>
+              <li><Link to="/privacy-policy/" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/terms-conditions/" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Terms & Conditions</Link></li>
+              <li><Link to="/imprint/" className="text-[13px] font-bold text-slate-500 hover:text-pink-600 transition-colors">Imprint</Link></li>
             </ul>
           </div>
           
@@ -61,8 +61,8 @@ export const Footer = () => {
         <div className="border-t border-slate-200 pt-6 text-[12px] font-bold text-slate-400 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p>&copy; {new Date().getFullYear()} {COMPANY.brandName}. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link to="/privacy-policy" className="hover:text-slate-900 transition-colors">Privacy</Link>
-            <Link to="/terms-conditions" className="hover:text-slate-900 transition-colors">Terms</Link>
+            <Link to="/privacy-policy/" className="hover:text-slate-900 transition-colors">Privacy</Link>
+            <Link to="/terms-conditions/" className="hover:text-slate-900 transition-colors">Terms</Link>
           </div>
         </div>
       </div>

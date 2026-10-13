@@ -20,30 +20,44 @@ import { NotFound } from './pages/NotFound';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import { ScrollToTop } from './components/ScrollToTop';
+import { Seo } from './components/Seo';
 import './App.css';
 
 const MemberAccess = ({ children }: { children: React.ReactElement }) => {
   const { isLoggedIn, hasLibraryAccess, isAuthLoading } = useAuth();
   if (isAuthLoading) return <Loader variant="page" label="Checking your session..." />;
-  return isLoggedIn && hasLibraryAccess ? children : <Navigate to="/pricing" replace />;
+  return isLoggedIn && hasLibraryAccess ? children : <Navigate to="/pricing/" replace />;
+};
+
+const AccountAccess = () => {
+  const { isLoggedIn, isAuthLoading } = useAuth();
+  if (isAuthLoading) return <Loader variant="page" label="Checking your session..." />;
+  return isLoggedIn ? <Account /> : <Navigate to="/login/" replace />;
+};
+
+const ProfileRedirect = () => {
+  const { isLoggedIn, isAuthLoading } = useAuth();
+  if (isAuthLoading) return <Loader variant="page" label="Checking your session..." />;
+  return <Navigate to={isLoggedIn ? '/account/' : '/login/'} replace />;
 };
 
 const LiveClassesAccess = () => {
   const { isLoggedIn, hasLibraryAccess, isAdmin, isAuthLoading } = useAuth();
   if (isAuthLoading) return <Loader variant="page" label="Checking your session..." />;
   if (isAdmin) return <AdminLiveClasses />;
-  return isLoggedIn && hasLibraryAccess ? <LiveSchedule /> : <Navigate to="/pricing" replace />;
+  return isLoggedIn && hasLibraryAccess ? <LiveSchedule /> : <Navigate to="/pricing/" replace />;
 };
 const PricingAccess = () => {
   const { isAdmin, isAuthLoading } = useAuth();
   if (isAuthLoading) return <Loader variant="page" label="Checking your session..." />;
-  return isAdmin ? <Navigate to="/schedule" replace /> : <Pricing />;
+  return isAdmin ? <Navigate to="/schedule/" replace /> : <Pricing />;
 };
 function App() {
   return (
     <AuthProvider>
       <ToastProvider>
       <Router>
+      <Seo />
       <ScrollToTop />
       <div className="flex flex-col min-h-screen">
         <Navbar />
@@ -61,7 +75,8 @@ function App() {
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-conditions" element={<TermsAndConditions />} />
             <Route path="/imprint" element={<Imprint />} />
-            <Route path="/account" element={<Account />} />
+            <Route path="/account" element={<AccountAccess />} />
+            <Route path="/profile" element={<ProfileRedirect />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

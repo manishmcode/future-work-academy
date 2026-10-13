@@ -21,18 +21,18 @@ export const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (['/live-room'].includes(location.pathname)) return null;
+  if (['/live-room', '/live-room/'].includes(location.pathname)) return null;
 
   const navLinks = isAdmin
     ? [
-      { name: 'Live Classes', path: '/schedule' },
-      { name: 'Profile', path: '/account' },
+      { name: 'Live Classes', path: '/schedule/' },
+      { name: 'Profile', path: '/account/' },
     ]
     : [
       { name: 'Home', path: '/' },
-      { name: 'Library', path: '/library' },
-      ...(!hasLibraryAccess ? [{ name: 'Pricing', path: '/pricing' }] : []),
-      { name: 'Unsubscribe', path: '/unsubscribe' },
+      { name: 'Library', path: '/library/' },
+      ...(!hasLibraryAccess ? [{ name: 'Pricing', path: '/pricing/' }] : []),
+      { name: 'Unsubscribe', path: '/unsubscribe/' },
     ];
 
   return (
@@ -58,7 +58,7 @@ export const Navbar = () => {
           {/* Desktop Links (With Animated Underline) */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => {
-              const isActive = location.pathname === link.path || (link.name === 'Library' && location.pathname === '/schedule');
+              const isActive = location.pathname === link.path || (link.name === 'Library' && ['/schedule', '/schedule/'].includes(location.pathname));
               return (
                 <Link
                   key={link.name}
@@ -79,7 +79,7 @@ export const Navbar = () => {
           <div className="hidden md:flex items-center space-x-3">            <LanguageSelector />
             {isAdmin ? null : isLoggedIn ? (
               <Link
-                to="/account"
+                to="/account/"
                 className="h-11 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 flex items-center justify-center text-white text-[15px] font-bold transition-all shadow-sm"
               >
                 My Account
@@ -88,7 +88,7 @@ export const Navbar = () => {
               <>
                 
                 <Link
-                  to="/login"
+                  to="/login/"
                   className="h-11 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 flex items-center justify-center text-white text-[15px] font-bold transition-all shadow-sm"
                 >
                   Log In
@@ -119,7 +119,7 @@ export const Navbar = () => {
       >
         <div className="mx-4 mt-2 mb-4 bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-xl overflow-hidden p-3 space-y-1">
           {navLinks.map((link) => {
-            const isActive = location.pathname === link.path || (link.name === 'Library' && location.pathname === '/schedule');
+            const isActive = location.pathname === link.path || (link.name === 'Library' && ['/schedule', '/schedule/'].includes(location.pathname));
             return (
               <Link
                 key={link.name}
@@ -137,7 +137,7 @@ export const Navbar = () => {
           <div className="pt-2 pb-1 px-1 flex flex-col gap-2">
             {isAdmin ? null : isLoggedIn ? (
               <Link
-                to="/account"
+                to="/account/"
                 onClick={() => setIsOpen(false)}
                 className="w-full h-12 rounded-xl bg-slate-900 flex items-center justify-center text-white text-[15px] font-bold shadow-sm"
               >
@@ -147,7 +147,7 @@ export const Navbar = () => {
               <>
 
                 <Link
-                  to="/login"
+                  to="/login/"
                   onClick={() => setIsOpen(false)}
                   className="w-full h-12 rounded-xl bg-slate-900 hover:bg-slate-800 transition-colors flex items-center justify-center text-white text-[15px] font-bold shadow-sm"
                 >

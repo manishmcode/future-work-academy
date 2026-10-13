@@ -14,7 +14,7 @@ export const LiveClasses = () => {
       <div className="border-b border-slate-200">
         <div className="max-w-[1400px] mx-auto px-6 h-[88px] flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <Link to="/schedule" className="w-10 h-10 rounded-full border border-slate-200 bg-slate-50 flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors shadow-sm">
+            <Link to="/schedule/" className="w-10 h-10 rounded-full border border-slate-200 bg-slate-50 flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:text-slate-800 transition-colors shadow-sm">
               <ChevronLeft className="w-5 h-5" />
             </Link>
             <div>

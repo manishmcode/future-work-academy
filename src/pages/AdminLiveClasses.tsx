@@ -44,7 +44,7 @@ export const AdminLiveClasses = () => {
 
   const handleAuthExpired = () => {
     logout();
-    navigate('/login');
+    navigate('/login/');
   };
 
   const request = async (url: string, init?: RequestInit) => {

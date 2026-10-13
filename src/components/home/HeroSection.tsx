@@ -33,7 +33,7 @@ export const HeroSection = () => {
         </div>
 
         {/* Right Graphic */}
-        <Link to="/library" className="lg:col-span-1 block group">
+        <Link to="/library/" className="lg:col-span-1 block group">
           <div className="bg-[#0F0F0F] rounded-3xl p-8 h-[350px] sm:h-[450px] relative overflow-hidden text-white flex flex-col justify-end cursor-pointer border border-black/10">
             <div className="absolute top-6 right-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 z-20">
               <ArrowRight className="w-8 h-8 -rotate-45" />

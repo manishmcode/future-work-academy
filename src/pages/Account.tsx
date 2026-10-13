@@ -85,7 +85,7 @@ export const Account = () => {
     if (isAuthLoading) return;
 
     if (!isLoggedIn) {
-      navigate('/login');
+      navigate('/login/');
       return;
     }
 
@@ -98,7 +98,7 @@ export const Account = () => {
       const token = localStorage.getItem('futureworkacademy_token');
       if (!token) {
         logout();
-        navigate('/login');
+        navigate('/login/');
         return;
       }
 
@@ -110,7 +110,7 @@ export const Account = () => {
         const result = await response.json();
         if (response.status === 401 || response.status === 403) {
           logout();
-          navigate('/login');
+          navigate('/login/');
           return;
         }
         if (!response.ok || !result.success || !result.data) throw new Error(result.message || 'Unable to load account details.');
@@ -155,7 +155,7 @@ export const Account = () => {
       const result = await response.json();
       if (response.status === 401 || response.status === 403) {
         logout();
-        navigate('/login');
+        navigate('/login/');
         return;
       }
       if (!response.ok || !result.success) throw new Error(result.message || 'Unable to save profile changes.');
@@ -214,7 +214,7 @@ export const Account = () => {
       const result = await response.json();
       if (response.status === 401 || response.status === 403) {
         logout();
-        navigate('/login');
+        navigate('/login/');
         return;
       }
       if (!response.ok || !result.success) throw new Error(result.message || 'Unable to change password.');

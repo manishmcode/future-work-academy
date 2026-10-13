@@ -25,7 +25,7 @@ export const Login = () => {
       if (!response.ok || !result.success || !result.data?.token) throw new Error(result.message || 'Unable to log in.');
 
       login(result.data.token, result.data.user);
-      navigate(result.data.user?.is_admin === true ? '/schedule' : '/library');
+      navigate(result.data.user?.is_admin === true ? '/schedule/' : '/library/');
     } catch (loginError) {
       setError(loginError instanceof Error ? loginError.message : 'Unable to log in.');
     } finally {
@@ -73,7 +73,7 @@ export const Login = () => {
                 Log in to your account.
               </h1>
               <p className="text-slate-500 font-medium">
-                Don't have an account? <Link to="/signup" className="text-pink-600 hover:text-pink-700 hover:underline">Sign up for free</Link>
+                Don't have an account? <Link to="/signup/" className="text-pink-600 hover:text-pink-700 hover:underline">Sign up for free</Link>
               </p>
             </div>
 
@@ -95,7 +95,6 @@ export const Login = () => {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <label className="text-[13px] font-bold text-slate-700 tracking-wide uppercase">Password</label>
-                  <Link to="#" className="text-[13px] font-bold text-pink-600 hover:text-pink-700 hover:underline">Forgot?</Link>
                 </div>
                 <div className="relative group">
                   <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-pink-500 transition-colors" />

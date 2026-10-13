@@ -28,7 +28,7 @@ export const SignUp = () => {
 
       showToast('success', result.message || 'Account created successfully.');
       login(result.data.token, result.data.user);
-      navigate('/library');
+      navigate('/library/');
     } catch (signupError) {
       showToast('error', signupError instanceof Error ? signupError.message : 'Unable to create your account.');
     } finally {
@@ -76,7 +76,7 @@ export const SignUp = () => {
                 Create an account.
               </h1>
               <p className="text-slate-500 font-medium">
-                Already have an account? <Link to="/login" className="text-pink-600 hover:text-pink-700 hover:underline">Log in</Link>
+                Already have an account? <Link to="/login/" className="text-pink-600 hover:text-pink-700 hover:underline">Log in</Link>
               </p>
             </div>
 

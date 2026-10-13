@@ -14,7 +14,7 @@ const coursesList = [
 
 export const CoursesSection = () => {
   const { hasLibraryAccess } = useAuth();
-  const courseDestination = hasLibraryAccess ? '/library' : '/pricing';
+  const courseDestination = hasLibraryAccess ? '/library/' : '/pricing/';
 
   return (
   <section className="py-24 border-b border-slate-100">
