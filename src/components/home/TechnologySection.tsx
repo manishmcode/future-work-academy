@@ -14,7 +14,7 @@ export const TechnologySection = () => (
         <div>
           <p className="text-pink-600 font-bold text-sm tracking-widest uppercase mb-4">Technology</p>
           <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 leading-[1.15] mb-8">
-            Any sufficiently advanced technology is indistinguishable from magic.
+            Any Sufficiently Advanced Technology Is Indistinguishable from Magic
           </h2>
           <div className="w-12 h-1 bg-pink-600 mb-8 rounded-full"></div>
           <p className="text-slate-500 mb-8 leading-relaxed">
@@ -40,7 +40,7 @@ export const TechnologySection = () => (
               <div className="mb-6">
                 <img src="/images/icon1.webp" alt="Video Vision" className="w-16 h-16 object-contain filter sepia saturate-[3] hue-rotate-[-15deg] contrast-125" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">Video Vision</h3>
+              <p className="text-xl font-bold text-slate-900 mb-3">Video Vision</p>
               <p className="text-slate-500 text-sm leading-relaxed">Simple easy distinguish when our power right.</p>
             </div>
           </div>
@@ -50,7 +50,7 @@ export const TechnologySection = () => (
               <div className="mb-6">
                 <img src="/images/icon2.webp" alt="Computer Vision" className="w-16 h-16 object-contain filter sepia saturate-[3] hue-rotate-[-15deg] contrast-125" />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3">Computer Vision</h3>
+              <p className="text-xl font-bold text-slate-900 mb-3">Computer Vision</p>
               <p className="text-slate-500 text-sm leading-relaxed">Claims duty the obligations of business it will occur.</p>
             </div>
           </div>

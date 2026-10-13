@@ -24,8 +24,7 @@ export const Unsubscribe = () => {
           {/* Spacing to replace removed badge */}
           <div className="h-[32px] mb-6"></div>
           <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-extrabold leading-[1.1] tracking-tight text-slate-900 mb-6">
-            Cancel <br className="hidden sm:block" />
-            <span className="text-slate-400 font-medium">Subscription.</span>
+            Cancel Subscription.
           </h1>
           <p className="text-[17px] text-slate-600 font-medium max-w-lg leading-relaxed">
             We’re sorry to see you leave. To securely cancel your subscription and halt future billing, please confirm your details below.

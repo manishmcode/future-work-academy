@@ -11,9 +11,8 @@ export const HeroSection = () => {
       <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-end mb-16">
         <div>
 
-          <h1 className="text-[3.5rem] sm:text-6xl lg:text-[72px] font-semibold leading-[1.05] tracking-tight text-slate-900"> 
-            Your Entire <br />Tech Career. <br />
-            <span className="text-slate-600">One Platform.</span>
+          <h1 className="text-[3.5rem] sm:text-6xl lg:text-[72px] font-semibold leading-[1.05] tracking-tight text-slate-900">
+            Your Entire Tech Career. One Platform.
           </h1>
         </div>
 
@@ -48,7 +47,7 @@ export const HeroSection = () => {
             <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#0F0F0F] to-transparent z-10"></div>
 
             <div className="relative z-20 mt-auto">
-              <h3 className="text-[26px] font-medium leading-[1.2] tracking-tight text-white/90">A world of<br />autonomous<br />learning agents</h3>
+              <p className="text-[26px] font-medium leading-[1.2] tracking-tight text-white/90">A world of<br />autonomous<br />learning agents</p>
               <div className="mt-6 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-xs font-bold hover:bg-white/20 transition-colors">
                 <Video className="w-3 h-3" /> Click to View Library
               </div>

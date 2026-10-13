@@ -47,9 +47,9 @@ export const SignUp = () => {
           <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-pink-500/20 blur-[120px] rounded-full pointer-events-none"></div>
 
           <div className="relative z-10 max-w-lg">
-            <h2 className="text-4xl lg:text-5xl font-black leading-tight mb-8 tracking-tight">
+            <h1 className="text-4xl lg:text-5xl font-black leading-tight mb-8 tracking-tight">
               Start your journey with <span className="text-pink-500">{COMPANY.brandName}.</span>
-            </h2>
+            </h1>
             
             <div className="space-y-6">
               {[
@@ -72,9 +72,12 @@ export const SignUp = () => {
           <div className="w-full max-w-[420px] relative z-10">
 
             <div className="mb-10 text-center lg:text-left">
-              <h1 className="text-4xl sm:text-5xl font-extrabold leading-[1.1] tracking-tight text-slate-900 mb-3">
-                Create an account.
+              <h1 className="text-4xl sm:text-5xl font-extrabold leading-[1.1] tracking-tight text-slate-900 mb-3 lg:hidden">
+                Start your journey with {COMPANY.brandName}.
               </h1>
+              <h2 className="text-3xl sm:text-4xl font-extrabold leading-[1.1] tracking-tight text-slate-900 mb-3">
+                Create an account.
+              </h2>
               <p className="text-slate-500 font-medium">
                 Already have an account? <Link to="/login/" className="text-pink-600 hover:text-pink-700 hover:underline">Log in</Link>
               </p>
