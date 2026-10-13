@@ -2,6 +2,7 @@ import React from 'react';
 import { HeroSection } from '../components/home/HeroSection';
 import { TechnologySection } from '../components/home/TechnologySection';
 import { CoursesSection } from '../components/home/CoursesSection';
+import { InstructorLedSection } from '../components/home/InstructorLedSection';
 import { LiveTrainingSection } from '../components/home/LiveTrainingSection';
 import { GrowthPlanSection } from '../components/home/GrowthPlanSection';
 
@@ -12,6 +13,7 @@ export const Home = () => {
       <HeroSection />
       <TechnologySection />
       <CoursesSection />
+      <InstructorLedSection />
       <LiveTrainingSection />
       <GrowthPlanSection />
     </main>
