@@ -11,6 +11,14 @@
 - [Terms & Conditions](https://futureworkacademy.net/terms-conditions/): Terms and conditions governing use of the platform.
 - [Imprint](https://futureworkacademy.net/imprint/): Legal and company information about FutureWorkAcademy.
 
+## Open Graph image
+
+- File: `public/images/og-image.webp` (1200×630, 1.91:1, center cover crop, no stretch)
+- Canonical URL: `https://futureworkacademy.net/images/og-image.webp`
+- Regenerate from a master asset: `npm run build:og-image -- public/images/your-master.webp`
+
+`live-class-mockup.webp` is kept in sync for legacy URLs and the home hero.
+
 ## Structured data assets (WebP)
 
 Deploy these files under `public/` so schema URLs resolve:

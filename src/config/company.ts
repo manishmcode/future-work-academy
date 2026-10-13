@@ -1,7 +1,11 @@
 export const COMPANY = {
   brandName: 'FutureWorkAcademy',
   siteUrl: 'https://futureworkacademy.net',
-  /** WebP logo for schema.org / Open Graph (deploy under public/images/) */
+  /** Open Graph / Twitter card image (1200×630 WebP, 1.91:1) */
+  ogImageUrl: 'https://futureworkacademy.net/images/og-image.webp',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  /** WebP logo for schema.org (deploy under public/images/) */
   logoUrl: 'https://futureworkacademy.net/images/logo.webp',
   /** WebP plan images for Offer schema (deploy under public/images/pricing/) */
   pricingPlanImages: {

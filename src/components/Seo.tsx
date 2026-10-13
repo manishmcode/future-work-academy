@@ -12,9 +12,9 @@ type SeoConfig = {
   ogImageAlt?: string;
 };
 
-const OG_IMAGE = `${COMPANY.siteUrl}/images/live-class-mockup.webp`;
-const OG_IMAGE_WIDTH = '1200';
-const OG_IMAGE_HEIGHT = '630';
+const OG_IMAGE = COMPANY.ogImageUrl;
+const OG_IMAGE_WIDTH = String(COMPANY.ogImageWidth);
+const OG_IMAGE_HEIGHT = String(COMPANY.ogImageHeight);
 
 const canonicalPath = (path: string) => (path === '/' ? '/' : path.replace(/\/+$/, ''));
 const canonicalUrl = (path: string) => `${COMPANY.siteUrl}${path === '/' ? '/' : `${path}/`}`;
