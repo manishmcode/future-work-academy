@@ -24,7 +24,7 @@ export const Footer = () => {
               <span>{COMPANY.brandName}</span>
             </div>
             <p className="text-[14px] leading-relaxed text-slate-500 font-medium max-w-[310px] mb-8">
-              FutureWorkAcademy offers video learning resources focused on AI productivity, personal productivity, remote work, freelancing, and online business development. Explore our courses and discover practical ideas to support your learning journey.
+              FutureWorkAcademy offers video courses and live classes on AI productivity, remote work, freelancing, and online business.
             </p>
           </div>
           
