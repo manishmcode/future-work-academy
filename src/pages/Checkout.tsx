@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { CheckCircle2, Clock, Lock, Shield } from 'lucide-react';
 import { LocationFields } from '../components/checkout/LocationFields';
 import type { Plan } from '../components/pricing/PricingCards';
 import { Loader } from '../components/Loader';
 import { API_URLS } from '../api';
 import { COMPANY, companyEmailLink } from '../config/company';
-import { formatPlanPrice } from '../utils/formatPlanPrice';
+import {
+  CHECKOUT_PATH,
+  CHECKOUT_PLAN_STORAGE_KEY,
+  formatPlanPrice,
+  rememberCheckoutPlan,
+  type CheckoutLocationState,
+} from '../utils/formatPlanPrice';
 
 const inputClass =
   'w-full bg-slate-50 border border-slate-200 rounded-2xl py-3.5 px-4 text-[15px] focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/10 focus:bg-white transition-all font-medium text-slate-900 placeholder:text-slate-400';
@@ -14,8 +20,19 @@ const inputClass =
 const labelClass = 'block text-[13px] font-bold text-slate-700 tracking-wide uppercase mb-2';
 
 export const Checkout = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const planId = Number(searchParams.get('plan'));
+  const legacyQueryPlan = searchParams.get('plan');
+  const statePlanId = (location.state as CheckoutLocationState | null)?.planId;
+  const planId = Number(statePlanId ?? legacyQueryPlan ?? sessionStorage.getItem(CHECKOUT_PLAN_STORAGE_KEY));
+
+  useEffect(() => {
+    if (!legacyQueryPlan) return;
+    const legacyId = Number(legacyQueryPlan);
+    if (Number.isFinite(legacyId) && legacyId > 0) rememberCheckoutPlan(legacyId);
+    navigate(CHECKOUT_PATH, { replace: true, state: { planId: legacyId } satisfies CheckoutLocationState });
+  }, [legacyQueryPlan, navigate]);
 
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
   const [planError, setPlanError] = useState('');
