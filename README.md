@@ -13,8 +13,8 @@
 
 ## Open Graph Image And Hero Asset
 
-- Open Graph file: `public/images/og-image.webp` (1200x630, 1.91:1, center cover crop, no stretch)
-- Open Graph URL: `https://futureworkacademy.net/images/og-image.webp`
+- Open Graph file: `public/images/og-image-v2.webp` (1200x630, hero screenshot with headline and CTA overlay; regenerate with `npm run build:og-image`)
+- Open Graph URL: `https://futureworkacademy.net/images/og-image-v2.webp`
 - Homepage hero: `public/images/futurework-learning-hero.webp`
 
 `live-class-mockup.webp` remains in the repo for legacy references, but the current homepage uses `futurework-learning-hero.webp`.

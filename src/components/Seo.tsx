@@ -23,12 +23,12 @@ const canonicalUrl = (path: string) => `${COMPANY.siteUrl}${path === '/' ? '/' :
 
 const publicRoutes: Record<string, SeoConfig> = {
   '/': {
-    title: 'AI Productivity, Remote Work & Online Business Courses | FutureWorkAcademy',
+    title: 'AI Productivity Courses & Live Classes | FutureWorkAcademy',
     description:
-      'Explore practical video courses and live classes for AI productivity, personal productivity, remote work, freelancing, and online business skills.',
+      'Video courses and live classes in AI productivity, remote work, freelancing, and online business. Start learning today.',
     path: '/',
     ogImageAlt:
-      'FutureWorkAcademy dashboard for AI productivity courses, video lessons, and live online classes',
+      'Learn AI and productivity skills with FutureWorkAcademy video courses and live classes. Start learning today.',
   },
   '/pricing': {
     title: 'Course Membership Pricing | FutureWorkAcademy',
