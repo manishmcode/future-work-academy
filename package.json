@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && node scripts/prerender-seo.mjs",
     "build:og-image": "node scripts/build-og-image.mjs",
     "build:responsive-images": "node scripts/build-responsive-images.mjs",
     "build:logo": "node scripts/build-logo.mjs",

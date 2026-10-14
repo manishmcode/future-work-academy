@@ -182,9 +182,9 @@ const pricingMainEntity = () => ({
   ],
 });
 
-const pricingBreadcrumb = () => ({
+const pageBreadcrumb = (path: string, name: string) => ({
   '@type': 'BreadcrumbList',
-  '@id': `${SITE}/pricing/#breadcrumb`,
+  '@id': `${SITE}${path}/#breadcrumb`,
   itemListElement: [
     {
       '@type': 'ListItem',
@@ -195,8 +195,8 @@ const pricingBreadcrumb = () => ({
     {
       '@type': 'ListItem',
       position: 2,
-      name: 'Pricing',
-      item: `${SITE}/pricing/`,
+      name,
+      item: `${SITE}${path}/`,
     },
   ],
 });
@@ -205,13 +205,14 @@ type PageSchemaInput = {
   path: string;
   title: string;
   description: string;
+  breadcrumbName?: string;
 };
 
 /**
  * Single root WebPage JSON-LD object. Organization, WebSite, Service, offers, etc. are nested
  * under WebPage so validators show one detected item, not multiple top-level tabs.
  */
-export const buildStructuredData = ({ path, title, description }: PageSchemaInput) => {
+export const buildStructuredData = ({ path, title, description, breadcrumbName }: PageSchemaInput) => {
   const org = organization();
 
   const pageId = (() => {
@@ -238,6 +239,10 @@ export const buildStructuredData = ({ path, title, description }: PageSchemaInpu
     publisher: org,
   };
 
+  if (path !== '/' && breadcrumbName) {
+    page.breadcrumb = pageBreadcrumb(path, breadcrumbName);
+  }
+
   switch (path) {
     case '/':
       page.about = learningServiceAbout();
@@ -250,14 +255,12 @@ export const buildStructuredData = ({ path, title, description }: PageSchemaInpu
     case '/pricing':
       page.about = learningServiceAbout();
       page.mainEntity = pricingMainEntity();
-      page.breadcrumb = pricingBreadcrumb();
       break;
     case '/terms-conditions':
     case '/privacy-policy':
     case '/imprint':
       page.about = { '@id': IDS.organization };
-      break;
-    default:
+      break;    default:
       break;
   }
 
