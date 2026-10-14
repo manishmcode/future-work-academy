@@ -42,18 +42,13 @@ const privacyData = [
   { title: "Contact", content: `Questions, comments, and requests regarding this Privacy Policy are welcomed and should be addressed to ${COMPANY.name}, ${COMPANY.address}, or by email at ${COMPANY.supportEmail}` }
 ] satisfies LegalItem[];
 
-const imprintData = [
-  { title: "Company information", content: `**Company Name:** ${COMPANY.name}\n**Registered Address:** ${COMPANY.address}\n**Represented by / Director:** ${COMPANY.director}`, icon: <BookOpen className="w-5 h-5 text-pink-500" /> },
-  { title: "Registration and tax information", content: `**Company Registration Number:** ${COMPANY.registrationNumber}`, icon: <ShieldCheck className="w-5 h-5 text-pink-500" /> },
-  { title: "Contact", content: `**Email:** ${COMPANY.supportEmail}`, icon: <HelpCircle className="w-5 h-5 text-pink-500" /> },
-  { title: "Responsible for website content", content: `${COMPANY.name}\n${COMPANY.address}`, icon: <AlertCircle className="w-5 h-5 text-pink-500" /> },
-  { title: "Disclaimer", content: "The information provided on this website is for general informational purposes only. While we make every effort to keep the content accurate and up to date, we do not accept liability for any errors, omissions, or outdated information.\n\nThis imprint is provided for transparency and legal disclosure purposes. For any questions regarding the website or company information, please contact us using the email address listed above.", icon: <AlertCircle className="w-5 h-5 text-pink-500" /> }
-] satisfies LegalItem[];
+const imprintDisclaimer = [
+  'The information provided on this website is for general informational purposes only. While we make every effort to keep the content accurate and up to date, we do not accept liability for any errors, omissions, or outdated information.',
+  'This imprint is provided for transparency and legal disclosure purposes. For any questions regarding the website or company information, please contact us using the email address listed above.',
+];
 
 type InfoCardProps = LegalItem & {
   index?: number;
-  /** Imprint grid: equal card size in 2×2 layout */
-  imprintGrid?: boolean;
 };
 
 const formatParagraph = (paragraph: string) => {
@@ -64,18 +59,14 @@ const formatParagraph = (paragraph: string) => {
   ));
 };
 
-const InfoCard = ({ title, content, index, icon, imprintGrid }: InfoCardProps) => {
+const InfoCard = ({ title, content, index, icon }: InfoCardProps) => {
   const paragraphs = content.split(/\n+/).filter(Boolean);
 
   return (
-    <article
-      className={`group relative bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] hover:border-slate-200 transition-all duration-300 ${
-        imprintGrid ? 'h-full min-h-[280px] flex flex-col' : ''
-      }`}
-    >
+    <article className="group relative bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] hover:border-slate-200 transition-all duration-300">
       <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-pink-50 to-transparent rounded-tr-3xl rounded-bl-[4rem] opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
-      <div className={`flex items-start gap-4 relative z-10 ${imprintGrid ? 'flex-1' : ''}`}>
+      <div className="flex items-start gap-4 relative z-10">
         {icon ? (
           <div className="w-12 h-12 rounded-2xl bg-pink-50 border border-pink-100/50 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300">
             {icon}
@@ -86,7 +77,7 @@ const InfoCard = ({ title, content, index, icon, imprintGrid }: InfoCardProps) =
           </div>
         )}
 
-        <div className={imprintGrid ? 'flex-1 min-w-0' : ''}>
+        <div>
           <h3 className="text-lg font-bold text-slate-900 mb-3">{title}</h3>
           <div className="space-y-4">
             {paragraphs.map((paragraph, paragraphIndex) => (
@@ -133,31 +124,81 @@ export const TermsContent = () => (
   </div>
 );
 
-export const ImprintContent = () => {
-  const imprintCards = imprintData.filter((item) => item.title !== 'Disclaimer');
-  const disclaimer = imprintData.find((item) => item.title === 'Disclaimer');
+const ImprintIcon = ({ children }: { children: React.ReactNode }) => (
+  <div className="w-11 h-11 rounded-2xl bg-pink-50 border border-pink-100/60 flex items-center justify-center shrink-0">
+    {children}
+  </div>
+);
 
-  return (
-    <div className="space-y-6">
-      <section className="bg-slate-900 text-white p-8 rounded-3xl mb-8 relative overflow-hidden" aria-labelledby="legal-content-title">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-        <h2 id="legal-content-title" className="text-2xl font-bold mb-2">Imprint & Legal Disclosure</h2>
-        <p className="text-slate-400">Official company information, registration details, and legal disclosures for transparency.</p>
-      </section>
+const ImprintField = ({ label, children }: { label: string; children: React.ReactNode }) => (
+  <div>
+    <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">{label}</p>
+    <div className="text-[15px] font-semibold text-slate-800 leading-relaxed">{children}</div>
+  </div>
+);
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-stretch">
-        {imprintCards.map((item, i) => (
-          <div key={i} className="h-full min-h-[280px]">
-            <InfoCard icon={item.icon} title={item.title} content={item.content} imprintGrid />
-          </div>
+export const ImprintContent = () => (
+  <div className="space-y-6">
+    <section className="bg-slate-900 text-white p-8 rounded-3xl relative overflow-hidden" aria-labelledby="legal-content-title">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-pink-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+      <h2 id="legal-content-title" className="text-2xl font-bold mb-2 relative">Imprint & Legal Disclosure</h2>
+      <p className="text-slate-400 relative">Official company information, registration details, and legal disclosures for transparency.</p>
+    </section>
+
+    <article className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8">
+      <div className="flex items-center gap-4 mb-8">
+        <ImprintIcon><BookOpen className="w-5 h-5 text-pink-500" /></ImprintIcon>
+        <h3 className="text-lg font-bold text-slate-900">Company information</h3>
+      </div>
+      <div className="grid sm:grid-cols-2 gap-x-10 gap-y-6">
+        <ImprintField label="Company name">{COMPANY.name}</ImprintField>
+        <ImprintField label="Represented by / Director">{COMPANY.director}</ImprintField>
+        <div className="sm:col-span-2">
+          <ImprintField label="Registered address">{COMPANY.address}</ImprintField>
+        </div>
+      </div>
+    </article>
+
+    <div className="grid sm:grid-cols-2 gap-6">
+      <article className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8">
+        <div className="flex items-center gap-4 mb-6">
+          <ImprintIcon><ShieldCheck className="w-5 h-5 text-pink-500" /></ImprintIcon>
+          <h3 className="text-lg font-bold text-slate-900">Registration</h3>
+        </div>
+        <ImprintField label="Company registration number">
+          <span className="text-xl font-bold tracking-wide text-slate-900">{COMPANY.registrationNumber}</span>
+        </ImprintField>
+      </article>
+
+      <article className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8">
+        <div className="flex items-center gap-4 mb-6">
+          <ImprintIcon><HelpCircle className="w-5 h-5 text-pink-500" /></ImprintIcon>
+          <h3 className="text-lg font-bold text-slate-900">Contact</h3>
+        </div>
+        <ImprintField label="Email">
+          <a href={`mailto:${COMPANY.supportEmail}`} className="text-pink-600 hover:text-pink-700 break-all">
+            {COMPANY.supportEmail}
+          </a>
+        </ImprintField>
+      </article>
+    </div>
+
+    <article className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8">
+      <div className="flex items-center gap-4 mb-6">
+        <ImprintIcon><AlertCircle className="w-5 h-5 text-pink-500" /></ImprintIcon>
+        <h3 className="text-lg font-bold text-slate-900">Responsible for website content</h3>
+      </div>
+      <p className="text-[15px] font-semibold text-slate-800">{COMPANY.name}</p>
+      <p className="text-[15px] text-slate-500 font-medium leading-relaxed">{COMPANY.address}</p>
+    </article>
+
+    <aside className="rounded-3xl border border-dashed border-slate-300 bg-slate-50/70 p-6 sm:p-8">
+      <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-3">Disclaimer</h3>
+      <div className="space-y-3">
+        {imprintDisclaimer.map((paragraph) => (
+          <p key={paragraph} className="text-[14px] leading-relaxed text-slate-500">{paragraph}</p>
         ))}
       </div>
-
-      {disclaimer && (
-        <div className="min-h-[280px]">
-          <InfoCard icon={disclaimer.icon} title={disclaimer.title} content={disclaimer.content} imprintGrid />
-        </div>
-      )}
-    </div>
-  );
-};
+    </aside>
+  </div>
+);
