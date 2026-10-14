@@ -5,8 +5,8 @@ const comparisonData = [
   {
     category: "Course Access",
     rows: [
-      { feature: "Lifestyle Courses", basic: true, standard: true, premium: true },
-      { feature: "Business & Tech Courses", basic: false, standard: true, premium: true },
+      { feature: "Productivity Video Courses", basic: true, standard: true, premium: true },
+      { feature: "AI, Remote Work & Business Courses", basic: false, standard: true, premium: true },
       { feature: "Downloadable Resources", basic: true, standard: true, premium: true }
     ]
   },

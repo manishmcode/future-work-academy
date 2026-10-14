@@ -1,7 +1,7 @@
 /**
- * Builds 1200×630 WebP OG image (1.91:1) via center cover crop — no stretch.
- * Usage: node scripts/build-og-image.mjs [source.webp]
- * Default source: public/images/live-class-mockup.webp (use a wide master if you have one)
+ * Builds 1200x630 WebP homepage hero and OG image (1.91:1) via center cover crop - no stretch.
+ * Usage: node scripts/build-og-image.mjs [source-image]
+ * Default source: public/images/futurework-learning-hero.webp
  */
 import sharp from 'sharp';
 import fs from 'fs';
@@ -10,11 +10,11 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.join(__dirname, '..');
-const defaultSource = path.join(root, 'public/images/live-class-mockup.webp');
+const defaultSource = path.join(root, 'public/images/futurework-learning-hero.webp');
 const source = path.resolve(root, process.argv[2] ?? defaultSource);
 const outputs = [
   path.join(root, 'public/images/og-image.webp'),
-  path.join(root, 'public/images/live-class-mockup.webp'),
+  path.join(root, 'public/images/futurework-learning-hero.webp'),
 ];
 
 const meta = await sharp(source).metadata();

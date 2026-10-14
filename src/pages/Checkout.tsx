@@ -121,7 +121,7 @@ export const Checkout = () => {
             Complete your {COMPANY.brandName} membership
           </h1>
           <p className="text-[17px] text-slate-600 font-medium leading-relaxed">
-            Secure checkout for practical AI and technology learning. Your access begins as soon as your order is
+            Secure checkout for practical AI productivity and online business learning. Your access begins as soon as your order is
             confirmed.
           </p>
         </header>

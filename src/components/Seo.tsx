@@ -15,31 +15,27 @@ type SeoConfig = {
 const OG_IMAGE = COMPANY.ogImageUrl;
 const OG_IMAGE_WIDTH = String(COMPANY.ogImageWidth);
 const OG_IMAGE_HEIGHT = String(COMPANY.ogImageHeight);
+const DEFAULT_IMAGE_ALT =
+  'FutureWorkAcademy AI productivity courses, video lessons, and live online classes';
 
 const canonicalPath = (path: string) => (path === '/' ? '/' : path.replace(/\/+$/, ''));
 const canonicalUrl = (path: string) => `${COMPANY.siteUrl}${path === '/' ? '/' : `${path}/`}`;
 
 const publicRoutes: Record<string, SeoConfig> = {
   '/': {
-    title: 'AI & Tech Courses with Live Training | FutureWorkAcademy',
+    title: 'AI Productivity, Remote Work & Online Business Courses | FutureWorkAcademy',
     description:
-      'Explore AI and technology courses with practical lessons, live instructor guidance, and structured learning paths to build real-world skills.',
+      'Explore practical video courses and live classes for AI productivity, personal productivity, remote work, freelancing, and online business skills.',
     path: '/',
-    ogImageAlt: 'FutureWorkAcademy AI and technology courses with live instructor training',
-  },
-  '/courses': {
-    title: `Courses | ${COMPANY.brandName}`,
-    description:
-      'Explore practical FutureWorkAcademy courses for productivity, consulting, marketing, online business, and professional growth.',
-    path: '/courses',
-    ogImageAlt: 'FutureWorkAcademy AI and technology courses with live instructor training',
+    ogImageAlt:
+      'FutureWorkAcademy dashboard for AI productivity courses, video lessons, and live online classes',
   },
   '/pricing': {
-    title: 'AI & Tech Courses Pricing Plans | FutureWorkAcademy',
+    title: 'Course Membership Pricing | FutureWorkAcademy',
     description:
-      'Compare FutureWorkAcademy pricing plans for AI and technology courses, practical learning resources, and live instructor guidance.',
+      'Compare FutureWorkAcademy membership plans for video courses, AI productivity learning resources, remote work skills, and live class access.',
     path: '/pricing',
-    ogImageAlt: 'FutureWorkAcademy AI and technology course pricing plans',
+    ogImageAlt: 'FutureWorkAcademy course membership pricing for video lessons and live classes',
   },
   '/unsubscribe': {
     title: `Unsubscribe | ${COMPANY.brandName}`,
@@ -50,29 +46,30 @@ const publicRoutes: Record<string, SeoConfig> = {
   },
   '/login': {
     title: `Log In | ${COMPANY.brandName}`,
-    description: 'Log in to your FutureWorkAcademy account.',
+    description:
+      'Log in to access your FutureWorkAcademy learning account, course library, and member resources.',
     path: '/login',
     noindex: true,
-    ogImageAlt: 'FutureWorkAcademy AI and technology courses with live instructor training',
+    ogImageAlt: 'FutureWorkAcademy member login for online learning resources',
   },
   '/signup': {
     title: 'Create an Account | FutureWorkAcademy',
     description:
-      'Create your FutureWorkAcademy account to access your personal learning dashboard and get started with your learning journey.',
+      'Create your FutureWorkAcademy account to access practical video learning resources and begin your course membership.',
     path: '/signup',
     ogImageAlt: 'Create an account with FutureWorkAcademy to access learning resources',
   },
   '/privacy-policy': {
     title: `Privacy Policy | ${COMPANY.brandName}`,
     description:
-      'Read FutureWorkAcademy’s privacy policy to learn how your personal information is collected, used, protected, and managed when using our platform.',
+      'Read FutureWorkAcademy privacy policy details about how personal information is collected, used, protected, and managed.',
     path: '/privacy-policy',
     ogImageAlt: 'FutureWorkAcademy privacy policy',
   },
   '/terms-conditions': {
     title: `Terms & Conditions | ${COMPANY.brandName}`,
     description:
-      'Read FutureWorkAcademy’s terms and conditions to understand the rules, policies, and terms governing the use of our platform and services.',
+      'Read FutureWorkAcademy terms and conditions for using the platform, course resources, memberships, and related services.',
     path: '/terms-conditions',
     ogImageAlt: 'FutureWorkAcademy terms and conditions',
   },
@@ -85,48 +82,51 @@ const publicRoutes: Record<string, SeoConfig> = {
   },
   '/checkout': {
     title: `Checkout | ${COMPANY.brandName}`,
-    description: 'Complete your FutureWorkAcademy order securely.',
+    description: 'Complete your FutureWorkAcademy course membership order securely.',
     path: '/checkout',
     noindex: true,
-    ogImageAlt: 'FutureWorkAcademy AI and technology courses with live instructor training',
+    ogImageAlt: 'FutureWorkAcademy secure checkout for course membership',
   },
 };
 
 const privateRoutes: Record<string, SeoConfig> = {
   '/library': {
     title: `Member Library | ${COMPANY.brandName}`,
-    description: 'Access your private FutureWorkAcademy course library.',
+    description:
+      'Access your private FutureWorkAcademy library of video courses and practical learning resources.',
     path: '/library',
     noindex: true,
-    ogImageAlt: 'FutureWorkAcademy AI and technology courses with live instructor training',
+    ogImageAlt: 'FutureWorkAcademy member library for video courses',
   },
   '/schedule': {
     title: `Live Class Schedule | ${COMPANY.brandName}`,
-    description: 'View your private FutureWorkAcademy live class schedule.',
+    description:
+      'View your private FutureWorkAcademy live class schedule and upcoming guided online sessions.',
     path: '/schedule',
     noindex: true,
-    ogImageAlt: 'FutureWorkAcademy AI and technology courses with live instructor training',
+    ogImageAlt: 'FutureWorkAcademy live class schedule for members',
   },
   '/live-room': {
     title: `Live Room | ${COMPANY.brandName}`,
-    description: 'Join your private FutureWorkAcademy live class room.',
+    description:
+      'Join your private FutureWorkAcademy live class room for guided online learning sessions.',
     path: '/live-room',
     noindex: true,
-    ogImageAlt: 'FutureWorkAcademy AI and technology courses with live instructor training',
+    ogImageAlt: 'FutureWorkAcademy private live class room',
   },
   '/account': {
     title: `My Account | ${COMPANY.brandName}`,
     description: 'Manage your private FutureWorkAcademy account details.',
     path: '/account',
     noindex: true,
-    ogImageAlt: 'FutureWorkAcademy AI and technology courses with live instructor training',
+    ogImageAlt: 'FutureWorkAcademy member account management',
   },
   '/profile': {
     title: `My Account | ${COMPANY.brandName}`,
     description: 'Manage your private FutureWorkAcademy account details.',
     path: '/account',
     noindex: true,
-    ogImageAlt: 'FutureWorkAcademy AI and technology courses with live instructor training',
+    ogImageAlt: 'FutureWorkAcademy member account management',
   },
 };
 
@@ -135,7 +135,7 @@ const notFoundSeo: SeoConfig = {
   description: `The requested ${COMPANY.brandName} page could not be found.`,
   path: '/404',
   noindex: true,
-  ogImageAlt: 'FutureWorkAcademy AI and technology courses with live instructor training',
+  ogImageAlt: 'FutureWorkAcademy online learning platform',
 };
 
 const upsertMeta = (selector: string, create: () => HTMLMetaElement, content: string) => {
@@ -190,7 +190,7 @@ const setStructuredData = (graph: Record<string, unknown>) => {
 
 const applySocialMeta = (config: SeoConfig, url: string) => {
   const imageAlt =
-    config.ogImageAlt ?? 'FutureWorkAcademy AI and technology courses with live instructor training';
+    config.ogImageAlt ?? DEFAULT_IMAGE_ALT;
 
   ensureMetaProperty('og:title', config.title);
   ensureMetaProperty('og:description', config.description);
@@ -225,6 +225,9 @@ export const Seo = () => {
       }
       if (path === '/profile') {
         return '/account';
+      }
+      if (path === '/courses') {
+        return hasLibraryAccess ? '/library' : '/pricing';
       }
       return path;
     })();

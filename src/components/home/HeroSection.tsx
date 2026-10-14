@@ -33,7 +33,7 @@ export const HeroSection = () => {
 
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 bg-[#F8F7F4] rounded-[2rem] p-6 sm:p-10 h-[350px] sm:h-[450px] relative overflow-hidden shadow-sm border border-slate-200 group">
-            <img src="/images/live-class-mockup.webp" alt="Live Class Dashboard" className="absolute inset-0 w-full h-full object-cover rounded-[2rem]" />
+            <img src="/images/futurework-learning-hero.webp" alt="FutureWorkAcademy AI productivity and live class dashboard" className="absolute inset-0 w-full h-full object-cover rounded-[2rem]" />
           </div>
 
           <Link to={courseDestination} className="lg:col-span-1 block group">

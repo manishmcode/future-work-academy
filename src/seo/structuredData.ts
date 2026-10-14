@@ -9,9 +9,42 @@ const IDS = {
   learningService: `${SITE}/#learning-service`,
 } as const;
 
+const featuredCourses = [
+  {
+    name: 'AI for Productivity Video Upgrade',
+    description:
+      'Practical ways to apply AI to everyday tasks, content creation, planning, and workflow improvement.',
+  },
+  {
+    name: 'Simple Productivity Video Course',
+    description:
+      'Practical approaches for productive habits, distraction management, daily planning, and better time use.',
+  },
+  {
+    name: 'Work From Home Productivity Video Upgrade',
+    description:
+      'Strategies for creating a productive home office, building routines, staying focused, and managing remote work.',
+  },
+  {
+    name: 'How To Start a Freelance Business Video Upgrade',
+    description:
+      'Freelancing fundamentals including niche selection, portfolio building, client discovery, and freelance opportunities.',
+  },
+  {
+    name: 'Solopreneur Success Video Upgrade',
+    description:
+      'Ideas for time management, motivation, professional connections, and building a one-person business.',
+  },
+  {
+    name: 'Virtual Summit Secrets Video Upgrade',
+    description:
+      'Virtual summit planning essentials including speakers, promotion, audience engagement, and monetization.',
+  },
+];
+
 /** Full Organization node (nested under WebPage only — never a separate top-level entity). */
 const organization = () => ({
-  '@type': 'Organization',
+  '@type': 'EducationalOrganization',
   '@id': IDS.organization,
   name: COMPANY.brandName,
   legalName: COMPANY.name,
@@ -41,9 +74,39 @@ const organization = () => ({
 const learningServiceAbout = () => ({
   '@type': 'Service',
   '@id': IDS.learningService,
-  name: `${COMPANY.brandName} Online Learning`,
-  serviceType: 'Online education and live instructor-led training',
+  name: `${COMPANY.brandName} Practical Online Learning`,
+  serviceType: 'Video courses and instructor-led online classes',
+  description:
+    'Video learning resources and guided online classes focused on AI productivity, personal productivity, remote work, freelancing, and online business development.',
+  audience: {
+    '@type': 'Audience',
+    audienceType: 'Professionals, remote workers, freelancers, solopreneurs, and online business learners',
+  },
+  areaServed: 'Worldwide',
   provider: { '@id': IDS.organization },
+});
+
+const featuredCourseList = () => ({
+  '@type': 'ItemList',
+  '@id': `${SITE}/#featured-courses`,
+  name: `${COMPANY.brandName} Featured Courses`,
+  itemListElement: featuredCourses.map((course, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'Course',
+      '@id': `${SITE}/#course-${index + 1}`,
+      name: course.name,
+      description: course.description,
+      provider: { '@id': IDS.organization },
+      offers: {
+        '@type': 'Offer',
+        url: `${SITE}/pricing/`,
+        category: 'Membership',
+        availability: 'https://schema.org/InStock',
+      },
+    },
+  })),
 });
 
 const pricingOffer = (
@@ -84,7 +147,7 @@ const pricingOffer = (
 const pricingMainEntity = () => ({
   '@type': 'OfferCatalog',
   '@id': `${SITE}/pricing/#membership-plans`,
-  name: 'FutureWorkAcademy Course Plans',
+  name: 'FutureWorkAcademy Course Membership Plans',
   itemListElement: [
     pricingOffer(
       `${SITE}/pricing/#basic-plan-offer`,
@@ -92,7 +155,7 @@ const pricingMainEntity = () => ({
       'Basic Monthly Membership',
       'FutureWorkAcademy Basic Plan',
       '18.00',
-      'Cancel anytime. Access lifestyle courses.',
+      'Cancel anytime. Access selected video learning resources for practical personal and professional development.',
       COMPANY.pricingPlanImages.basic,
     ),
     pricingOffer(
@@ -101,7 +164,7 @@ const pricingMainEntity = () => ({
       'Classic Monthly Membership',
       'FutureWorkAcademy Classic Plan',
       '48.00',
-      'Cancel anytime. Access lifestyle courses and business courses.',
+      'Cancel anytime. Access video courses for productivity, remote work, freelancing, and online business skills.',
       COMPANY.pricingPlanImages.classic,
     ),
     pricingOffer(
@@ -110,7 +173,7 @@ const pricingMainEntity = () => ({
       'Premium Monthly Membership',
       'FutureWorkAcademy Premium Plan',
       '98.00',
-      'Cancel anytime. Access lifestyle courses, business courses, unlimited access, scheduled instructor-led live classes, direct interaction with instructors, practical live demonstrations, questions during live sessions, upcoming and past classes through your account, and eligible classes at their scheduled time.',
+      'Cancel anytime. Access video courses, practical learning resources, scheduled instructor-led live classes, direct interaction with instructors, demonstrations, questions during live sessions, and member class access through your account.',
       COMPANY.pricingPlanImages.premium,
       'Monthly online course membership with live instructor-led classes',
     ),
@@ -175,6 +238,9 @@ export const buildStructuredData = ({ path, title, description }: PageSchemaInpu
 
   switch (path) {
     case '/':
+      page.about = learningServiceAbout();
+      page.mainEntity = featuredCourseList();
+      break;
     case '/unsubscribe':
     case '/signup':
       page.about = learningServiceAbout();

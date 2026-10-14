@@ -1,7 +1,7 @@
 export const COMPANY = {
   brandName: 'FutureWorkAcademy',
   siteUrl: 'https://futureworkacademy.net',
-  /** Open Graph / Twitter card image (1200×630 WebP, 1.91:1) */
+  /** Open Graph / Twitter card image (1200x630 WebP, 1.91:1) */
   ogImageUrl: 'https://futureworkacademy.net/images/og-image.webp',
   ogImageWidth: 1200,
   ogImageHeight: 630,

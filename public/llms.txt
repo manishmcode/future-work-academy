@@ -1,0 +1,32 @@
+# FutureWorkAcademy
+
+FutureWorkAcademy is an online learning platform offering practical video courses and instructor-led live classes for AI productivity, personal productivity, remote work, freelancing, solopreneurship, virtual events, and online business development.
+
+## Primary Pages
+
+- Home: https://futureworkacademy.net/
+- Pricing: https://futureworkacademy.net/pricing/
+- Unsubscribe: https://futureworkacademy.net/unsubscribe/
+- Privacy Policy: https://futureworkacademy.net/privacy-policy/
+- Terms and Conditions: https://futureworkacademy.net/terms-conditions/
+- Imprint: https://futureworkacademy.net/imprint/
+
+## Learning Topics
+
+- AI for Productivity: AI tools for task management, planning, content creation, and daily workflows.
+- Personal Productivity: routines, time management, distraction reduction, and focused work.
+- Work From Home: home office setup, motivation, routines, and remote work effectiveness.
+- Freelancing: niche selection, portfolio building, clients, and freelance opportunities.
+- Solopreneur Success: time management, motivation, networking, and one-person business development.
+- Virtual Summit Secrets: speaker selection, promotion, engagement, and monetization.
+
+## Access Model
+
+Course links route members with active access to the private library. Visitors and logged-in users without access are directed to pricing.
+
+## Organization
+
+Brand: FutureWorkAcademy
+Legal entity: Elqavora Ltd
+Website: https://futureworkacademy.net/
+Support: support@futureworkacademy.net
