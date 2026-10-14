@@ -13,7 +13,7 @@ const categories = [
     desc: 'Discover ways to use AI tools for task management, planning, content creation, and everyday workflows.',
     icon: '/images/icon1.webp',
     alt: 'AI for Productivity',
-    className: 'mt-0 sm:mt-12',
+    className: '',
   },
   {
     title: 'Personal Productivity',
@@ -32,16 +32,16 @@ const categories = [
 ];
 
 export const TechnologySection = () => (
-  <section className="py-24">
+  <section className="py-16 sm:py-20 lg:py-24">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <div className="grid lg:grid-cols-[0.95fr_1.05fr] gap-10 lg:gap-16 items-center">
         <div>
           <p className="text-pink-600 font-bold text-sm tracking-widest uppercase mb-4">Learning Categories</p>
-          <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 leading-[1.15] mb-8">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 leading-[1.15] mb-6 lg:mb-8">
             Skills That Make Your Workday Better
           </h2>
-          <div className="w-12 h-1 bg-pink-600 mb-8 rounded-full"></div>
-          <p className="text-slate-500 mb-8 leading-relaxed">
+          <div className="w-12 h-1 bg-pink-600 mb-6 lg:mb-8 rounded-full"></div>
+          <p className="text-slate-500 mb-5 leading-relaxed">
             Explore practical learning resources designed around everyday productivity, modern AI tools, and online business development.
           </p>
           <p className="text-slate-500 mb-8 leading-relaxed">
@@ -59,9 +59,9 @@ export const TechnologySection = () => (
           </ul>
         </div>
 
-        <div className="grid sm:grid-cols-2 gap-6">
+        <div className="grid sm:grid-cols-2 gap-5 lg:gap-6">
           {categories.map((category) => (
-            <div key={category.title} className={`bg-white rounded-2xl p-8 hover:shadow-xl transition-all border border-slate-100 relative overflow-hidden group ${category.className}`}>
+            <div key={category.title} className={`bg-white rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-all border border-slate-100 relative overflow-hidden group ${category.className}`}>
               <div className="absolute inset-0 w-full h-full opacity-30 mix-blend-multiply pointer-events-none bg-right-bottom bg-no-repeat" style={{ backgroundImage: "url('/images/card-bg.webp')" }}></div>
               <div className="relative z-10">
                 <div className="mb-6">

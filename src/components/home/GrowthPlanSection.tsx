@@ -14,17 +14,17 @@ export const GrowthPlanSection = () => {
   const courseDestination = hasLibraryAccess ? '/library/' : '/pricing/';
 
   return (
-  <section className="py-24 relative overflow-hidden bg-transparent">
+  <section className="py-16 sm:py-20 lg:py-24 relative overflow-hidden bg-transparent">
 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div className="text-center max-w-3xl mx-auto mb-20">
+      <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16 lg:mb-20">
         <p className="text-pink-600 font-bold text-[12px] tracking-[0.2em] uppercase mb-4">
           How It Works
         </p>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-[1.1] tracking-tight px-4">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-[1.1] tracking-tight">
           Three Simple Steps to Get Started
         </h2>
-        <p className="text-slate-500 text-[15px] sm:text-[16px] leading-relaxed max-w-2xl mx-auto font-medium px-4">
+        <p className="text-slate-500 text-[15px] sm:text-[16px] leading-relaxed max-w-2xl mx-auto font-medium">
           Choose a practical learning topic, move through the course at your own pace, and apply new ideas to your work.
         </p>
       </div>
@@ -33,7 +33,7 @@ export const GrowthPlanSection = () => {
         {/* Connecting Line (Desktop) */}
         <div className="hidden lg:block absolute top-1/2 left-0 w-full h-[1px] bg-slate-200 -translate-y-1/2 z-0"></div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 relative z-10">
           {growthSteps.map((step, index) => (
             <div
               key={index}
@@ -62,7 +62,7 @@ export const GrowthPlanSection = () => {
         <div className="text-center mt-14">
           <Link
             to={courseDestination}
-            className="inline-flex items-center h-12 px-8 rounded-xl bg-slate-900 text-white text-[13px] font-bold tracking-wide hover:bg-pink-600 transition-colors"
+            className="inline-flex w-full sm:w-auto items-center justify-center min-h-12 px-8 rounded-xl bg-slate-900 text-white text-[13px] font-bold tracking-wide hover:bg-pink-600 transition-colors"
           >
             Explore Courses
           </Link>

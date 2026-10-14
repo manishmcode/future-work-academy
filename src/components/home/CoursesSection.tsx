@@ -10,7 +10,6 @@ const coursesList = [
     desc: 'Discover practical ways to apply AI to everyday tasks, support content creation, improve planning, and streamline your workflow.',
     tag: 'WORKFLOW & TOOLS',
     icon: '/images/icon1.webp',
-    staggered: false,
   },
   {
     title: 'Simple Productivity Video Course',
@@ -18,7 +17,6 @@ const coursesList = [
     desc: 'Learn practical approaches to building productive habits, managing distractions, planning your day, and making better use of your time.',
     tag: 'TIME MANAGEMENT',
     icon: '/images/icon2.webp',
-    staggered: true,
   },
   {
     title: 'Work From Home Productivity Video Upgrade',
@@ -26,7 +24,6 @@ const coursesList = [
     desc: 'Explore strategies for creating a productive home office, establishing routines, staying focused, and managing the challenges of remote work.',
     tag: 'HOME OFFICE',
     icon: '/images/icon1.webp',
-    staggered: false,
   },
   {
     title: 'How To Start a Freelance Business Video Upgrade',
@@ -34,7 +31,6 @@ const coursesList = [
     desc: 'Explore key aspects of freelancing, from identifying your niche and building a portfolio to finding clients and discovering freelance opportunities.',
     tag: 'CLIENT ACQUISITION',
     icon: '/images/icon2.webp',
-    staggered: true,
   },
   {
     title: 'Solopreneur Success Video Upgrade',
@@ -42,7 +38,6 @@ const coursesList = [
     desc: 'Discover ideas for managing your time, staying motivated, building professional connections, and developing your one-person business.',
     tag: 'GROWTH & MARKETING',
     icon: '/images/icon1.webp',
-    staggered: false,
   },
   {
     title: 'Virtual Summit Secrets Video Upgrade',
@@ -50,7 +45,6 @@ const coursesList = [
     desc: 'Explore the essentials of virtual summit planning, including speaker selection, event promotion, audience engagement, and monetization strategies.',
     tag: 'EVENT STRATEGY',
     icon: '/images/icon2.webp',
-    staggered: true,
   },
 ];
 
@@ -59,11 +53,11 @@ export const CoursesSection = () => {
   const courseDestination = hasLibraryAccess ? '/library/' : '/pricing/';
 
   return (
-    <section className="py-24 border-b border-slate-100">
+    <section className="py-16 sm:py-20 lg:py-24 border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <p className="text-pink-600 font-bold text-[11px] tracking-widest uppercase mb-4">Featured Courses</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">
             Learn Skills You Can Put Into Practice
           </h2>
           <p className="text-slate-500 mt-6 max-w-2xl mx-auto text-[15px] leading-relaxed">
@@ -76,7 +70,7 @@ export const CoursesSection = () => {
             {coursesList.map((course, i) => (
               <div
                 key={i}
-                className={`bg-white rounded-2xl p-8 hover:shadow-xl transition-all border border-slate-100 relative overflow-hidden group flex flex-col h-full ${course.staggered ? 'mt-0 md:mt-12' : ''}`}
+                className="bg-white rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-all border border-slate-100 relative overflow-hidden group flex flex-col h-full"
               >
                 <div
                   className="absolute inset-0 w-full h-full opacity-30 mix-blend-multiply pointer-events-none bg-right-bottom bg-no-repeat"
@@ -91,7 +85,7 @@ export const CoursesSection = () => {
                         className="w-full h-full object-contain filter sepia saturate-[3] hue-rotate-[-15deg] contrast-125"
                       />
                     </div>
-                    <span className="px-3 py-1 bg-white border border-slate-200 text-slate-700 text-[10px] font-bold rounded-full uppercase tracking-wider max-w-[48%] text-right leading-tight">
+                    <span className="px-3 py-1 bg-white border border-slate-200 text-slate-700 text-[10px] font-bold rounded-full uppercase tracking-wider max-w-[56%] text-right leading-tight">
                       {course.cat}
                     </span>
                   </div>
@@ -105,7 +99,7 @@ export const CoursesSection = () => {
                     <Link
                       to={courseDestination}
                       aria-label={`Explore ${course.title}`}
-                      className="inline-flex items-center justify-center gap-2 h-9 px-4 rounded-full border border-slate-300 text-slate-500 text-[11px] font-bold uppercase tracking-wider group-hover:bg-pink-600 group-hover:text-white group-hover:border-pink-600 transition-colors"
+                      className="inline-flex w-full sm:w-auto items-center justify-center gap-2 min-h-9 px-4 rounded-full border border-slate-300 text-slate-500 text-[11px] font-bold uppercase tracking-wider group-hover:bg-pink-600 group-hover:text-white group-hover:border-pink-600 transition-colors"
                     >
                       Explore Course
                       <ArrowRight className="w-4 h-4" />
@@ -120,7 +114,7 @@ export const CoursesSection = () => {
         <div className="text-center mt-14">
           <Link
             to={courseDestination}
-            className="inline-flex items-center gap-2 h-12 px-8 rounded-xl bg-slate-900 text-white text-[13px] font-bold tracking-wide hover:bg-pink-600 transition-colors"
+            className="inline-flex w-full sm:w-auto items-center justify-center gap-2 min-h-12 px-8 rounded-xl bg-slate-900 text-white text-[13px] font-bold tracking-wide hover:bg-pink-600 transition-colors"
           >
             Browse All Courses
             <ArrowRight className="w-4 h-4" />
