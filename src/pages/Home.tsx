@@ -1,10 +1,11 @@
 import React from 'react';
-import { HeroSection } from '../components/home/HeroSection';
-import { TechnologySection } from '../components/home/TechnologySection';
-import { CoursesSection } from '../components/home/CoursesSection';
-import { InstructorLedSection } from '../components/home/InstructorLedSection';
-import { LiveTrainingSection } from '../components/home/LiveTrainingSection';
-import { GrowthPlanSection } from '../components/home/GrowthPlanSection';
+import {
+  CoursesSection,
+  GrowthPlanSection,
+  HeroSection,
+  InstructorLedSection,
+  TechnologySection,
+} from '../components/home';
 
 export const Home = () => {
   return (
@@ -14,7 +15,6 @@ export const Home = () => {
       <TechnologySection />
       <CoursesSection />
       <InstructorLedSection />
-      <LiveTrainingSection />
       <GrowthPlanSection />
     </main>
   );

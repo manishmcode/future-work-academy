@@ -5,7 +5,6 @@ import { Footer } from './components/Footer';
 import { Loader } from './components/Loader';
 import { Home } from './pages/Home';
 import { Library } from './pages/Library';
-import { Courses } from './pages/Courses';
 import { LiveSchedule } from './pages/LiveSchedule';
 import { LiveClasses } from './pages/LiveClasses';
 import { AdminLiveClasses } from './pages/AdminLiveClasses';
@@ -41,6 +40,12 @@ const ProfileRedirect = () => {
   return <Navigate to={isLoggedIn ? '/account/' : '/login/'} replace />;
 };
 
+const CoursesRedirect = () => {
+  const { hasLibraryAccess, isAuthLoading } = useAuth();
+  if (isAuthLoading) return <Loader variant="page" label="Checking your session..." />;
+  return <Navigate to={hasLibraryAccess ? '/library/' : '/pricing/'} replace />;
+};
+
 const LiveClassesAccess = () => {
   const { isLoggedIn, hasLibraryAccess, isAdmin, isAuthLoading } = useAuth();
   if (isAuthLoading) return <Loader variant="page" label="Checking your session..." />;
@@ -64,7 +69,7 @@ function App() {
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/courses" element={<Courses />} />
+            <Route path="/courses" element={<CoursesRedirect />} />
             <Route path="/library" element={<MemberAccess><Library /></MemberAccess>} />
             <Route path="/schedule" element={<LiveClassesAccess />} />
             <Route path="/live-room" element={<MemberAccess><LiveClasses /></MemberAccess>} />

@@ -1,25 +1,31 @@
 import React from 'react';
-import { GraduationCap, Briefcase, TrendingUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { GraduationCap, Briefcase, CheckCircle } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
 const growthSteps = [
-  { num: '01', title: 'Build Your Foundation', desc: 'Start with focused, self-paced lessons that explain key AI tools, concepts and everyday workflows in a clear way.', icon: <GraduationCap className="w-6 h-6" /> },
-  { num: '02', title: 'Practice Real Use Cases', desc: 'Move from learning to doing with guided exercises, examples and tasks shaped around practical business needs.', icon: <Briefcase className="w-6 h-6" /> },
-  { num: '03', title: 'Get Instructor Support', desc: 'Join scheduled live classes, ask your questions and get direct guidance that helps each topic make sense.', icon: <TrendingUp className="w-6 h-6" /> }
+  { num: '01', title: 'Choose Your Course', desc: 'Explore the available courses and select a topic that aligns with your interests and goals.', icon: <GraduationCap className="w-6 h-6" /> },
+  { num: '02', title: 'Learn at Your Own Pace', desc: 'Work through the available video lessons and learning materials at a pace that suits your schedule.', icon: <Briefcase className="w-6 h-6" /> },
+  { num: '03', title: 'Put Your Knowledge Into Practice', desc: 'Apply the ideas and techniques you learn to your everyday work, personal productivity, or online business projects.', icon: <CheckCircle className="w-6 h-6" /> }
 ];
 
-export const GrowthPlanSection = () => (
+export const GrowthPlanSection = () => {
+  const { hasLibraryAccess } = useAuth();
+  const courseDestination = hasLibraryAccess ? '/library/' : '/pricing/';
+
+  return (
   <section className="py-24 relative overflow-hidden bg-transparent">
 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="text-center max-w-3xl mx-auto mb-20">
         <p className="text-pink-600 font-bold text-[12px] tracking-[0.2em] uppercase mb-4">
-          Your Learning Path
+          How It Works
         </p>
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-[1.1] tracking-tight px-4">
-          Your 3-Step Growth Plan
+          Three Simple Steps to Get Started
         </h2>
         <p className="text-slate-500 text-[15px] sm:text-[16px] leading-relaxed max-w-2xl mx-auto font-medium px-4">
-          Build useful AI skills with structured lessons, practical resources and live instructor support.
+          Choose a practical learning topic, move through the course at your own pace, and apply new ideas to your work.
         </p>
       </div>
 
@@ -53,7 +59,16 @@ export const GrowthPlanSection = () => (
             </div>
           ))}
         </div>
+        <div className="text-center mt-14">
+          <Link
+            to={courseDestination}
+            className="inline-flex items-center h-12 px-8 rounded-xl bg-slate-900 text-white text-[13px] font-bold tracking-wide hover:bg-pink-600 transition-colors"
+          >
+            Explore Courses
+          </Link>
+        </div>
       </div>
     </div>
   </section>
-);
+  );
+};
