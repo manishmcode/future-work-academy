@@ -33,7 +33,17 @@ export const HeroSection = () => {
 
         <div className="grid lg:grid-cols-3 gap-5 lg:gap-6">
           <div className="lg:col-span-2 bg-[#F8F7F4] rounded-[1.5rem] sm:rounded-[2rem] aspect-[16/10] lg:aspect-auto lg:h-[450px] relative overflow-hidden shadow-sm border border-slate-200 group">
-            <img src="/images/futurework-learning-hero.webp" alt="FutureWorkAcademy AI productivity and live class dashboard" className="absolute inset-0 w-full h-full object-cover rounded-[1.5rem] sm:rounded-[2rem]" />
+            <img
+              src="/images/futurework-learning-hero-800.webp"
+              srcSet="/images/futurework-learning-hero-480.webp 480w, /images/futurework-learning-hero-800.webp 800w, /images/futurework-learning-hero-1200.webp 1200w"
+              sizes="(min-width: 1280px) 805px, (min-width: 1024px) 64vw, calc(100vw - 32px)"
+              width={800}
+              height={420}
+              fetchPriority="high"
+              decoding="async"
+              alt="FutureWorkAcademy AI productivity and live class dashboard"
+              className="absolute inset-0 w-full h-full object-cover rounded-[1.5rem] sm:rounded-[2rem]"
+            />
           </div>
 
           <Link to={courseDestination} className="lg:col-span-1 block group">
@@ -43,7 +53,16 @@ export const HeroSection = () => {
               </div>
 
               <div className="absolute inset-0 w-full h-full">
-                <img src="/images/collaborative-learning.webp" alt="Collaborative Learning" className="w-full h-full object-cover opacity-60" />
+                <img
+                  src="/images/collaborative-learning-700.webp"
+                  srcSet="/images/collaborative-learning-400.webp 400w, /images/collaborative-learning-700.webp 700w, /images/collaborative-learning-1000.webp 1000w"
+                  sizes="(min-width: 1280px) 395px, (min-width: 1024px) 32vw, calc(100vw - 32px)"
+                  width={700}
+                  height={467}
+                  decoding="async"
+                  alt="Collaborative Learning"
+                  className="w-full h-full object-cover opacity-60"
+                />
               </div>
 
               <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#0F0F0F] to-transparent z-10"></div>
