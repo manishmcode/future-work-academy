@@ -5,7 +5,7 @@ export const COMPANY = {
   ogImageUrl: 'https://futureworkacademy.net/images/og-image-v2.webp',
   ogImageWidth: 1200,
   ogImageHeight: 630,
-  /** WebP logo for schema.org (deploy under public/images/) */
+  /** Horizontal WebP logo for schema.org, 1408x320 (regenerate with `npm run build:logo`) */
   logoUrl: 'https://futureworkacademy.net/images/logo.webp',
   /** WebP plan images for Offer schema (deploy under public/images/pricing/) */
   pricingPlanImages: {

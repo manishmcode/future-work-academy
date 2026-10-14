@@ -54,6 +54,8 @@ const organization = () => ({
     '@id': IDS.logo,
     url: COMPANY.logoUrl,
     contentUrl: COMPANY.logoUrl,
+    width: 1408,
+    height: 320,
   },
   email: COMPANY.supportEmail,
   address: {
