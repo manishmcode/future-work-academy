@@ -1,32 +1,15 @@
 # FutureWorkAcademy
 
-FutureWorkAcademy is an online learning platform offering practical video courses and instructor-led live classes for AI productivity, personal productivity, remote work, freelancing, solopreneurship, virtual events, and online business development.
+> FutureWorkAcademy is an online learning platform focused on AI productivity, personal productivity, time management, remote work, freelancing, online business development, and virtual events. It offers practical learning resources and video courses to help learners develop skills they can apply to everyday work and professional projects. 
 
-## Primary Pages
+## Public pages
 
-- Home: https://futureworkacademy.net/
-- Pricing: https://futureworkacademy.net/pricing/
-- Unsubscribe: https://futureworkacademy.net/unsubscribe/
-- Privacy Policy: https://futureworkacademy.net/privacy-policy/
-- Terms and Conditions: https://futureworkacademy.net/terms-conditions/
-- Imprint: https://futureworkacademy.net/imprint/
+- [Home](https://futureworkacademy.net/): Overview of FutureWorkAcademy, its learning categories, featured courses, and self-paced learning options.
+- [Pricing](https://futureworkacademy.net/pricing/): Information about pricing, subscription plans, and included learning features.
+- [Unsubscribe](https://futureworkacademy.net/unsubscribe/): Information and options for unsubscribing from the service.
+- [Privacy Policy](https://futureworkacademy.net/privacy-policy/): Information about privacy and personal data handling.
+- [Terms & Conditions](https://futureworkacademy.net/terms-conditions/): Terms and conditions governing use of the platform.
+- [Imprint](https://futureworkacademy.net/imprint/): Legal and company information about FutureWorkAcademy.
 
-## Learning Topics
 
-- AI for Productivity: AI tools for task management, planning, content creation, and daily workflows.
-- Personal Productivity: routines, time management, distraction reduction, and focused work.
-- Work From Home: home office setup, motivation, routines, and remote work effectiveness.
-- Freelancing: niche selection, portfolio building, clients, and freelance opportunities.
-- Solopreneur Success: time management, motivation, networking, and one-person business development.
-- Virtual Summit Secrets: speaker selection, promotion, engagement, and monetization.
 
-## Access Model
-
-Course links route members with active access to the private library. Visitors and logged-in users without access are directed to pricing.
-
-## Organization
-
-Brand: FutureWorkAcademy
-Legal entity: Elqavora Ltd
-Website: https://futureworkacademy.net/
-Support: support@futureworkacademy.net
