@@ -1,6 +1,18 @@
 export const COMPANY = {
   brandName: 'FutureWorkAcademy',
   siteUrl: 'https://futureworkacademy.net',
+  /** Open Graph / Twitter card image (1200x630 WebP, 1.91:1) */
+  ogImageUrl: 'https://futureworkacademy.net/images/og-image-v2.webp',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  /** Horizontal WebP logo for schema.org, 1408x320 (regenerate with `npm run build:logo`) */
+  logoUrl: 'https://futureworkacademy.net/images/logo.webp',
+  /** WebP plan images for Offer schema (deploy under public/images/pricing/) */
+  pricingPlanImages: {
+    basic: 'https://futureworkacademy.net/images/pricing/basic-plan.webp',
+    classic: 'https://futureworkacademy.net/images/pricing/classic-plan.webp',
+    premium: 'https://futureworkacademy.net/images/pricing/premium-plan.webp',
+  },
   name: 'Elqavora Ltd',
   address: 'Suite F, Ground Floor, Breakspear Park, Breakspear Way, Hemel Hempstead, Hertfordshire, HP2 4TZ, United Kingdom',
   supportEmail: 'support@futureworkacademy.net',

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Check, Shield, Star, X, Zap } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { CHECKOUT_PATH, formatPlanPrice, rememberCheckoutPlan, type CheckoutLocationState } from '../../utils/formatPlanPrice';
 
 export type Plan = { id: number; name: string; price: string | number; currency: string; is_active: boolean; description: string | null; features: { name: string; is_included: boolean }[] | string };
 type PlanFeature = { name: string; is_included: boolean };
@@ -25,7 +26,7 @@ export const PricingCards = ({ plans }: { plans: Plan[] }) => {
         const Icon = icons[index % icons.length];
         const features = parseFeatures(plan.features);
         const featured = plan.id === featuredPlan?.id;
-        const price = new Intl.NumberFormat(undefined, { style: 'currency', currency: plan.currency || 'EUR', maximumFractionDigits: 2 }).format(Number(plan.price));
+        const price = formatPlanPrice(plan);
         return <div key={plan.id} className={`relative rounded-3xl flex flex-col transition-all duration-300 ${featured ? 'bg-slate-900 text-white border border-pink-500/30 shadow-xl lg:-translate-y-2' : 'bg-white text-slate-900 border border-slate-200 shadow-sm hover:-translate-y-1'}`}>
           {featured && <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-pink-600 text-white text-[10px] font-black uppercase tracking-[0.2em] px-4 py-1 rounded-full whitespace-nowrap">Most Popular</div>}
           <div className="flex-grow p-6 sm:p-8">
@@ -45,7 +46,7 @@ export const PricingCards = ({ plans }: { plans: Plan[] }) => {
               })}
             </ul>
           </div>
-          <div className={`p-6 sm:p-8 pt-4 border-t ${featured ? 'border-slate-800' : 'border-slate-100'}`}><Link to="/checkout/" className={`w-full h-11 rounded-xl text-sm font-bold flex items-center justify-center ${featured ? 'bg-pink-600 hover:bg-pink-500 text-white' : 'bg-slate-900 hover:bg-slate-800 text-white'}`}>Start Reading</Link></div>
+          <div className={`p-6 sm:p-8 pt-4 border-t ${featured ? 'border-slate-800' : 'border-slate-100'}`}><Link to={CHECKOUT_PATH} state={{ planId: plan.id } satisfies CheckoutLocationState} onClick={() => rememberCheckoutPlan(plan.id)} className={`w-full h-11 rounded-xl text-sm font-bold flex items-center justify-center ${featured ? 'bg-pink-600 hover:bg-pink-500 text-white' : 'bg-slate-900 hover:bg-slate-800 text-white'}`}>Start Learning</Link></div>
         </div>;
       })}
     </div>

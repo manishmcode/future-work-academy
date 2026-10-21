@@ -99,14 +99,17 @@ export const Navbar = () => {
 
           {/* Mobile Menu Toggle */}
           <div className="flex items-center md:hidden gap-2">           <LanguageSelector />
-            <button className="text-slate-500 hover:text-slate-900 p-2">
-              <Search className="w-5 h-5" />
+            <button type="button" aria-label="Search" className="text-slate-500 hover:text-slate-900 p-2">
+              <Search className="w-5 h-5" aria-hidden="true" />
             </button>
             <button
+              type="button"
+              aria-label={isOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={isOpen}
               onClick={() => setIsOpen(!isOpen)}
               className="grid h-10 w-10 place-items-center rounded-lg bg-slate-50 border border-slate-200 text-slate-700 transition hover:bg-slate-100 focus:outline-none"
             >
-              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {isOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
             </button>
           </div>
         </nav>

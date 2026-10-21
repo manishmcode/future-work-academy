@@ -2,128 +2,21 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { COMPANY } from '../config/company';
 import { useAuth } from '../context/AuthContext';
+import { buildStructuredData } from '../seo/structuredData';
+import {
+  canonicalUrl,
+  DEFAULT_IMAGE_ALT,
+  notFoundSeo,
+  privateRoutes,
+  publicRoutes,
+  type SeoConfig,
+} from '../seo/routes';
 
-type SeoConfig = {
-  title: string;
-  description: string;
-  path: string;
-  noindex?: boolean;
-  structuredData?: Record<string, unknown>;
-};
+const OG_IMAGE = COMPANY.ogImageUrl;
+const OG_IMAGE_WIDTH = String(COMPANY.ogImageWidth);
+const OG_IMAGE_HEIGHT = String(COMPANY.ogImageHeight);
 
 const canonicalPath = (path: string) => (path === '/' ? '/' : path.replace(/\/+$/, ''));
-const canonicalUrl = (path: string) => `${COMPANY.siteUrl}${path === '/' ? '/' : `${path}/`}`;
-
-const baseStructuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: COMPANY.name,
-  url: `${COMPANY.siteUrl}/`,
-  brand: COMPANY.brandName,
-  email: COMPANY.supportEmail,
-};
-
-const publicRoutes: Record<string, SeoConfig> = {
-  '/': {
-    title: `${COMPANY.brandName} | Practical AI Skills and Live Learning`,
-    description: 'Build practical AI and business skills with FutureWorkAcademy courses, learning resources, and instructor-led live classes.',
-    path: '/',
-    structuredData: {
-      ...baseStructuredData,
-      '@type': 'WebSite',
-      name: COMPANY.brandName,
-    },
-  },
-  '/courses': {
-    title: `Courses | ${COMPANY.brandName}`,
-    description: 'Explore practical FutureWorkAcademy courses for productivity, consulting, marketing, online business, and professional growth.',
-    path: '/courses',
-  },
-  '/pricing': {
-    title: `Pricing | ${COMPANY.brandName}`,
-    description: 'Choose a FutureWorkAcademy plan and unlock access to practical learning resources and live training.',
-    path: '/pricing',
-  },
-  '/unsubscribe': {
-    title: `Unsubscribe | ${COMPANY.brandName}`,
-    description: 'Manage your FutureWorkAcademy email preferences and unsubscribe requests.',
-    path: '/unsubscribe',
-    noindex: true,
-  },
-  '/login': {
-    title: `Log In | ${COMPANY.brandName}`,
-    description: 'Log in to your FutureWorkAcademy account.',
-    path: '/login',
-    noindex: true,
-  },
-  '/signup': {
-    title: `Sign Up | ${COMPANY.brandName}`,
-    description: 'Create your FutureWorkAcademy account.',
-    path: '/signup',
-    noindex: true,
-  },
-  '/privacy-policy': {
-    title: `Privacy Policy | ${COMPANY.brandName}`,
-    description: `Learn how ${COMPANY.name} collects, uses, and protects personal information on FutureWorkAcademy.`,
-    path: '/privacy-policy',
-  },
-  '/terms-conditions': {
-    title: `Terms & Conditions | ${COMPANY.brandName}`,
-    description: `Review the terms and conditions for using ${COMPANY.brandName}.`,
-    path: '/terms-conditions',
-  },
-  '/imprint': {
-    title: `Imprint | ${COMPANY.brandName}`,
-    description: `Official company and legal disclosure information for ${COMPANY.name}.`,
-    path: '/imprint',
-  },
-  '/checkout': {
-    title: `Checkout | ${COMPANY.brandName}`,
-    description: 'Complete your FutureWorkAcademy order securely.',
-    path: '/checkout',
-    noindex: true,
-  },
-};
-
-const privateRoutes: Record<string, SeoConfig> = {
-  '/library': {
-    title: `Member Library | ${COMPANY.brandName}`,
-    description: 'Access your private FutureWorkAcademy course library.',
-    path: '/library',
-    noindex: true,
-  },
-  '/schedule': {
-    title: `Live Class Schedule | ${COMPANY.brandName}`,
-    description: 'View your private FutureWorkAcademy live class schedule.',
-    path: '/schedule',
-    noindex: true,
-  },
-  '/live-room': {
-    title: `Live Room | ${COMPANY.brandName}`,
-    description: 'Join your private FutureWorkAcademy live class room.',
-    path: '/live-room',
-    noindex: true,
-  },
-  '/account': {
-    title: `My Account | ${COMPANY.brandName}`,
-    description: 'Manage your private FutureWorkAcademy account details.',
-    path: '/account',
-    noindex: true,
-  },
-  '/profile': {
-    title: `My Account | ${COMPANY.brandName}`,
-    description: 'Manage your private FutureWorkAcademy account details.',
-    path: '/account',
-    noindex: true,
-  },
-};
-
-const notFoundSeo: SeoConfig = {
-  title: `404 Page Not Found | ${COMPANY.brandName}`,
-  description: `The requested ${COMPANY.brandName} page could not be found.`,
-  path: '/404',
-  noindex: true,
-};
 
 const upsertMeta = (selector: string, create: () => HTMLMetaElement, content: string) => {
   const element = document.head.querySelector<HTMLMetaElement>(selector) ?? create();
@@ -131,21 +24,29 @@ const upsertMeta = (selector: string, create: () => HTMLMetaElement, content: st
 };
 
 const ensureMetaName = (name: string, content: string) => {
-  upsertMeta(`meta[name="${name}"]`, () => {
-    const meta = document.createElement('meta');
-    meta.setAttribute('name', name);
-    document.head.appendChild(meta);
-    return meta;
-  }, content);
+  upsertMeta(
+    `meta[name="${name}"]`,
+    () => {
+      const meta = document.createElement('meta');
+      meta.setAttribute('name', name);
+      document.head.appendChild(meta);
+      return meta;
+    },
+    content,
+  );
 };
 
 const ensureMetaProperty = (property: string, content: string) => {
-  upsertMeta(`meta[property="${property}"]`, () => {
-    const meta = document.createElement('meta');
-    meta.setAttribute('property', property);
-    document.head.appendChild(meta);
-    return meta;
-  }, content);
+  upsertMeta(
+    `meta[property="${property}"]`,
+    () => {
+      const meta = document.createElement('meta');
+      meta.setAttribute('property', property);
+      document.head.appendChild(meta);
+      return meta;
+    },
+    content,
+  );
 };
 
 const ensureCanonical = (href: string) => {
@@ -158,18 +59,34 @@ const ensureCanonical = (href: string) => {
   link.setAttribute('href', href);
 };
 
-const setStructuredData = (data?: Record<string, unknown>) => {
+/** Reuses the prerendered script[data-route-schema] so there is only ever one JSON-LD block. */
+const setStructuredData = (data: Record<string, unknown>) => {
   const existing = document.head.querySelector<HTMLScriptElement>('script[data-route-schema="true"]');
-  if (!data) {
-    existing?.remove();
-    return;
-  }
-
   const script = existing ?? document.createElement('script');
   script.type = 'application/ld+json';
   script.dataset.routeSchema = 'true';
   script.textContent = JSON.stringify(data);
   if (!existing) document.head.appendChild(script);
+};
+
+const applySocialMeta = (config: SeoConfig, url: string) => {
+  const imageAlt = config.ogImageAlt ?? DEFAULT_IMAGE_ALT;
+
+  ensureMetaProperty('og:title', config.title);
+  ensureMetaProperty('og:description', config.description);
+  ensureMetaProperty('og:url', url);
+  ensureMetaProperty('og:type', 'website');
+  ensureMetaProperty('og:site_name', COMPANY.brandName);
+  ensureMetaProperty('og:image', OG_IMAGE);
+  ensureMetaProperty('og:image:width', OG_IMAGE_WIDTH);
+  ensureMetaProperty('og:image:height', OG_IMAGE_HEIGHT);
+  ensureMetaProperty('og:image:alt', imageAlt);
+
+  ensureMetaName('twitter:card', 'summary_large_image');
+  ensureMetaName('twitter:title', config.title);
+  ensureMetaName('twitter:description', config.description);
+  ensureMetaName('twitter:image', OG_IMAGE);
+  ensureMetaName('twitter:image:alt', imageAlt);
 };
 
 export const Seo = () => {
@@ -189,6 +106,9 @@ export const Seo = () => {
       if (path === '/profile') {
         return '/account';
       }
+      if (path === '/courses') {
+        return hasLibraryAccess ? '/library' : '/pricing';
+      }
       return path;
     })();
     const config = publicRoutes[effectivePath] ?? privateRoutes[effectivePath] ?? notFoundSeo;
@@ -198,14 +118,8 @@ export const Seo = () => {
     ensureMetaName('description', config.description);
     ensureMetaName('robots', config.noindex ? 'noindex, follow' : 'index, follow');
     ensureCanonical(url);
-
-    ensureMetaProperty('og:title', config.title);
-    ensureMetaProperty('og:description', config.description);
-    ensureMetaProperty('og:url', url);
-    ensureMetaProperty('og:type', 'website');
-    ensureMetaName('twitter:card', 'summary');
-
-    setStructuredData(config.structuredData);
+    applySocialMeta(config, url);
+    setStructuredData(buildStructuredData(config));
   }, [hasLibraryAccess, isAuthLoading, isLoggedIn, location.pathname]);
 
   return null;

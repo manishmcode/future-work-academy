@@ -12,7 +12,7 @@ const termsData = [
   { title: "Service", content: "We provide online courses and educational materials through our platform. The Service is provided 'as is' and 'as available' without any warranties of any kind. We reserve the right to modify, suspend, or discontinue the Service at any time without notice." },
   { title: "User Agreement", content: "By accessing or using the Service, you agree to be bound by these Terms and our Privacy Policy. If you disagree with any part of the terms, then you may not access the Service. You must provide accurate and complete information when creating an account." },
   { title: "Your License", content: "We grant you a limited, non-exclusive, non-transferable, and revocable license to access and use the Service for your personal, non-commercial educational purposes. You may not copy, modify, distribute, sell, or lease any part of our Services or included software." },
-  { title: "Support Services", content: `Support is provided primarily via email and our dedicated support portal. You can contact ${COMPANY.name} at ${COMPANY.supportEmail}. We strive to respond to all inquiries within 24-48 business hours.` },
+  { title: "Support Services", content: `Support is provided primarily via email and our dedicated support portal. Email ${COMPANY.supportEmail} to contact ${COMPANY.name}. We strive to respond to all inquiries within 24-48 business hours.` },
   { title: "Fees and Payment", content: "Certain aspects of the Service may be provided for a fee or other charge. If you elect to use paid aspects of the Service, you agree to the pricing and payment terms. We may add new services for additional fees and charges, or amend fees and charges for existing services, at any time in our sole discretion." },
   { title: "Cancellation", content: "You may cancel your subscription at any time. Cancellation will take effect at the end of your current billing cycle. You will continue to have access to the Service through the end of your billing period." },
   { title: "Refund Policy", content: `All courses and educational content offered through this website are delivered digitally and access is typically granted immediately upon purchase. By completing a purchase, you acknowledge that immediate access affects your eligibility for a refund.\n\nYou may request a refund within 14 days of your initial purchase, provided that you have not substantially accessed or completed the course materials. Requests are assessed on a case-by-case basis and are not automatically guaranteed.\n\nRefund requests must be submitted in writing to ${COMPANY.supportEmail}, including your order number and the reason for the request. We aim to respond to all refund requests within 5 business days.` },
@@ -42,13 +42,10 @@ const privacyData = [
   { title: "Contact", content: `Questions, comments, and requests regarding this Privacy Policy are welcomed and should be addressed to ${COMPANY.name}, ${COMPANY.address}, or by email at ${COMPANY.supportEmail}` }
 ] satisfies LegalItem[];
 
-const imprintData = [
-  { title: "Company Information", content: `**Company Name:** ${COMPANY.name}\n**Registered Address:** ${COMPANY.address}\n**Represented by / Director:** ${COMPANY.director}`, icon: <BookOpen className="w-5 h-5 text-pink-500" /> },
-  { title: "Registration and Tax Information", content: `**Company Registration Number:** ${COMPANY.registrationNumber}`, icon: <ShieldCheck className="w-5 h-5 text-pink-500" /> },
-  { title: "Contact", content: `**Email:** ${COMPANY.supportEmail}`, icon: <HelpCircle className="w-5 h-5 text-pink-500" /> },
-  { title: "Responsible for Website Content", content: `${COMPANY.name}\n${COMPANY.address}`, icon: <AlertCircle className="w-5 h-5 text-pink-500" /> },
-  { title: "Disclaimer", content: "The information provided on this website is for general informational purposes only. While we make every effort to keep the content accurate and up to date, we do not accept liability for any errors, omissions, or outdated information.\n\nThis imprint is provided for transparency and legal disclosure purposes. For any questions regarding the website or company information, please contact us using the email address listed above.", icon: <AlertCircle className="w-5 h-5 text-pink-500" /> }
-] satisfies LegalItem[];
+const imprintDisclaimer = [
+  'The information provided on this website is for general informational purposes only. While we make every effort to keep the content accurate and up to date, we do not accept liability for any errors, omissions, or outdated information.',
+  'This imprint is provided for transparency and legal disclosure purposes. For any questions regarding the website or company information, please contact us using the email address listed above.',
+];
 
 type InfoCardProps = LegalItem & {
   index?: number;
@@ -127,20 +124,81 @@ export const TermsContent = () => (
   </div>
 );
 
+const ImprintIcon = ({ children }: { children: React.ReactNode }) => (
+  <div className="w-11 h-11 rounded-2xl bg-pink-50 border border-pink-100/60 flex items-center justify-center shrink-0">
+    {children}
+  </div>
+);
+
+const ImprintField = ({ label, children }: { label: string; children: React.ReactNode }) => (
+  <div>
+    <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1.5">{label}</p>
+    <div className="text-[15px] font-semibold text-slate-800 leading-relaxed">{children}</div>
+  </div>
+);
+
 export const ImprintContent = () => (
   <div className="space-y-6">
-    <section className="bg-slate-900 text-white p-8 rounded-3xl mb-8 relative overflow-hidden" aria-labelledby="legal-content-title">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-      <h2 id="legal-content-title" className="text-2xl font-bold mb-2">Imprint & Legal Disclosure</h2>
-      <p className="text-slate-400">Official company information, registration details, and legal disclosures for transparency.</p>
+    <section className="bg-slate-900 text-white p-8 rounded-3xl relative overflow-hidden" aria-labelledby="legal-content-title">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-pink-500/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+      <h2 id="legal-content-title" className="text-2xl font-bold mb-2 relative">Imprint & Legal Disclosure</h2>
+      <p className="text-slate-400 relative">Official company information, registration details, and legal disclosures for transparency.</p>
     </section>
 
-    <div className="grid sm:grid-cols-2 gap-6">
-      {imprintData.map((item, i) => (
-        <div key={i} className={item.title === "Disclaimer" ? "sm:col-span-2" : ""}>
-          <InfoCard icon={item.icon} title={item.title} content={item.content} />
+    <article className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8">
+      <div className="flex items-center gap-4 mb-8">
+        <ImprintIcon><BookOpen className="w-5 h-5 text-pink-500" /></ImprintIcon>
+        <h3 className="text-lg font-bold text-slate-900">Company information</h3>
+      </div>
+      <div className="grid sm:grid-cols-2 gap-x-10 gap-y-6">
+        <ImprintField label="Company name">{COMPANY.name}</ImprintField>
+        <ImprintField label="Represented by / Director">{COMPANY.director}</ImprintField>
+        <div className="sm:col-span-2">
+          <ImprintField label="Registered address">{COMPANY.address}</ImprintField>
         </div>
-      ))}
+      </div>
+    </article>
+
+    <div className="grid sm:grid-cols-2 gap-6">
+      <article className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8">
+        <div className="flex items-center gap-4 mb-6">
+          <ImprintIcon><ShieldCheck className="w-5 h-5 text-pink-500" /></ImprintIcon>
+          <h3 className="text-lg font-bold text-slate-900">Registration</h3>
+        </div>
+        <ImprintField label="Company registration number">
+          <span className="text-xl font-bold tracking-wide text-slate-900">{COMPANY.registrationNumber}</span>
+        </ImprintField>
+      </article>
+
+      <article className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8">
+        <div className="flex items-center gap-4 mb-6">
+          <ImprintIcon><HelpCircle className="w-5 h-5 text-pink-500" /></ImprintIcon>
+          <h3 className="text-lg font-bold text-slate-900">Contact</h3>
+        </div>
+        <ImprintField label="Email">
+          <a href={`mailto:${COMPANY.supportEmail}`} className="text-pink-600 hover:text-pink-700 break-all">
+            {COMPANY.supportEmail}
+          </a>
+        </ImprintField>
+      </article>
     </div>
+
+    <article className="bg-white border border-slate-100 rounded-3xl p-6 sm:p-8">
+      <div className="flex items-center gap-4 mb-6">
+        <ImprintIcon><AlertCircle className="w-5 h-5 text-pink-500" /></ImprintIcon>
+        <h3 className="text-lg font-bold text-slate-900">Responsible for website content</h3>
+      </div>
+      <p className="text-[15px] font-semibold text-slate-800">{COMPANY.name}</p>
+      <p className="text-[15px] text-slate-500 font-medium leading-relaxed">{COMPANY.address}</p>
+    </article>
+
+    <aside className="rounded-3xl border border-dashed border-slate-300 bg-slate-50/70 p-6 sm:p-8">
+      <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-500 mb-3">Disclaimer</h3>
+      <div className="space-y-3">
+        {imprintDisclaimer.map((paragraph) => (
+          <p key={paragraph} className="text-[14px] leading-relaxed text-slate-500">{paragraph}</p>
+        ))}
+      </div>
+    </aside>
   </div>
 );

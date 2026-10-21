@@ -1,0 +1,15 @@
+# FutureWorkAcademy
+
+> FutureWorkAcademy is an online learning platform focused on AI productivity, personal productivity, time management, remote work, freelancing, online business development, and virtual events. It offers practical learning resources and video courses to help learners develop skills they can apply to everyday work and professional projects. 
+
+## Public pages
+
+- [Home](https://futureworkacademy.net/): Overview of FutureWorkAcademy, its learning categories, featured courses, and self-paced learning options.
+- [Pricing](https://futureworkacademy.net/pricing/): Information about pricing, subscription plans, and included learning features.
+- [Unsubscribe](https://futureworkacademy.net/unsubscribe/): Information and options for unsubscribing from the service.
+- [Privacy Policy](https://futureworkacademy.net/privacy-policy/): Information about privacy and personal data handling.
+- [Terms & Conditions](https://futureworkacademy.net/terms-conditions/): Terms and conditions governing use of the platform.
+- [Imprint](https://futureworkacademy.net/imprint/): Legal and company information about FutureWorkAcademy.
+
+
+

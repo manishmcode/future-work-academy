@@ -1,46 +1,38 @@
-# Getting Started with Create React App
+# FutureWorkAcademy
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+> FutureWorkAcademy is an online learning platform offering practical video courses and instructor-led live classes for AI productivity, personal productivity, remote work, freelancing, and online business development.
 
-## Available Scripts
+## Public Pages
 
-In the project directory, you can run:
+- [Home](https://futureworkacademy.net/): Overview of FutureWorkAcademy, including AI productivity, personal productivity, remote work, freelancing, online business development, video courses, and live classes.
+- [Pricing](https://futureworkacademy.net/pricing/): Information about pricing, subscription plans, and included learning features.
+- [Unsubscribe](https://futureworkacademy.net/unsubscribe/): Information and options for unsubscribing from the service.
+- [Privacy Policy](https://futureworkacademy.net/privacy-policy/): Information about privacy and personal data handling.
+- [Terms & Conditions](https://futureworkacademy.net/terms-conditions/): Terms and conditions governing use of the platform.
+- [Imprint](https://futureworkacademy.net/imprint/): Legal and company information about FutureWorkAcademy.
 
-### `npm start`
+## Open Graph Image And Hero Asset
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- Open Graph file: `public/images/og-image-v2.webp` (1200x630, hero screenshot with headline and CTA overlay; regenerate with `npm run build:og-image`)
+- Open Graph URL: `https://futureworkacademy.net/images/og-image-v2.webp`
+- Homepage hero: `public/images/futurework-learning-hero.webp`
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+`live-class-mockup.webp` remains in the repo for legacy references, but the current homepage uses `futurework-learning-hero.webp`.
 
-### `npm test`
+## Structured Data Assets
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Deploy these files under `public/` so schema URLs resolve:
 
-### `npm run build`
+| File | URL |
+|------|-----|
+| Site logo | `public/images/logo.webp` -> `https://futureworkacademy.net/images/logo.webp` |
+| Basic plan | `public/images/pricing/basic-plan.webp` |
+| Classic plan | `public/images/pricing/classic-plan.webp` |
+| Premium plan | `public/images/pricing/premium-plan.webp` |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+JSON-LD is one `application/ld+json` block per page with a single root `WebPage` and nested entities (see `src/seo/structuredData.ts`).
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## LLM Metadata
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- File: `public/llms.txt`
+- Canonical URL: `https://futureworkacademy.net/llms.txt`

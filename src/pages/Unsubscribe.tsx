@@ -7,9 +7,72 @@ import {
   AlertTriangle,
   ArrowRight
 } from 'lucide-react';
+import { API_URLS } from '../api';
+import { Loader } from '../components/Loader';
+import { useToast } from '../context/ToastContext';
 
 export const Unsubscribe = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [ibanLast5, setIbanLast5] = useState('');
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formMessage, setFormMessage] = useState('');
+  const { showToast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+
+    const trimmedFirstName = firstName.trim();
+    const trimmedLastName = lastName.trim();
+    const trimmedEmail = email.trim();
+
+    if (!/^\d{5}$/.test(ibanLast5)) {
+      setFormMessage('Please enter exactly 5 digits from the end of your IBAN.');
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      setFormMessage('');
+      const response = await fetch(API_URLS.subscriptions.unsubscribe, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          first_name: trimmedFirstName,
+          last_name: trimmedLastName,
+          email: trimmedEmail,
+          iban_last5: ibanLast5,
+          is_unsubscribe: true
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || result.success === false) {
+        throw new Error(result.message || 'Unable to submit your cancellation request.');
+      }
+
+      const successMessage = result.message || 'Your cancellation request has been submitted.';
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setIbanLast5('');
+      setIsConfirmed(false);
+      setFormMessage(successMessage);
+      showToast('success', successMessage);
+    } catch (unsubscribeError) {
+      const message =
+        unsubscribeError instanceof Error
+          ? unsubscribeError.message
+          : 'Unable to submit your cancellation request.';
+      setFormMessage(message);
+      showToast('error', message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <main className="min-h-screen font-sans bg-[#FAF9F6] flex flex-col justify-center py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -24,8 +87,7 @@ export const Unsubscribe = () => {
           {/* Spacing to replace removed badge */}
           <div className="h-[32px] mb-6"></div>
           <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-extrabold leading-[1.1] tracking-tight text-slate-900 mb-6">
-            Cancel <br className="hidden sm:block" />
-            <span className="text-slate-400 font-medium">Subscription.</span>
+            Cancel Subscription.
           </h1>
           <p className="text-[17px] text-slate-600 font-medium max-w-lg leading-relaxed">
             We’re sorry to see you leave. To securely cancel your subscription and halt future billing, please confirm your details below.
@@ -38,7 +100,12 @@ export const Unsubscribe = () => {
           {/* Subtle decorative background piece */}
           <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-bl from-slate-50 to-transparent rounded-bl-[4rem] pointer-events-none"></div>
           
-          <form method="post" className="relative z-10 space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form method="post" className="relative z-10 space-y-6" onSubmit={handleSubmit}>
+            {formMessage && (
+              <p role="status" className="rounded-xl bg-slate-50 border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700">
+                {formMessage}
+              </p>
+            )}
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* First Name */}
@@ -52,6 +119,9 @@ export const Unsubscribe = () => {
                   </div>
                   <input 
                     type="text" 
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    autoComplete="given-name"
                     required
                     placeholder="John"
                     className="w-full bg-slate-50/50 border border-slate-200 rounded-xl pl-11 pr-5 py-3.5 text-[15px] focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/10 transition-all text-slate-900 font-medium placeholder:text-slate-400"
@@ -70,6 +140,9 @@ export const Unsubscribe = () => {
                   </div>
                   <input 
                     type="text" 
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    autoComplete="family-name"
                     required
                     placeholder="Doe"
                     className="w-full bg-slate-50/50 border border-slate-200 rounded-xl pl-11 pr-5 py-3.5 text-[15px] focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/10 transition-all text-slate-900 font-medium placeholder:text-slate-400"
@@ -89,6 +162,9 @@ export const Unsubscribe = () => {
                 </div>
                 <input 
                   type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
                   required
                   placeholder="john@example.com"
                   className="w-full bg-slate-50/50 border border-slate-200 rounded-xl pl-11 pr-5 py-3.5 text-[15px] focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/10 transition-all text-slate-900 font-medium placeholder:text-slate-400"
@@ -113,6 +189,9 @@ export const Unsubscribe = () => {
                   inputMode="numeric" 
                   pattern="[0-9]{5}" 
                   maxLength={5}
+                  value={ibanLast5}
+                  onChange={(e) => setIbanLast5(e.target.value.replace(/\D/g, '').slice(0, 5))}
+                  autoComplete="off"
                   required
                   placeholder="•••••"
                   className="w-full bg-slate-50/50 border border-slate-200 rounded-xl pl-11 pr-5 py-3.5 text-[16px] focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/10 transition-all text-slate-900 font-bold tracking-[0.25em] placeholder:text-slate-300 placeholder:font-normal placeholder:tracking-normal"
@@ -151,9 +230,10 @@ export const Unsubscribe = () => {
             <div className="flex flex-col-reverse sm:flex-row items-center gap-3 pt-6 mt-4">
               <button 
                 type="submit" 
-                className="w-full sm:w-auto h-12 px-6 inline-flex items-center justify-center rounded-xl bg-white border border-slate-200 text-[14px] font-bold text-slate-600 transition-all hover:bg-red-50 hover:text-red-600 hover:border-red-200"
+                disabled={isSubmitting}
+                className="w-full sm:w-auto min-h-12 px-6 inline-flex items-center justify-center rounded-xl bg-white border border-slate-200 text-[14px] font-bold text-slate-600 transition-all hover:bg-red-50 hover:text-red-600 hover:border-red-200 disabled:cursor-wait disabled:opacity-70"
               >
-                Cancel Subscription
+                {isSubmitting ? <Loader variant="inline" label="Submitting..." /> : 'Cancel Subscription'}
               </button>
               
               <Link 

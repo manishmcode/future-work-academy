@@ -246,9 +246,9 @@ export const Account = () => {
         <section className="bg-white rounded-[2rem] p-6 sm:p-8 shadow-sm border border-slate-200">
           <p className="text-slate-500 font-medium mb-8">Update your password to keep your administrator account secure.</p>
           <form onSubmit={handlePasswordSubmit} className="space-y-6">
-            <PasswordInput label="Current Password" value={passwordForm.current_password} onChange={(value) => setPasswordForm((current) => ({ ...current, current_password: value }))} />
-            <PasswordInput label="New Password" value={passwordForm.new_password} onChange={(value) => setPasswordForm((current) => ({ ...current, new_password: value }))} hint="At least 6 characters" />
-            <PasswordInput label="Confirm Password" value={passwordForm.confirm_password} onChange={(value) => setPasswordForm((current) => ({ ...current, confirm_password: value }))} />
+            <PasswordInput label="Current Password" value={passwordForm.current_password} onChange={(value) => setPasswordForm((current) => ({ ...current, current_password: value }))} placeholder="Enter your current password" />
+            <PasswordInput label="New Password" value={passwordForm.new_password} onChange={(value) => setPasswordForm((current) => ({ ...current, new_password: value }))} placeholder="At least 6 characters" />
+            <PasswordInput label="Confirm Password" value={passwordForm.confirm_password} onChange={(value) => setPasswordForm((current) => ({ ...current, confirm_password: value }))} placeholder="Re-enter your new password" />
             <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-4 pt-6 border-t border-slate-100">
               <button type="button" onClick={handleLogout} className="h-12 px-6 rounded-xl border-2 border-red-100 text-red-600 text-[13px] font-black uppercase tracking-widest flex items-center justify-center gap-2"><LogOut className="w-4 h-4" /> Sign Out</button>
               <button disabled={isChangingPassword} className="h-12 px-8 rounded-xl bg-slate-900 text-white text-[15px] font-bold disabled:opacity-60">{isChangingPassword ? <Loader variant="inline" label="Updating..." /> : 'Update Password'}</button>
@@ -358,10 +358,10 @@ export const Account = () => {
           {activeTab === 'profile' && <form onSubmit={handleProfileSubmit} className="bg-white rounded-[2.5rem] p-8 sm:p-12 shadow-sm border border-slate-200">
             <h2 className="text-2xl font-black text-slate-900 mb-8">Personal Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <ProfileInput label="First Name" value={form.firstname} onChange={(value) => updateField('firstname', value)} required />
-              <ProfileInput label="Last Name" value={form.lastname} onChange={(value) => updateField('lastname', value)} />
-              <ProfileInput label="Display Name" value={form.display_name} onChange={(value) => updateField('display_name', value)} required />
-              <div className="space-y-3"><label className="block text-[11px] font-black text-slate-500 uppercase tracking-[0.2em] ml-2">Email Address</label><div className="relative"><input type="email" value={dashboard?.email || ''} disabled className="w-full h-14 px-6 rounded-2xl border-2 border-slate-100 bg-slate-100 text-[15px] font-bold text-slate-400 cursor-not-allowed" /><Lock className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300" /></div></div>
+              <ProfileInput label="First Name" value={form.firstname} onChange={(value) => updateField('firstname', value)} placeholder="John" required />
+              <ProfileInput label="Last Name" value={form.lastname} onChange={(value) => updateField('lastname', value)} placeholder="Doe" />
+              <ProfileInput label="Display Name" value={form.display_name} onChange={(value) => updateField('display_name', value)} placeholder="How we greet you in the app" required />
+              <div className="space-y-3"><label className="block text-[11px] font-black text-slate-500 uppercase tracking-[0.2em] ml-2">Email Address</label><div className="relative"><input type="email" value={dashboard?.email || ''} disabled placeholder="you@example.com" className="w-full h-14 px-6 rounded-2xl border-2 border-slate-100 bg-slate-100 text-[15px] font-bold text-slate-400 cursor-not-allowed placeholder:text-slate-400" /><Lock className="absolute right-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-300" /></div></div>
             </div>
             <div className="flex justify-end pt-8 mt-8 border-t border-slate-100"><button disabled={isSaving} className="h-12 px-8 rounded-xl bg-slate-900 text-white text-[15px] font-bold disabled:opacity-60">{isSaving ? <Loader variant="inline" label="Saving..." /> : 'Save Changes'}</button></div>
           </form>}
@@ -370,9 +370,9 @@ export const Account = () => {
             <h2 className="text-2xl font-black text-slate-900 mb-3">Security & Password</h2>
             <p className="text-slate-500 font-medium mb-8">Update your password to keep your account secure.</p>
             <form onSubmit={handlePasswordSubmit} className="space-y-6">
-              <PasswordInput label="Current Password" value={passwordForm.current_password} onChange={(value) => setPasswordForm((current) => ({ ...current, current_password: value }))} />
-              <PasswordInput label="New Password" value={passwordForm.new_password} onChange={(value) => setPasswordForm((current) => ({ ...current, new_password: value }))} hint="At least 6 characters" />
-              <PasswordInput label="Confirm Password" value={passwordForm.confirm_password} onChange={(value) => setPasswordForm((current) => ({ ...current, confirm_password: value }))} />
+              <PasswordInput label="Current Password" value={passwordForm.current_password} onChange={(value) => setPasswordForm((current) => ({ ...current, current_password: value }))} placeholder="Enter your current password" />
+              <PasswordInput label="New Password" value={passwordForm.new_password} onChange={(value) => setPasswordForm((current) => ({ ...current, new_password: value }))} placeholder="At least 6 characters" />
+              <PasswordInput label="Confirm Password" value={passwordForm.confirm_password} onChange={(value) => setPasswordForm((current) => ({ ...current, confirm_password: value }))} placeholder="Re-enter your new password" />
               <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-4 pt-6 border-t border-slate-100">
                 <button type="button" onClick={handleLogout} className="h-12 px-6 rounded-xl border-2 border-red-100 text-red-600 text-[13px] font-black uppercase tracking-widest flex items-center justify-center gap-2"><LogOut className="w-4 h-4" /> Sign Out</button>
                 <button disabled={isChangingPassword} className="h-12 px-8 rounded-xl bg-slate-900 text-white text-[15px] font-bold disabled:opacity-60">{isChangingPassword ? <Loader variant="inline" label="Updating..." /> : 'Update Password'}</button>
@@ -385,10 +385,29 @@ export const Account = () => {
   );
 };
 
-const PasswordInput = ({ label, value, onChange, hint }: { label: string; value: string; onChange: (value: string) => void; hint?: string }) => (
+const PasswordInput = ({
+  label,
+  value,
+  onChange,
+  placeholder,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+}) => (
   <div className="space-y-3">
     <label className="block text-[11px] font-black text-slate-500 uppercase tracking-[0.2em] ml-2">{label}</label>
-    <input type="password" value={value} required minLength={label === 'Current Password' ? 1 : 6} onChange={(event) => onChange(event.target.value)} placeholder={hint} autoComplete={label === 'Current Password' ? 'current-password' : 'new-password'} className="w-full h-14 px-6 rounded-2xl border-2 border-slate-200 bg-slate-50 text-[15px] font-bold text-slate-900 focus:outline-none focus:border-slate-900 focus:bg-white transition-all placeholder:text-slate-400" />
+    <input
+      type="password"
+      value={value}
+      required
+      minLength={label === 'Current Password' ? 1 : 6}
+      onChange={(event) => onChange(event.target.value)}
+      placeholder={placeholder}
+      autoComplete={label === 'Current Password' ? 'current-password' : 'new-password'}
+      className="w-full h-14 px-6 rounded-2xl border-2 border-slate-200 bg-slate-50 text-[15px] font-bold text-slate-900 focus:outline-none focus:border-slate-900 focus:bg-white transition-all placeholder:text-slate-400"
+    />
   </div>
 );
 
@@ -417,9 +436,30 @@ const SubscriptionTotalRow = ({ label, value, strong = false, accent = false }: 
   </div>
 );
 
-const ProfileInput = ({ label, value, onChange, required = false, wide = false }: { label: string; value: string; onChange: (value: string) => void; required?: boolean; wide?: boolean }) => (
+const ProfileInput = ({
+  label,
+  value,
+  onChange,
+  placeholder,
+  required = false,
+  wide = false,
+}: {
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  required?: boolean;
+  wide?: boolean;
+}) => (
   <div className={`space-y-3 ${wide ? 'md:col-span-2' : ''}`}>
     <label className="block text-[11px] font-black text-slate-500 uppercase tracking-[0.2em] ml-2">{label}</label>
-    <input type="text" value={value} required={required} onChange={(event) => onChange(event.target.value)} className="w-full h-14 px-6 rounded-2xl border-2 border-slate-200 bg-slate-50 text-[15px] font-bold text-slate-900 focus:outline-none focus:border-slate-900 focus:bg-white transition-all" />
+    <input
+      type="text"
+      value={value}
+      required={required}
+      placeholder={placeholder}
+      onChange={(event) => onChange(event.target.value)}
+      className="w-full h-14 px-6 rounded-2xl border-2 border-slate-200 bg-slate-50 text-[15px] font-bold text-slate-900 focus:outline-none focus:border-slate-900 focus:bg-white transition-all placeholder:text-slate-400"
+    />
   </div>
 );

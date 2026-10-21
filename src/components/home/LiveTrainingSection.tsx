@@ -18,7 +18,7 @@ export const LiveTrainingSection = () => (
             <span className="w-8 h-[2px] bg-pink-600"></span> LIVE TRAINING
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight tracking-tight">
-            Learn in Real Time <br /> with Skilled Instructors
+            Learn in Real Time with Skilled Instructors
           </h2>
         </div>
         <div className="lg:pl-10">
@@ -49,7 +49,7 @@ export const LiveTrainingSection = () => (
               <div className="w-10 h-10 rounded-lg bg-pink-50 flex items-center justify-center shrink-0 group-hover:bg-pink-600 group-hover:text-white transition-colors [&>svg]:group-hover:text-white">
                 {item.icon}
               </div>
-              <h4 className="text-[17px] font-bold text-slate-800">{item.title}</h4>
+              <h3 className="text-[17px] font-bold text-slate-800">{item.title}</h3>
             </div>
           ))}
         </div>
