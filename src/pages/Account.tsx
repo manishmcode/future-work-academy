@@ -335,7 +335,7 @@ export const Account = () => {
                     <span>Product</span>
                     <span>Total</span>
                   </div>
-                  <SubscriptionTotalRow label={subscription.plan_name || 'Subscription'} value={subscriptionTotal} />
+                  <SubscriptionTotalRow label={`${subscription.plan_name || 'Subscription'} - Rebills every month`} value={subscriptionTotal} />
                   <SubscriptionTotalRow label="SubTotal:" value={subscriptionTotal} />
                   <SubscriptionTotalRow label="Totals:" value={subscriptionTotal} strong accent />
                 </div>
