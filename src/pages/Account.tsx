@@ -285,6 +285,9 @@ export const Account = () => {
               </span>
               <span className="text-slate-500 font-medium text-sm">{dashboard?.email}</span>
             </div>
+            <button type="button" onClick={handleLogout} className="mt-5 h-10 px-5 rounded-xl border-2 border-red-100 text-red-600 text-[12px] font-black uppercase tracking-widest inline-flex items-center justify-center gap-2 hover:bg-red-50 hover:border-red-200 transition-colors">
+              <LogOut className="w-4 h-4" /> Sign Out
+            </button>
           </header>
 
           <nav className="bg-white p-2 rounded-full shadow-sm border border-slate-200/60 flex items-center gap-2 mb-8 overflow-x-auto">
@@ -373,8 +376,7 @@ export const Account = () => {
               <PasswordInput label="Current Password" value={passwordForm.current_password} onChange={(value) => setPasswordForm((current) => ({ ...current, current_password: value }))} placeholder="Enter your current password" />
               <PasswordInput label="New Password" value={passwordForm.new_password} onChange={(value) => setPasswordForm((current) => ({ ...current, new_password: value }))} placeholder="At least 6 characters" />
               <PasswordInput label="Confirm Password" value={passwordForm.confirm_password} onChange={(value) => setPasswordForm((current) => ({ ...current, confirm_password: value }))} placeholder="Re-enter your new password" />
-              <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-4 pt-6 border-t border-slate-100">
-                <button type="button" onClick={handleLogout} className="h-12 px-6 rounded-xl border-2 border-red-100 text-red-600 text-[13px] font-black uppercase tracking-widest flex items-center justify-center gap-2"><LogOut className="w-4 h-4" /> Sign Out</button>
+              <div className="flex justify-end pt-6 border-t border-slate-100">
                 <button disabled={isChangingPassword} className="h-12 px-8 rounded-xl bg-slate-900 text-white text-[15px] font-bold disabled:opacity-60">{isChangingPassword ? <Loader variant="inline" label="Updating..." /> : 'Update Password'}</button>
               </div>
             </form>

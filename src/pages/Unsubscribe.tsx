@@ -87,7 +87,7 @@ export const Unsubscribe = () => {
           {/* Spacing to replace removed badge */}
           <div className="h-[32px] mb-6"></div>
           <h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-extrabold leading-[1.1] tracking-tight text-slate-900 mb-6">
-            Cancel Subscription.
+            Unsubscribe
           </h1>
           <p className="text-[17px] text-slate-600 font-medium max-w-lg leading-relaxed">
             We’re sorry to see you leave. To securely cancel your subscription and halt future billing, please confirm your details below.
@@ -233,7 +233,7 @@ export const Unsubscribe = () => {
                 disabled={isSubmitting}
                 className="w-full sm:w-auto min-h-12 px-6 inline-flex items-center justify-center rounded-xl bg-white border border-slate-200 text-[14px] font-bold text-slate-600 transition-all hover:bg-red-50 hover:text-red-600 hover:border-red-200 disabled:cursor-wait disabled:opacity-70"
               >
-                {isSubmitting ? <Loader variant="inline" label="Submitting..." /> : 'Cancel Subscription'}
+                {isSubmitting ? <Loader variant="inline" label="Submitting..." /> : 'Unsubscribe'}
               </button>
               
               <Link 

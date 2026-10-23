@@ -4,6 +4,25 @@ import { Logo } from './Logo';
 import { COMPANY, companyEmailLink } from '../config/company';
 import { useAuth } from '../context/AuthContext';
 
+const PaymentMethods = () => (
+  <div className="flex items-center gap-3" aria-label="Accepted payment methods">
+    <span className="inline-flex" aria-label="Mastercard">
+      <svg width="42" height="28" viewBox="0 0 42 28" aria-hidden="true">
+        <rect width="42" height="28" rx="2" fill="#F7F7F7" />
+        <circle cx="16" cy="14" r="8" fill="#EB001B" />
+        <circle cx="26" cy="14" r="8" fill="#F79E1B" />
+        <path d="M21 7.76a8 8 0 0 0 0 12.48 8 8 0 0 0 0-12.48Z" fill="#FF5F00" />
+      </svg>
+    </span>
+    <span className="text-[26px] font-black leading-none tracking-[-0.12em] text-[#17469e]" aria-label="SEPA">
+      S<span className="text-[#f4bf24]">€</span>PA
+    </span>
+    <span className="rounded-sm bg-[#1a4b9b] px-1.5 py-1 text-[14px] font-black italic leading-none tracking-tight text-white" aria-label="Visa">
+      VISA
+    </span>
+  </div>
+);
+
 export const Footer = () => {
   const location = useLocation();
   const { hasLibraryAccess } = useAuth();
@@ -26,6 +45,7 @@ export const Footer = () => {
             <p className="text-[14px] leading-relaxed text-slate-500 font-medium max-w-[310px] mb-8">
               FutureWorkAcademy offers video courses and live classes on AI productivity, remote work, freelancing, and online business.
             </p>
+            <PaymentMethods />
           </div>
           
           <div>
