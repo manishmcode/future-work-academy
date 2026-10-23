@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { API_URLS } from '../api';
+import { useNavigate } from 'react-router-dom';
+import { authenticatedFetch, AUTH_EXPIRED_EVENT } from '../utils/authenticatedFetch';
 
 type AuthUser = {
   is_admin?: boolean;
@@ -52,10 +54,12 @@ function clearAuthCookies() {
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [hasLibraryAccess, setHasLibraryAccess] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const [shouldRedirectToLogin, setShouldRedirectToLogin] = useState(false);
 
   const clearAuth = useCallback(() => {
     clearAuthCookies();
@@ -68,16 +72,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setIsAdmin(false);
   }, []);
 
+  useEffect(() => {
+    const handleAuthExpired = () => {
+      clearAuth();
+      setIsAuthLoading(false);
+      setShouldRedirectToLogin(true);
+    };
+    window.addEventListener(AUTH_EXPIRED_EVENT, handleAuthExpired);
+    return () => window.removeEventListener(AUTH_EXPIRED_EVENT, handleAuthExpired);
+  }, [clearAuth]);
+
+  useEffect(() => {
+    if (!shouldRedirectToLogin) return;
+    navigate('/login/', { replace: true });
+    setShouldRedirectToLogin(false);
+  }, [shouldRedirectToLogin, navigate]);
+
   const refreshLibraryAccess = useCallback(async (token: string) => {
     try {
-      const response = await fetch(API_URLS.user.dashboard, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await authenticatedFetch(API_URLS.user.dashboard);
       const result = await response.json();
-      if (response.status === 401 || response.status === 403) {
-        clearAuth();
-        return;
-      }
+      if (localStorage.getItem('futureworkacademy_token') !== token) return;
       if (!response.ok || !result.success || !result.data) return;
 
       const storedUser = localStorage.getItem('futureworkacademy_user');
@@ -92,7 +107,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     } catch {
       // Keep the last known access state when the dashboard cannot be reached.
     }
-  }, [clearAuth]);
+  }, []);
 
   useEffect(() => {
     const initialiseAuth = async () => {
@@ -119,6 +134,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     void initialiseAuth();
   }, [clearAuth, refreshLibraryAccess]);
 
+  useEffect(() => {
+    if (!isLoggedIn || isAuthLoading) return;
+    let pending = false;
+    const validateSession = async () => {
+      const token = localStorage.getItem('futureworkacademy_token');
+      if (pending) return;
+      if (!token) {
+        window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
+        return;
+      }
+      pending = true;
+      await refreshLibraryAccess(token);
+      pending = false;
+    };
+    const timer = window.setInterval(() => { void validateSession(); }, 60_000);
+    window.addEventListener('focus', validateSession);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener('focus', validateSession);
+    };
+  }, [isLoggedIn, isAuthLoading, refreshLibraryAccess]);
+
   const login = (token: string, user?: AuthUser) => {
     localStorage.setItem('futureworkacademy_token', token);
     localStorage.setItem('futureworkacademy_auth', 'true');
@@ -137,10 +174,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     void refreshLibraryAccess(token);
   };
 
-  const logout = () => {
+  const logout = useCallback(() => {
     clearAuth();
     setIsAuthLoading(false);
-  };
+  }, [clearAuth]);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, hasLibraryAccess, isAdmin, isAuthLoading, login, logout }}>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CreditCard, FileText, Lock, LogOut, User } from 'lucide-react';
 import { API_URLS } from '../api';
+import { authenticatedFetch } from '../utils/authenticatedFetch';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { Loader } from '../components/Loader';
@@ -99,24 +100,10 @@ export const Account = () => {
     }
 
     const loadDashboard = async () => {
-      const token = localStorage.getItem('futureworkacademy_token');
-      if (!token) {
-        logout();
-        navigate('/login/');
-        return;
-      }
-
       try {
         setError('');
-        const response = await fetch(API_URLS.user.dashboard, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await authenticatedFetch(API_URLS.user.dashboard);
         const result = await response.json();
-        if (response.status === 401 || response.status === 403) {
-          logout();
-          navigate('/login/');
-          return;
-        }
         if (!response.ok || !result.success || !result.data) throw new Error(result.message || 'Unable to load account details.');
         applyDashboard(result.data);
       } catch (loadError) {
@@ -140,16 +127,14 @@ export const Account = () => {
 
   const handleProfileSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const token = localStorage.getItem('futureworkacademy_token');
-    if (!token) return handleLogout();
 
     try {
       setIsSaving(true);
       setError('');
       setSuccess('');
-      const response = await fetch(API_URLS.user.profile, {
+      const response = await authenticatedFetch(API_URLS.user.profile, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           firstname: form.firstname.trim(),
           lastname: form.lastname.trim(),
@@ -157,11 +142,6 @@ export const Account = () => {
         }),
       });
       const result = await response.json();
-      if (response.status === 401 || response.status === 403) {
-        logout();
-        navigate('/login/');
-        return;
-      }
       if (!response.ok || !result.success) throw new Error(result.message || 'Unable to save profile changes.');
 
       if (result.data) {
@@ -192,8 +172,6 @@ export const Account = () => {
 
   const handlePasswordSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const token = localStorage.getItem('futureworkacademy_token');
-    if (!token) return handleLogout();
 
     if (passwordForm.new_password !== passwordForm.confirm_password) {
       const message = 'New password and confirmation password must match.';
@@ -207,20 +185,15 @@ export const Account = () => {
       setIsChangingPassword(true);
       setError('');
       setSuccess('');
-      const response = await fetch(API_URLS.auth.changePassword, {
+      const response = await authenticatedFetch(API_URLS.auth.changePassword, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           old_password: passwordForm.current_password,
           new_password: passwordForm.new_password,
         }),
       });
       const result = await response.json();
-      if (response.status === 401 || response.status === 403) {
-        logout();
-        navigate('/login/');
-        return;
-      }
       if (!response.ok || !result.success) throw new Error(result.message || 'Unable to change password.');
       setPasswordForm(emptyPasswordForm);
       const message = result.message || 'Your password has been changed successfully.';

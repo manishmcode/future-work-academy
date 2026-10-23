@@ -62,9 +62,9 @@ const PricingAccess = () => {
 };
 function App() {
   return (
+    <Router>
     <AuthProvider>
       <ToastProvider>
-      <Router>
       <Seo />
       <ScrollToTop />
       <div className="flex flex-col min-h-screen">
@@ -93,9 +93,9 @@ function App() {
         </main>
         <Footer />
       </div>
-    </Router>
     </ToastProvider>
     </AuthProvider>
+    </Router>
   );
 }
 

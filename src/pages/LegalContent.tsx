@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ShieldCheck, BookOpen, AlertCircle, HelpCircle } from 'lucide-react';
 import { COMPANY } from '../config/company';
 
@@ -176,9 +177,9 @@ export const ImprintContent = () => (
           <h3 className="text-lg font-bold text-slate-900">Contact</h3>
         </div>
         <ImprintField label="Email">
-          <a href={`mailto:${COMPANY.supportEmail}`} className="text-pink-600 hover:text-pink-700 break-all">
+          <Link to={`mailto:${COMPANY.supportEmail}`} className="text-pink-600 hover:text-pink-700 break-all">
             {COMPANY.supportEmail}
-          </a>
+          </Link>
         </ImprintField>
       </article>
     </div>

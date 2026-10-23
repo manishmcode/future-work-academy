@@ -385,9 +385,9 @@ export const Checkout = () => {
 
             <p className="text-xs text-slate-500 font-medium text-center px-2 leading-relaxed">
               Cancel anytime from your account. Questions before you subscribe?{' '}
-              <a href={companyEmailLink} className="text-pink-600 font-bold hover:underline">
+              <Link to={companyEmailLink} className="text-pink-600 font-bold hover:underline">
                 Contact support
-              </a>
+              </Link>
               .
             </p>
           </aside>

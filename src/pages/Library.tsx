@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Search, Play, BookOpen, Video, ArrowRight, MonitorPlay, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { API_URLS } from '../api';
+import { authenticatedFetch } from '../utils/authenticatedFetch';
 import { Loader } from '../components/Loader';
 
 type LibraryCard = { title: string; image: string; link: string; plan_ids: number[] };
@@ -18,12 +19,7 @@ export const Library = () => {
   useEffect(() => {
     const loadLibrary = async () => {
       try {
-        const token = localStorage.getItem('futureworkacademy_token');
-        if (!token) throw new Error('Please log in again to access the library.');
-
-        const response = await fetch(API_URLS.library.list, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await authenticatedFetch(API_URLS.library.list);
         const result = await response.json();
         if (!response.ok || !result.success) throw new Error(result.message || 'Unable to load the library.');
         const data = result.data as LibraryCourse[];

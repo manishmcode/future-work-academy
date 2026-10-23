@@ -1,8 +1,7 @@
 import React, { FormEvent, useEffect, useMemo, useState } from 'react';
 import { Calendar, Pencil, Trash2, X } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 import { API_URLS } from '../api';
-import { useAuth } from '../context/AuthContext';
+import { authenticatedFetch } from '../utils/authenticatedFetch';
 import { Loader } from '../components/Loader';
 
 type LiveClass = {
@@ -39,26 +38,10 @@ export const AdminLiveClasses = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const navigate = useNavigate();
-  const { logout } = useAuth();
-
-  const handleAuthExpired = () => {
-    logout();
-    navigate('/login/');
-  };
 
   const request = async (url: string, init?: RequestInit) => {
-    const token = localStorage.getItem('futureworkacademy_token');
-    if (!token) throw new Error('Please log in again.');
-    const response = await fetch(url, {
-      ...init,
-      headers: { Authorization: `Bearer ${token}`, ...(init?.headers || {}) },
-    });
+    const response = await authenticatedFetch(url, init);
     const result = await response.json();
-    if (response.status === 401 || response.status === 403) {
-      handleAuthExpired();
-      throw new Error('Please log in again.');
-    }
     if (!response.ok || !result.success) throw new Error(result.message || 'Request failed.');
     return result.data;
   };
