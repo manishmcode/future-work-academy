@@ -12,6 +12,7 @@
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "country-state-city": "^3.2.1",
+    "http-proxy-middleware": "^2.0.10",
     "lucide-react": "^1.52.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",

@@ -65,7 +65,7 @@ test('redirects when the library rejects a previously validated session', async 
   ));
   render(<App />);
   expect(await screen.findByText('Login page')).toBeInTheDocument();
-  expect(mockFetch).toHaveBeenCalledWith(API_URLS.library.list, expect.anything());
+  expect(mockFetch).toHaveBeenCalledWith(`${API_URLS.library.items}?page=1&limit=10`, expect.anything());
   expect(localStorage.getItem('futureworkacademy_token')).toBeNull();
 });
 
