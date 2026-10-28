@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Search, Play, BookOpen, Video, ArrowRight, MonitorPlay, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Search, Play, BookOpen, Video, ArrowRight, ChevronRight, LibraryBig, Layers3 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { API_URLS } from '../api';
 import { authenticatedFetch } from '../utils/authenticatedFetch';
 import { Loader } from '../components/Loader';
+import { LearningResourceTabs } from '../components/LearningResourceTabs';
 
 type LibraryCard = {
   title: string; image: string; link: string; category: string;
@@ -28,9 +29,21 @@ export const Library = () => {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [error, setError] = useState('');
   const [categoryError, setCategoryError] = useState('');
-  const categoryScrollRef = useRef<HTMLDivElement>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const nextPageRef = useRef<() => void>(() => {});
+  const collectionRef = useRef<HTMLElement>(null);
+
+  const scrollToCollection = useCallback(() => {
+    collectionRef.current?.scrollIntoView({
+      block: 'start',
+      behavior: window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches ? 'auto' : 'smooth',
+    });
+  }, []);
+
+  const selectCategory = (category: string) => {
+    scrollToCollection();
+    setActiveCategory(category);
+  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -108,39 +121,171 @@ export const Library = () => {
     return () => observer.disconnect();
   }, [hasMore, isLoading, isLoadingMore, error, cards.length]);
 
-  const scrollCategories = (direction: 'left' | 'right') => categoryScrollRef.current?.scrollBy({
-    left: direction === 'left' ? -360 : 360,
-    behavior: 'smooth',
-  });
-  const displayedCards = cards;
-  const tabs = [{ title: 'ALL', value: '' }, ...categories.map((category) => ({ title: category.title, value: category.title }))];
+  const totalLessons = categories.reduce((total, category) => total + category.item_count, 0);
+  const selectedCollection = categories.find((category) => category.title === activeCategory);
+  const collectionTitle = activeCategory || 'All lessons';
+  const collectionCount = activeCategory ? selectedCollection?.item_count : totalLessons;
+  const tabs = [
+    { title: 'All lessons', value: '', count: totalLessons },
+    ...categories.map((category) => ({ title: category.title, value: category.title, count: category.item_count })),
+  ];
 
   return (
-    <main className="min-h-screen font-sans bg-slate-50/50 overflow-hidden pb-24 text-slate-900 relative">
-      <div className="absolute inset-0 w-full h-full pointer-events-none bg-right-bottom bg-no-repeat fixed" style={{ backgroundImage: "url('/images/card-bg.webp')", backgroundAttachment: 'fixed' }} />
-      <section className="pt-20 pb-10 lg:pt-28 lg:pb-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative z-20">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-10">
-          <div className="max-w-2xl"><div className="h-[28px] mb-6" /><h1 className="text-4xl sm:text-5xl lg:text-[4rem] font-extrabold leading-[1.1] tracking-tight text-slate-900">Explore the <br className="hidden sm:block" /><span className="text-slate-400 font-medium">Course Library.</span></h1></div>
-          <div className="w-full md:w-80 relative group"><input type="search" value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search lessons..." className="w-full bg-white border border-slate-200/80 shadow-sm rounded-2xl py-3.5 pl-12 pr-4 text-sm focus:outline-none focus:border-pink-500 focus:ring-4 focus:ring-pink-500/10 transition-all text-slate-900 font-medium placeholder:text-slate-400" /><Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-pink-500 transition-colors" /></div>
+    <main className="relative min-h-screen bg-slate-50/50 pb-24 font-sans text-slate-900">
+      <div
+        className="pointer-events-none absolute inset-0 bg-right-bottom bg-no-repeat opacity-60"
+        style={{ backgroundImage: "url('/images/card-bg.webp')" }}
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto max-w-[1440px] px-4 pt-28 sm:px-6 lg:px-8 lg:pt-36">
+        <header className="mb-8 lg:mb-10">
+          <div className="mb-5 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+            <BookOpen className="h-4 w-4 text-pink-600" aria-hidden="true" />
+            Your learning space
+          </div>
+          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <div className="max-w-xl">
+              <h1 className="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                The course <span className="font-medium text-slate-400">library.</span>
+              </h1>
+              <p className="mt-4 max-w-lg text-sm leading-relaxed text-slate-500 sm:text-base">
+                Make room for your next skill. Explore practical lessons and learn at your own pace.
+              </p>
+            </div>
+            <div className="w-full lg:max-w-sm">
+              <label htmlFor="library-search" className="mb-2 block text-xs font-semibold text-slate-500">Find your next lesson</label>
+              <div className="group relative">
+                <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 group-focus-within:text-pink-600" aria-hidden="true" />
+                <input
+                  id="library-search"
+                  type="search"
+                  value={search}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder="Search lessons..."
+                  maxLength={200}
+                  className="w-full rounded-2xl border border-slate-200 bg-white py-4 pl-12 pr-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-pink-500 focus:ring-4 focus:ring-pink-500/10 placeholder:text-slate-400"
+                />
+              </div>
+            </div>
+          </div>
+          <LearningResourceTabs />
+        </header>
+
+        <div className="grid items-start gap-8 lg:grid-cols-[240px_minmax(0,1fr)] xl:gap-10">
+          <aside className="min-w-0 lg:sticky lg:top-28" aria-label="Library collections">
+            <div className="hidden overflow-hidden rounded-2xl border border-slate-200/80 bg-white lg:block">
+              <div className="flex items-center gap-2 border-b border-slate-100 px-5 py-5">
+                <Layers3 className="h-4 w-4 text-pink-600" aria-hidden="true" />
+                <h2 className="text-sm font-bold text-slate-900">Browse collections</h2>
+              </div>
+              <nav aria-label="Collections" className="space-y-1 p-2">
+                {tabs.map((tab) => (
+                  <button
+                    type="button"
+                    key={tab.value}
+                    aria-label={tab.value || 'ALL'}
+                    aria-pressed={activeCategory === tab.value}
+                    onClick={() => selectCategory(tab.value)}
+                    className={`group flex w-full items-start gap-3 rounded-xl px-3 py-3 text-left text-sm transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 ${
+                      activeCategory === tab.value
+                        ? 'bg-slate-900 font-semibold text-white'
+                        : 'font-medium text-slate-500 hover:bg-pink-50/60 hover:text-slate-900'
+                    }`}
+                  >
+                    {!tab.value && <LibraryBig className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />}
+                    <span className="min-w-0 flex-1 break-words leading-relaxed">{tab.title}</span>
+                    <span className={`mt-0.5 min-w-[24px] rounded-md px-1.5 py-0.5 text-center text-[10px] ${activeCategory === tab.value ? 'bg-white/10 text-slate-200' : 'bg-slate-100 text-slate-400'}`}>
+                      {tab.count}
+                    </span>
+                  </button>
+                ))}
+              </nav>
+            </div>
+            <div className="lg:hidden">
+              <label htmlFor="library-collection" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-slate-500">Browse collections</label>
+              <select
+                id="library-collection"
+                value={activeCategory}
+                onChange={(event) => selectCategory(event.target.value)}
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/10"
+              >
+                {tabs.map((tab) => <option key={tab.value} value={tab.value}>{tab.value ? tab.title : 'ALL - All lessons'}{tab.count ? ` (${tab.count})` : ''}</option>)}
+              </select>
+            </div>
+          </aside>
+
+          <section ref={collectionRef} className="min-w-0 scroll-mt-28" aria-labelledby="library-collection-heading">
+            <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                <div className="mb-2 flex items-center gap-1.5 text-xs font-medium text-slate-400">
+                  <span>Library</span><ChevronRight className="h-3 w-3" aria-hidden="true" /><span>{activeCategory ? 'Collection' : 'Explore'}</span>
+                </div>
+                <h2 id="library-collection-heading" className="break-words text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">{collectionTitle}</h2>
+                <p className="mt-2 text-sm text-slate-500">
+                  {query ? <>Search results for <span className="font-semibold text-slate-700">&ldquo;{query}&rdquo;</span></> : activeCategory ? 'Explore the lessons in this collection.' : 'A new perspective is only a lesson away.'}
+                </p>
+              </div>
+              {!query && collectionCount != null && collectionCount > 0 && (
+                <span className="mt-6 shrink-0 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-500">{collectionCount} {collectionCount === 1 ? 'lesson' : 'lessons'}</span>
+              )}
+            </div>
+
+            {categoryError && <p role="alert" className="mb-4 text-sm text-red-700">{categoryError}</p>}
+            {isLoading ? <Loader label="Loading your library..." /> : !cards.length && error ? (
+              <PageMessage message={error} error />
+            ) : cards.length ? (
+              <div className="grid gap-x-5 gap-y-7 sm:grid-cols-2 xl:grid-cols-3">
+                {cards.map((card) => (
+                  <Link
+                    to={card.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    key={card.link}
+                    className="group flex min-w-0 flex-col overflow-hidden rounded-2xl border border-slate-200/80 bg-white shadow-sm transition duration-300 hover:border-pink-200 hover:shadow-lg hover:shadow-slate-900/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-pink-500 focus-visible:ring-offset-4"
+                  >
+                    <div className="relative aspect-video w-full overflow-hidden border-b border-slate-100 bg-slate-100">
+                      {card.image ? (
+                        <img src={card.image} alt={card.title} loading="lazy" className="h-full w-full object-contain object-center" />
+                      ) : (
+                        <Video className="absolute inset-0 m-auto h-10 w-10 text-slate-300" aria-hidden="true" />
+                      )}
+                      <div className="absolute inset-0 flex items-center justify-center bg-slate-900/0 transition group-hover:bg-slate-900/10 group-focus-visible:bg-slate-900/10">
+                        <span className="grid h-11 w-11 place-items-center rounded-full bg-white/95 text-pink-600 opacity-0 shadow-lg transition group-hover:opacity-100 group-focus-visible:opacity-100">
+                          <Play className="ml-0.5 h-4 w-4" fill="currentColor" aria-hidden="true" />
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-1 flex-col p-5">
+                      <p className="mb-2 line-clamp-2 text-[11px] font-semibold uppercase leading-relaxed tracking-wider text-pink-600">{card.category}</p>
+                      <h3 className="mb-5 text-base font-bold leading-relaxed text-slate-900 transition group-hover:text-pink-600">{card.title}</h3>
+                      <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-4">
+                        <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-400"><Video className="h-3.5 w-3.5" aria-hidden="true" /> Video lesson</span>
+                        <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 transition group-hover:text-pink-600">Watch lesson <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" /></span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : <PageMessage message={query ? 'No lessons match your search.' : 'No library content is available yet.'} />}
+            {!isLoading && error && <div role="alert" className="py-6 text-center">
+              {cards.length > 0 && <p className="mb-3 text-sm text-red-700">{error}</p>}
+              <button type="button" onClick={() => nextPageRef.current()} className="rounded-xl border border-slate-300 bg-white px-5 py-3 font-semibold">Try again</button>
+            </div>}
+            <div ref={loadMoreRef} className="min-h-px" />
+            {isLoadingMore && <div className="py-8 text-center"><Loader variant="inline" label="Loading more lessons..." /></div>}
+            {hasMore && !isLoading && !isLoadingMore && !error && <div className="mt-10 flex justify-center border-t border-slate-200/70 pt-7">
+              <button type="button" onClick={() => nextPageRef.current()} className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-600 transition hover:border-pink-200 hover:text-pink-600">Load more lessons <ArrowRight className="h-4 w-4" aria-hidden="true" /></button>
+            </div>}
+          </section>
         </div>
-        <div className="mb-8"><div className="inline-flex items-center p-1 bg-slate-200/60 rounded-xl"><Link to="/library/" className="flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold bg-white text-slate-900 shadow-sm"><BookOpen className="w-4 h-4" /> Course Library</Link><Link to="/schedule/" className="flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold text-slate-500 hover:text-slate-700"><MonitorPlay className="w-4 h-4" /> Live Classes</Link></div></div>
-        {<div className="flex items-center gap-3 py-2"><button type="button" aria-label="Show previous courses" onClick={() => scrollCategories('left')} className="shrink-0 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-slate-600 hover:text-pink-600 hover:border-pink-200 hover:scale-105 transition-all"><ChevronLeft className="w-5 h-5" /></button><div ref={categoryScrollRef} className="flex-1 min-w-0 flex gap-3 overflow-x-auto scroll-smooth py-2 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>{tabs.map((tab) => <button type="button" aria-pressed={activeCategory === tab.value} key={tab.value} onClick={() => setActiveCategory(tab.value)} className={`shrink-0 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 border ${activeCategory === tab.value ? 'bg-slate-900 text-white border-slate-900 shadow-md' : 'bg-white text-slate-600 hover:text-pink-600 hover:border-pink-200 hover:bg-pink-50/40 border-slate-200 shadow-sm'}`}>{tab.title}</button>)}</div><button type="button" aria-label="Show more courses" onClick={() => scrollCategories('right')} className="shrink-0 w-10 h-10 rounded-full bg-white border border-slate-200 shadow-sm flex items-center justify-center text-slate-600 hover:text-pink-600 hover:border-pink-200 hover:scale-105 transition-all"><ChevronRight className="w-5 h-5" /></button></div>}
-      </section>
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {categoryError && <p role="alert" className="mb-4 text-sm text-red-700">{categoryError}</p>}
-        {isLoading ? <Loader label="Loading your library..." /> : !displayedCards.length && error ? <PageMessage message={error} error /> : displayedCards.length ? <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">{displayedCards.map((card) => <Link to={card.link} target="_blank" rel="noopener noreferrer" key={card.link} className="bg-white border border-slate-200/60 shadow-sm hover:shadow-xl hover:shadow-slate-200/40 rounded-[24px] p-3 flex flex-col group transition-all duration-300"><div className="relative w-full aspect-video rounded-[16px] overflow-hidden mb-4 bg-slate-100">{card.image ? <img src={card.image} alt={card.title} loading="lazy" className="w-full h-full object-contain object-center" /> : <Video className="absolute inset-0 m-auto w-10 h-10 text-slate-300" />}<div className="absolute inset-0 bg-slate-900/10 group-hover:bg-slate-900/20 transition-colors" /><div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"><div className="w-12 h-12 bg-white/90 rounded-full flex items-center justify-center shadow-lg text-pink-600"><Play className="w-5 h-5 ml-1" fill="currentColor" /></div></div></div><div className="flex-1 flex flex-col px-3 pb-2"><div className="flex items-center gap-2 text-pink-600 text-xs font-bold uppercase tracking-wider mb-2"><Video className="w-3.5 h-3.5" /> {card.category}</div><h3 className="font-bold text-slate-900 text-lg leading-snug mb-4 group-hover:text-pink-600 transition-colors line-clamp-2">{card.title}</h3><div className="mt-auto pt-4 flex items-center justify-between border-t border-slate-100"><span className="text-sm font-semibold text-slate-500 group-hover:text-slate-900">Start Lesson</span><div className="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-pink-500 group-hover:text-white"><ArrowRight className="w-4 h-4" /></div></div></div></Link>)}</div> : <PageMessage message={query ? 'No lessons match your search.' : 'No library content is available yet.'} />}
-        {!isLoading && error && <div role="alert" className="py-6 text-center">
-          {cards.length > 0 && <p className="mb-3 text-sm text-red-700">{error}</p>}
-          <button type="button" onClick={() => nextPageRef.current()} className="rounded-xl border border-slate-300 bg-white px-5 py-3 font-semibold">Try again</button>
-        </div>}
-        <div ref={loadMoreRef} className="min-h-px" />
-        {isLoadingMore && <div role="status" className="py-8"><Loader label="Loading more lessons..." /></div>}
-        {hasMore && !isLoading && !isLoadingMore && !error && <div className="py-8 text-center">
-          <button type="button" onClick={() => nextPageRef.current()} className="rounded-xl border border-slate-300 bg-white px-5 py-3 font-semibold">Load more lessons</button>
-        </div>}
-      </section>
+      </div>
     </main>
   );
 };
 
-const PageMessage = ({ message, error = false }: { message: string; error?: boolean }) => <div className={`py-20 text-center border-2 border-dashed rounded-[24px] ${error ? 'border-red-200 text-red-700 bg-red-50/50' : 'border-slate-200 text-slate-500'}`}><BookOpen className="w-12 h-12 mx-auto mb-4 text-slate-300" /><p className="font-medium">{message}</p></div>;
+const PageMessage = ({ message, error = false }: { message: string; error?: boolean }) => (
+  <div className={`rounded-2xl border bg-white px-6 py-20 text-center ${error ? 'border-red-200 text-red-700' : 'border-slate-200 text-slate-500'}`}>
+    <BookOpen className="mx-auto mb-4 h-10 w-10 text-slate-300" aria-hidden="true" />
+    <p className="text-sm font-medium">{message}</p>
+  </div>
+);

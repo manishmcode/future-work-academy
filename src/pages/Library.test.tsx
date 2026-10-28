@@ -26,6 +26,7 @@ const scrollToEnd = () => act(() => intersection([
 
 beforeEach(() => {
   mockFetch.mockReset();
+  Element.prototype.scrollIntoView = jest.fn();
   global.IntersectionObserver = jest.fn().mockImplementation((callback) => {
     intersection = callback;
     return { observe: jest.fn(), disconnect: jest.fn(), unobserve: jest.fn() };
@@ -80,6 +81,33 @@ test('changing category discards an old in-flight page and restarts at page one'
   expect(mockFetch).toHaveBeenCalledWith(`${API_URLS.library.items}?page=1&limit=10&category=SEO`, expect.anything());
   fireEvent.click(screen.getByRole('button', { name: 'ALL' }));
   await screen.findByRole('heading', { name: 'Lesson 1' });
+});
+
+test('category selection scrolls immediately without waiting for videos or scrolling again after loading', async () => {
+  let resolveCategory!: (value: Response) => void;
+  mockFetch.mockImplementation((url) => {
+    if (url === API_URLS.library.categories) return response([{ title: 'SEO', item_count: 1 }]);
+    if (url.includes('category=SEO')) return new Promise((resolve) => { resolveCategory = resolve; });
+    if (url.includes('page=2')) return response(page(11, 1, false));
+    return response(page(1, 10, true));
+  });
+  renderLibrary();
+  await screen.findByRole('heading', { name: 'Lesson 1' });
+  expect(Element.prototype.scrollIntoView).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button', { name: 'SEO' }));
+  expect(Element.prototype.scrollIntoView).toHaveBeenCalledTimes(1);
+  await act(async () => { resolveCategory(await response(page(99, 1, false))); });
+  await screen.findByRole('heading', { name: 'Lesson 99' });
+  expect(Element.prototype.scrollIntoView).toHaveBeenCalledTimes(1);
+  expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith({ block: 'start', behavior: 'smooth' });
+  const scroll = Element.prototype.scrollIntoView as jest.Mock;
+  expect(scroll.mock.instances[0]).toBe(screen.getByRole('region', { name: 'SEO' }));
+  fireEvent.change(screen.getByRole('combobox', { name: 'Browse collections' }), { target: { value: '' } });
+  expect(scroll).toHaveBeenCalledTimes(2);
+  await screen.findByRole('heading', { name: 'Lesson 1' });
+  scrollToEnd();
+  await screen.findByRole('heading', { name: 'Lesson 11' });
+  expect(scroll).toHaveBeenCalledTimes(2);
 });
 
 test('search queries the server so results outside loaded pages can be found', async () => {
