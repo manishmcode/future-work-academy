@@ -121,13 +121,10 @@ export const Library = () => {
     return () => observer.disconnect();
   }, [hasMore, isLoading, isLoadingMore, error, cards.length]);
 
-  const totalLessons = categories.reduce((total, category) => total + category.item_count, 0);
-  const selectedCollection = categories.find((category) => category.title === activeCategory);
   const collectionTitle = activeCategory || 'All lessons';
-  const collectionCount = activeCategory ? selectedCollection?.item_count : totalLessons;
   const tabs = [
-    { title: 'All lessons', value: '', count: totalLessons },
-    ...categories.map((category) => ({ title: category.title, value: category.title, count: category.item_count })),
+    { title: 'All lessons', value: '' },
+    ...categories.map((category) => ({ title: category.title, value: category.title })),
   ];
 
   return (
@@ -194,9 +191,7 @@ export const Library = () => {
                   >
                     {!tab.value && <LibraryBig className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />}
                     <span className="min-w-0 flex-1 break-words leading-relaxed">{tab.title}</span>
-                    <span className={`mt-0.5 min-w-[24px] rounded-md px-1.5 py-0.5 text-center text-[10px] ${activeCategory === tab.value ? 'bg-white/10 text-slate-200' : 'bg-slate-100 text-slate-400'}`}>
-                      {tab.count}
-                    </span>
+
                   </button>
                 ))}
               </nav>
@@ -209,7 +204,7 @@ export const Library = () => {
                 onChange={(event) => selectCategory(event.target.value)}
                 className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500/10"
               >
-                {tabs.map((tab) => <option key={tab.value} value={tab.value}>{tab.value ? tab.title : 'ALL - All lessons'}{tab.count ? ` (${tab.count})` : ''}</option>)}
+                {tabs.map((tab) => <option key={tab.value} value={tab.value}>{tab.value ? tab.title : 'ALL - All lessons'}</option>)}
               </select>
             </div>
           </aside>
@@ -225,9 +220,7 @@ export const Library = () => {
                   {query ? <>Search results for <span className="font-semibold text-slate-700">&ldquo;{query}&rdquo;</span></> : activeCategory ? 'Explore the lessons in this collection.' : 'A new perspective is only a lesson away.'}
                 </p>
               </div>
-              {!query && collectionCount != null && collectionCount > 0 && (
-                <span className="mt-6 shrink-0 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-500">{collectionCount} {collectionCount === 1 ? 'lesson' : 'lessons'}</span>
-              )}
+
             </div>
 
             {categoryError && <p role="alert" className="mb-4 text-sm text-red-700">{categoryError}</p>}
