@@ -16,6 +16,18 @@ type LibraryPage = {
   pagination: { has_more: boolean };
 };
 const PAGE_SIZE = 10;
+const FEATURED_CATEGORIES = [
+  'AI Assistants for Everyday Work',
+  'Automate Repetitive Work',
+];
+
+const orderCategories = (items: LibraryCategory[]) => [...items].sort((left, right) => {
+  const leftIndex = FEATURED_CATEGORIES.indexOf(left.title);
+  const rightIndex = FEATURED_CATEGORIES.indexOf(right.title);
+  const leftPriority = leftIndex === -1 ? FEATURED_CATEGORIES.length : leftIndex;
+  const rightPriority = rightIndex === -1 ? FEATURED_CATEGORIES.length : rightIndex;
+  return leftPriority - rightPriority;
+});
 
 export const Library = () => {
   const [categories, setCategories] = useState<LibraryCategory[]>([]);
@@ -32,6 +44,10 @@ export const Library = () => {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const nextPageRef = useRef<() => void>(() => {});
   const collectionRef = useRef<HTMLElement>(null);
+  const featuredCategoryNames = FEATURED_CATEGORIES.filter((featuredCategory) =>
+    categories.some((category) => category.title === featuredCategory),
+  );
+  const featuredCategoryKey = featuredCategoryNames.join('|');
 
   const scrollToCollection = useCallback(() => {
     collectionRef.current?.scrollIntoView({
@@ -52,7 +68,7 @@ export const Library = () => {
         const response = await authenticatedFetch(API_URLS.library.categories, { signal: controller.signal });
         const result = await response.json();
         if (!response.ok || !result.success) throw new Error(result.message || 'Unable to load categories.');
-        if (!controller.signal.aborted) setCategories(result.data);
+        if (!controller.signal.aborted) setCategories(orderCategories(result.data));
       } catch (loadError) {
         if (!controller.signal.aborted) setCategoryError(loadError instanceof Error ? loadError.message : 'Unable to load categories.');
       }
@@ -88,12 +104,26 @@ export const Library = () => {
         const params = new URLSearchParams({ page: String(page), limit: String(PAGE_SIZE) });
         if (activeCategory) params.set('category', activeCategory);
         if (query) params.set('search', query);
-        const response = await authenticatedFetch(`${API_URLS.library.items}?${params}`, { signal: controller.signal });
-        const result = await response.json();
-        if (!response.ok || !result.success) throw new Error(result.message || 'Unable to load the library.');
+        const fetchPage = async (pageParams: URLSearchParams): Promise<LibraryPage> => {
+          const response = await authenticatedFetch(`${API_URLS.library.items}?${pageParams}`, { signal: controller.signal });
+          const result = await response.json();
+          if (!response.ok || !result.success) throw new Error(result.message || 'Unable to load the library.');
+          return result.data as LibraryPage;
+        };
+        const shouldFeatureCollections = firstPage && !activeCategory && !query && featuredCategoryNames.length > 0;
+        const [data, ...featuredPages] = await Promise.all([
+          fetchPage(params),
+          ...(shouldFeatureCollections ? featuredCategoryNames.map((category) => {
+            const featuredParams = new URLSearchParams({ page: '1', limit: '60', category });
+            return fetchPage(featuredParams);
+          }) : []),
+        ]);
         if (controller.signal.aborted) return;
-        const data = result.data as LibraryPage;
-        setCards((previous) => firstPage ? data.items : [...previous, ...data.items]);
+        const featuredCards = featuredPages.flatMap((featuredPage) => featuredPage.items);
+        const remainingCards = featuredCards.length
+          ? data.items.filter((item) => !featuredCategoryNames.includes(item.category))
+          : data.items;
+        setCards((previous) => firstPage ? [...featuredCards, ...remainingCards] : [...previous, ...remainingCards]);
         more = data.pagination.has_more;
         setHasMore(more);
         page += 1;
@@ -110,7 +140,7 @@ export const Library = () => {
     nextPageRef.current = () => { void loadNextPage(); };
     void loadNextPage();
     return () => controller.abort();
-  }, [activeCategory, query]);
+  }, [activeCategory, query, featuredCategoryKey]);
 
   useEffect(() => {
     if (!hasMore || isLoading || isLoadingMore || error || !loadMoreRef.current || typeof IntersectionObserver === 'undefined') return;

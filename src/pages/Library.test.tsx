@@ -44,6 +44,28 @@ test('selects ALL first and requests only the first ten items', async () => {
   expect(mockFetch).not.toHaveBeenCalledWith(API_URLS.library.list, expect.anything());
 });
 
+test('puts the featured collections first while retaining the server order for all other collections', async () => {
+  mockFetch.mockImplementation((url) => url === API_URLS.library.categories
+    ? response([
+      { title: 'SEO', item_count: 1 },
+      { title: 'Automate Repetitive Work', item_count: 10 },
+      { title: 'The Organized Life', item_count: 1 },
+      { title: 'AI Assistants for Everyday Work', item_count: 10 },
+    ]) : response(page(1, 10, true)));
+  renderLibrary();
+  await screen.findByRole('heading', { name: 'Lesson 1' });
+  const collections = screen.getAllByRole('button').filter((button) =>
+    ['ALL', 'AI Assistants for Everyday Work', 'Automate Repetitive Work', 'SEO', 'The Organized Life'].includes(button.getAttribute('aria-label') || ''),
+  );
+  expect(collections.map((button) => button.getAttribute('aria-label'))).toEqual([
+    'ALL',
+    'AI Assistants for Everyday Work',
+    'Automate Repetitive Work',
+    'SEO',
+    'The Organized Life',
+  ]);
+});
+
 test('scroll appends the next ten, prevents overlapping requests, and stops at the end', async () => {
   let resolveNext!: (value: Response) => void;
   mockFetch.mockImplementation((url) => {
