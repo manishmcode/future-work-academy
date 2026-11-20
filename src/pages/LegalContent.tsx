@@ -6,6 +6,9 @@ import { COMPANY } from '../config/company';
 type LegalItem = {
   title: string;
   content: string;
+  isBulleted?: boolean;
+  cookieTypes?: string[];
+  afterContent?: string[];
   icon?: React.ReactNode;
 };
 
@@ -13,31 +16,31 @@ const termsData = [
   { title: "Service", content: "We provide online courses and educational materials through our platform. The Service is provided 'as is' and 'as available' without any warranties of any kind. We reserve the right to modify, suspend, or discontinue the Service at any time without notice." },
   { title: "User Agreement", content: "By accessing or using the Service, you agree to be bound by these Terms and our Privacy Policy. If you disagree with any part of the terms, then you may not access the Service. You must provide accurate and complete information when creating an account." },
   { title: "Your License", content: "We grant you a limited, non-exclusive, non-transferable, and revocable license to access and use the Service for your personal, non-commercial educational purposes. You may not copy, modify, distribute, sell, or lease any part of our Services or included software." },
-  { title: "Support Services", content: `Support is provided primarily via email and our dedicated support portal. Email ${COMPANY.supportEmail} to contact ${COMPANY.name}. We strive to respond to all inquiries within 24-48 business hours.` },
+  { title: "Support Services", content: `Support is provided primarily via email and our dedicated support portal. You can contact ${COMPANY.name} at ${COMPANY.supportEmail}. We strive to respond to all inquiries within 24-48 business hours.` },
   { title: "Fees and Payment", content: "Certain aspects of the Service may be provided for a fee or other charge. If you elect to use paid aspects of the Service, you agree to the pricing and payment terms. We may add new services for additional fees and charges, or amend fees and charges for existing services, at any time in our sole discretion." },
   { title: "Cancellation", content: "You may cancel your subscription at any time. Cancellation will take effect at the end of your current billing cycle. You will continue to have access to the Service through the end of your billing period." },
-  { title: "Refund Policy", content: `All courses and educational content offered through this website are delivered digitally and access is typically granted immediately upon purchase. By completing a purchase, you acknowledge that immediate access affects your eligibility for a refund.\n\nYou may request a refund within 14 days of your initial purchase, provided that you have not substantially accessed or completed the course materials. Requests are assessed on a case-by-case basis and are not automatically guaranteed.\n\nRefund requests must be submitted in writing to ${COMPANY.supportEmail}, including your order number and the reason for the request. We aim to respond to all refund requests within 5 business days.` },
+  { title: "Refund Policy", content: `• All courses and educational content offered through this website are delivered digitally and access is typically granted immediately upon purchase. By completing a purchase, you acknowledge that immediate access affects your eligibility for a refund as described below.\n\n• You may request a refund within 14 days of your initial purchase, provided that you have not substantially accessed or completed the course materials. Requests are assessed on a case-by-case basis and are not automatically guaranteed.\n\n• Refund requests must be submitted in writing to ${COMPANY.supportEmail}, including your order number and the reason for the request. We aim to respond to all refund requests within 5 business days.\n\n• We may decline a refund request where a substantial portion of the course has been accessed or downloaded, where the request is made outside the eligible period, where the purchase was subject to a promotional or discounted rate explicitly marked as non-refundable, or where there is evidence of misuse, content sharing, or a violation of these Terms.\n\n• Approved refunds will be issued to the original payment method within a reasonable timeframe, subject to the processing times of the relevant payment provider. Upon approval, access to the course materials will be revoked.\n\n• Recurring subscription charges may be cancelled at any time to prevent future billing; cancellation does not itself entitle you to a refund of charges already incurred, except as set out above.` },
   { title: "Right to Terminate", content: "We may terminate or suspend your account immediately, without prior notice or liability, for any reason whatsoever, including without limitation if you breach the Terms." },
-  { title: "Your Responsibilities", content: "You are responsible for all activities that occur under your account. You agree not to share your account credentials with third parties, use the Service for any illegal or unauthorized purpose, attempt to hack, destabilize, or adapt the Service, or transmit any worms, viruses, or destructive code." },
+  { title: "Your Responsibilities", content: "You are responsible for all activities that occur under your account. You agree not to:\n\nShare your account credentials with third parties\nUse the Service for any illegal or unauthorized purpose\nAttempt to hack, destabilize, or adapt the Service\nTransmit any worms, viruses, or destructive code" },
   { title: "Suspension/Discontinuation", content: "We reserve the right at any time to modify or discontinue, temporarily or permanently, the Service or any part thereof with or without notice." },
-  { title: "Dispute Resolution", content: `If you have a complaint or dispute regarding a purchase, charge, or your use of the services, you agree to first contact us at ${COMPANY.supportEmail} so that we may attempt to resolve the matter directly. We aim to acknowledge complaints within 24 hours and to reach a resolution within 5 business days.` },
-  { title: "Governing Law", content: "These Terms, and any dispute or claim arising out of or in connection with them or the services provided through this website, shall be governed by and construed in accordance with the laws of United Kingdom, without regard to its conflict of law provisions." },
+  { title: "Dispute Resolution", content: `• If you have a complaint or dispute regarding a purchase, charge, or your use of the services, you agree to first contact us at ${COMPANY.supportEmail} so that we may attempt to resolve the matter directly. We aim to acknowledge complaints within 24 hours and to reach a resolution within 5 business days.\n\n• We encourage you to raise any billing concern with us directly before contacting your card issuer or payment provider, as doing so allows us to resolve the matter more quickly than a formal chargeback process.\n\n• If a dispute cannot be resolved directly between you and the Company within a reasonable timeframe, either party may refer the matter to an independent mediation or alternative dispute resolution service before pursuing formal legal proceedings.` },
+  { title: "Governing Law", content: "These Terms, and any dispute or claim arising out of or in connection with them or the services provided through this website, shall be governed by and construed in accordance with the laws of United Kingdom, without regard to its conflict of law provisions. The courts ofUnited Kingdom shall have exclusive jurisdiction to settle any such dispute, save as otherwise provided in the Dispute Resolution clause above." },
   { title: "Copyright", content: "All content, features, and functionality are and will remain the exclusive property of the Academy and its licensors. Our trademarks and trade dress may not be used in connection with any product or service without our prior written consent." },
-  { title: "Links to Other Websites", content: "Our Service may contain links to third-party web sites or services that are not owned or controlled by us. We have no control over, and assume no responsibility for the content, privacy policies, or practices of any third-party websites or services." },
-  { title: "Trademarks", content: "The company name, logo, and related names, product names, service names, designs, and slogans are trademarks of the Company or its affiliates or licensors." },
-  { title: "Force Majeure", content: "We shall not be liable for any failure or delay in performance under these Terms resulting from acts beyond our reasonable control, including war, terrorism, riots, embargoes, fire, floods, accidents, strikes, or shortages of transportation, fuel, energy, labor, or materials." },
-  { title: "Disclaimer of Warranties", content: "Your use of the Service is at your sole risk. The Service is provided on an AS IS and AS AVAILABLE basis. The Service is provided without warranties of any kind, whether express or implied." },
+  { title: "Links to Other Websites", content: "Our Service may contain links to third-party web sites or services that are not owned or controlled by us. We have no control over, and assume no responsibility for, the content, privacy policies, or practices of any third party web sites or services." },
+  { title: "Trademarks", content: "The company name, the company logo, and all related names, logos, product and service names, designs, and slogans are trademarks of the Company or its affiliates or licensors." },
+  { title: "Force Majeure", content: "We shall not be liable for any failure or delay in performance under these Terms resulting from acts beyond our reasonable control, including, without limitation, acts of God, war, terrorism, riots, embargoes, acts of civil or military authorities, fire, floods, accidents, strikes, or shortages of transportation facilities, fuel, energy, labor or materials." },
+  { title: "Disclaimer of Warranties", content: "Your use of the Service is at your sole risk. The Service is provided on an \"AS IS\" and \"AS AVAILABLE\" basis. The Service is provided without warranties of any kind, whether express or implied." },
   { title: "Age Restriction", content: "The Service is intended only for access and use by individuals at least eighteen (18) years old. By accessing or using the Service, you warrant and represent that you are at least eighteen (18) years of age." },
-  { title: "General Provisions", content: "These Terms shall be governed and construed in accordance with the laws of United Kingdom, without regard to its conflict of law provisions. Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights." }
+  { title: "General Provisions", content: "These Terms shall be governed and construed in accordance With the Laws of United Kingdom, without regard to its conflict of law provisions. Our failure to enforce any right or provision of these Terms will not be considered a waiver of those rights." }
 ] satisfies LegalItem[];
 
 const privacyData = [
   { title: "Consent to Privacy Policy", content: "By accessing and using our Site and Services, you acknowledge that you have read and agree to this Privacy Policy." },
-  { title: "Information Collection", content: "We collect registration data, including email address, password, first name, last name, phone number, and payment details.\nWe collect usage data, including information about your browser, network, or device.\nWe collect marketing data related to communication and other interaction campaigns.\nLegal bases include contract performance, legitimate interests, and compliance with legal obligations such as accounting and tax requirements.\nYou may request access to, correction of, or deletion of your data, restrict processing, or object to processing, especially marketing. We will honor such requests unless an overriding legal obligation applies." },
-  { title: "Information Use", content: "We use information for processing payment transactions, customizing services, ads, and recommendations, contacting you and responding to requests, conducting research and improving services, preventing fraud, and ensuring security." },
-  { title: "Information Sharing and Disclosure", content: "We will not disclose your personally identifiable information except when required by law, to our service providers, in connection with corporate transactions, or with your explicit consent or at your direction.\nWe may share aggregate, anonymous information with partners, advertisers, or content distributors." },
-  { title: "Changing or Deleting Your Information", content: "You may review, update, correct, or delete your personal information by contacting us. We may retain your data for legally required recordkeeping purposes." },
-  { title: "Use of Cookies", content: "The merchant uses cookies, web beacons, device fingerprinting, and similar technologies for functionality, analytics, personalization, and advertising.\nTypes of cookies used include strictly necessary cookies, performance cookies, functional cookies, and targeting or advertising cookies." },
+  { title: "Information Collection and Personally Identifiable Information", content: "We collect the following personal data:\n\nRegistration data: email address, password, first name, last name, phone number, and payment details.\nUsage data: information about your browser, network, or device.\nMarketing data: details related to communication and other interaction campaigns.\n\nLegal bases\nContract performance (access to services)\nLegitimate interests (fraud prevention, network improvements)\nCompliance with legal obligations (e.g., accounting, tax)\n\nYour rights\nYou may request accessing, correcting, or deleting your data, restrict processing, or object to processing (especially marketing). We will honor such requests unless an overriding legal obligation applies.\n\nWe ensure processing to GDPR compliant data processors, such as hosting providers and payment processors. We may also be legally required to disclose information to authorities (e.g., police authorities)." },
+  { title: "Information Use", content: "Processing payment transactions\nCustomizing services, ads, and recommendations\nContacting you and responding to requests\nConducting research and improving services\nPreventing fraud and ensuring security", isBulleted: true },
+  { title: "Information Sharing and Disclosure", content: "We will not disclose your personally identifiable information except:\n\nWhen required by law\nTo our service providers (e.g., hosting, payment processing)\nIn connection with corporate transactions (e.g., merger, sale)\nWith your explicit consent or at your direction\n\nWe may share aggregate, anonymous information with partners, advertisers, or content distributors.", isBulleted: true },
+  { title: "Changing or Deleting Your Information", content: "You may review, update, correct, or delete your personal information by contacting us. Note that we may retain your data for legally required recordkeeping purposes." },
+  { title: "Use of Cookies and Similar Technologies", content: "The merchant uses cookies, web beacons, device fingerprinting, and similar technologies for functionality, analytics, personalization, and advertising.", cookieTypes: ["Strictly necessary cookies", "Performance cookies", "Functional cookies", "Targeting/advertising cookies"], afterContent: ["Cookies help improve navigation, remember preferences, and display relevant ads. You can manage cookies in your browser settings. Blocking cookies may affect site functionality.", "We may use Google Analytics and Facebook Pixel for tracking and marketing."] },
   { title: "Behavioral Advertising", content: "We may use cookies and online identifiers for behavioral advertising. We follow industry standards like Network Advertising Initiative.\nYou can manage cookies via browser settings, but some site functions may not work if cookies are disabled." },
   { title: "Changes and Updates", content: "We may periodically update this Privacy Policy. We will notify you by posting the modified terms on site. Your continued use implies agreement." },
   { title: "Contact", content: `Questions, comments, and requests regarding this Privacy Policy are welcomed and should be addressed to ${COMPANY.name}, ${COMPANY.address}, or by email at ${COMPANY.supportEmail}` }
@@ -60,8 +63,19 @@ const formatParagraph = (paragraph: string) => {
   ));
 };
 
-const InfoCard = ({ title, content, index, icon }: InfoCardProps) => {
+const InfoCard = ({ title, content, isBulleted, cookieTypes, afterContent, index, icon }: InfoCardProps) => {
   const paragraphs = content.split(/\n+/).filter(Boolean);
+  const isCookiesSection = title === 'Use of Cookies and Similar Technologies';
+  const displayedCookieTypes = cookieTypes ?? [
+    'Strictly necessary cookies',
+    'Performance cookies',
+    'Functional cookies',
+    'Targeting/advertising cookies',
+  ];
+  const displayedAfterContent = afterContent ?? [
+    'Cookies help improve navigation, remember preferences, and display relevant ads. You can manage cookies in your browser settings. Blocking cookies may affect site functionality.',
+    'We may use Google Analytics and Facebook Pixel for tracking and marketing.',
+  ];
 
   return (
     <article className="group relative bg-white border border-slate-100 rounded-3xl p-6 sm:p-8 hover:shadow-[0_20px_60px_rgba(0,0,0,0.06)] hover:border-slate-200 transition-all duration-300">
@@ -80,13 +94,45 @@ const InfoCard = ({ title, content, index, icon }: InfoCardProps) => {
 
         <div>
           <h3 className="text-lg font-bold text-slate-900 mb-3">{title}</h3>
-          <div className="space-y-4">
-            {paragraphs.map((paragraph, paragraphIndex) => (
-              <p key={paragraphIndex} className="text-[15px] leading-relaxed text-slate-500 font-medium">
-                {formatParagraph(paragraph)}
-              </p>
-            ))}
-          </div>
+          {isCookiesSection ? (
+            <div className="space-y-5">
+              <p className="text-[15px] leading-relaxed text-slate-500 font-medium">{formatParagraph(content)}</p>
+
+              <div>
+                <p className="text-sm font-bold text-slate-900 mb-3">Types of cookies used include:</p>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  {displayedCookieTypes.map((type) => (
+                    <div key={type} className="rounded-2xl border border-slate-100 bg-slate-50 px-4 py-3.5 text-[15px] font-semibold text-slate-700 transition-colors hover:border-pink-100 hover:bg-pink-50/50">
+                      {type}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {displayedAfterContent.map((paragraph) => (
+                <p key={paragraph} className="text-[15px] leading-relaxed text-slate-500 font-medium">
+                  {formatParagraph(paragraph)}
+                </p>
+              ))}
+            </div>
+          ) : isBulleted ? (
+            <ul className="space-y-4 list-none p-0 m-0">
+              {paragraphs.map((paragraph, paragraphIndex) => (
+                <li key={paragraphIndex} className="flex gap-3 text-[15px] leading-relaxed text-slate-500 font-medium">
+                  <span aria-hidden="true" className="shrink-0 text-slate-500 font-bold">•</span>
+                  <span>{formatParagraph(paragraph)}</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="space-y-4">
+              {paragraphs.map((paragraph, paragraphIndex) => (
+                <p key={paragraphIndex} className="text-[15px] leading-relaxed text-slate-500 font-medium">
+                  {formatParagraph(paragraph)}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </article>
@@ -103,7 +149,7 @@ export const PrivacyContent = () => (
 
     <div className="grid gap-6">
       {privacyData.map((item, i) => (
-        <InfoCard key={i} index={i} title={item.title} content={item.content} />
+        <InfoCard key={i} index={i} {...item} />
       ))}
     </div>
   </div>

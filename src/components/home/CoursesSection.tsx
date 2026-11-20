@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -48,9 +48,68 @@ const coursesList = [
   },
 ];
 
+const germanCoursesList = [
+  {
+    title: 'Agil arbeiten mit Scrum und Kanban',
+    cat: 'AGILES ARBEITEN',
+    desc: 'Lernen Sie Kanban, WIP-Limits, Scrum-Rollen und Retrospektiven kennen und setzen Sie agile Methoden auch außerhalb der IT ein.',
+    tag: 'SCRUM & KANBAN',
+    icon: '/images/icon1.webp',
+  },
+  {
+    title: 'Fokus und Selbstmanagement im digitalen Alltag',
+    cat: 'PRODUKTIVITÄT',
+    desc: 'Reduzieren Sie Ablenkungen, planen Sie mit Zeitblöcken, setzen Sie klare Prioritäten und bauen Sie Ihr persönliches Fokus-System auf.',
+    tag: 'DEEP WORK',
+    icon: '/images/icon2.webp',
+  },
+  {
+    title: 'KI im Job - DSGVO-sicher nutzen',
+    cat: 'KI & DATENSCHUTZ',
+    desc: 'Erfahren Sie, welche Daten in den KI-Chat dürfen, welche Tools erlaubt sind und wie Sie KI-Ergebnisse im Arbeitsalltag sicher prüfen.',
+    tag: 'DSGVO',
+    icon: '/images/icon1.webp',
+  },
+  {
+    title: 'Karriere 2030 - Skills, Weiterbildung und LinkedIn',
+    cat: 'KARRIERE',
+    desc: 'Finden Sie heraus, welche Fähigkeiten künftig zählen, wie Sie Weiterbildung finanzieren und mit LinkedIn sichtbar werden.',
+    tag: 'WEITERBILDUNG',
+    icon: '/images/icon2.webp',
+  },
+  {
+    title: 'Remote und Hybrid arbeiten wie ein Profi',
+    cat: 'REMOTE-ARBEIT',
+    desc: 'Richten Sie Ihren Arbeitsplatz zu Hause ein, kommunizieren Sie asynchron, gestalten Sie virtuelle Meetings und ziehen Sie klare Grenzen.',
+    tag: 'HYBRIDE TEAMS',
+    icon: '/images/icon1.webp',
+  },
+];
+
+const COURSE_LANGUAGES = [
+  { value: 'de', label: 'German courses' },
+  { value: 'en', label: 'English courses' },
+] as const;
+type CourseLanguage = typeof COURSE_LANGUAGES[number]['value'];
+const FADE_MS = 200;
+
 export const CoursesSection = () => {
   const { hasLibraryAccess } = useAuth();
   const courseDestination = hasLibraryAccess ? '/library/' : '/pricing/';
+  const [language, setLanguage] = useState<CourseLanguage>('de');
+  const [shownLanguage, setShownLanguage] = useState<CourseLanguage>('de');
+  const fadeTimeout = useRef<number | undefined>(undefined);
+  const visibleCourses = shownLanguage === 'de' ? germanCoursesList : coursesList;
+  const isFading = language !== shownLanguage;
+
+  // Fade the cards out, swap the list, then fade the new cards in.
+  const selectLanguage = (nextLanguage: CourseLanguage) => {
+    setLanguage(nextLanguage);
+    window.clearTimeout(fadeTimeout.current);
+    fadeTimeout.current = window.setTimeout(() => setShownLanguage(nextLanguage), FADE_MS);
+  };
+
+  useEffect(() => () => window.clearTimeout(fadeTimeout.current), []);
 
   return (
     <section className="py-16 sm:py-20 lg:py-24 border-b border-slate-100">
@@ -61,16 +120,38 @@ export const CoursesSection = () => {
             Learn Skills You Can Put Into Practice
           </h2>
           <p className="text-slate-500 mt-6 max-w-2xl mx-auto text-[15px] leading-relaxed">
-            Explore video courses covering AI productivity, time management, freelancing, remote work, and virtual events. Choose a topic that matches your interests and learn at your own pace.
+            Explore English and German video courses covering AI productivity, time management, freelancing, remote work, and virtual events. Choose a topic that matches your interests and learn at your own pace.
           </p>
+          <div role="group" aria-label="Course language" className="mt-8 inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
+            {COURSE_LANGUAGES.map((option) => {
+              const isActive = option.value === language;
+              return (
+                <button
+                  key={option.value}
+                  type="button"
+                  onClick={() => selectLanguage(option.value)}
+                  aria-pressed={isActive}
+                  className={`rounded-lg px-3.5 py-1.5 text-[13px] font-semibold transition-colors duration-200 focus:outline-none focus-visible:ring-4 focus-visible:ring-pink-500/20 ${isActive ? 'bg-slate-900 text-white' : 'text-slate-500 hover:text-slate-900'}`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <div className="max-w-5xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-6">
-            {coursesList.map((course, i) => (
+          <div
+            aria-live="polite"
+            className={`grid md:grid-cols-2 gap-6 transition-all duration-200 ease-out motion-reduce:transition-none ${isFading ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}
+          >
+            {visibleCourses.map((course, index) => (
               <div
-                key={i}
-                className="bg-white rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-all border border-slate-100 relative overflow-hidden group flex flex-col h-full"
+                key={course.title}
+                className={`bg-white rounded-2xl p-6 sm:p-8 hover:shadow-xl transition-all border border-slate-100 relative overflow-hidden group flex flex-col h-full ${
+                  // Centre a lone last card in the two-column grid.
+                  visibleCourses.length % 2 === 1 && index === visibleCourses.length - 1 ? 'md:col-span-2 md:justify-self-center md:w-[calc(50%-0.75rem)]' : ''
+                }`}
               >
                 <div
                   className="absolute inset-0 w-full h-full opacity-30 mix-blend-multiply pointer-events-none bg-right-bottom bg-no-repeat"

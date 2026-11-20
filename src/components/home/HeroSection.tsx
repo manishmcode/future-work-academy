@@ -19,7 +19,7 @@ export const HeroSection = () => {
 
           <div className="lg:pt-14">
             <p className="text-[16px] sm:text-[17px] leading-relaxed text-slate-600 font-medium mb-7 max-w-xl lg:max-w-md">
-              Explore practical video courses and instructor-led live classes designed to help you develop new skills, improve productivity, and learn from guided online sessions.
+              Explore practical English and German video courses and instructor-led live classes designed to help you develop new skills, improve productivity, and learn from guided online sessions.
             </p>
             <Link
               to={courseDestination}

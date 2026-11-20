@@ -8,7 +8,7 @@ export const PricingHeader = () => (
         Invest in Your Growth
       </h1>
       <p className="max-w-2xl text-[17px] leading-relaxed text-slate-600 font-medium">
-        Choose a learning plan that fits your goals and explore practical video courses in AI productivity, time management, remote work, freelancing, and online business.
+        Choose a learning plan that fits your goals and explore practical English and German video courses, along with live classes in AI productivity, time management, remote work, freelancing, and online business.
 
       </p>
       <p className="max-w-2xl text-[17px] leading-relaxed text-slate-600 font-medium">

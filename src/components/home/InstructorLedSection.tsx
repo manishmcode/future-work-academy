@@ -34,7 +34,7 @@ export const InstructorLedSection = () => {
               Learn Practical Skills at Your Own Pace
             </h2>
             <p className="text-slate-300 text-[15px] leading-relaxed mb-8 max-w-lg">
-              Explore video courses covering AI productivity, time management, working from home, freelancing, and online business. Learn at a pace that fits your schedule and discover practical ideas you can apply to your work.
+              Explore English & German video courses covering AI productivity, time management, working from home, freelancing, and online business. Learn at a pace that fits your schedule and discover practical ideas you can apply to your work.
             </p>
             <Link
               to={courseDestination}

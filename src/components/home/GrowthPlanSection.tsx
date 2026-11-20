@@ -4,7 +4,7 @@ import { GraduationCap, Briefcase, CheckCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const growthSteps = [
-  { num: '01', title: 'Choose Your Course', desc: 'Explore the available courses and select a topic that aligns with your interests and goals.', icon: <GraduationCap className="w-6 h-6" /> },
+  { num: '01', title: 'Choose Your Course', desc: 'Explore the available English and German courses and select a topic that aligns with your interests and goals.', icon: <GraduationCap className="w-6 h-6" /> },
   { num: '02', title: 'Learn at Your Own Pace', desc: 'Work through the available video lessons and learning materials at a pace that suits your schedule.', icon: <Briefcase className="w-6 h-6" /> },
   { num: '03', title: 'Put Your Knowledge Into Practice', desc: 'Apply the ideas and techniques you learn to your everyday work, personal productivity, or online business projects.', icon: <CheckCircle className="w-6 h-6" /> }
 ];
@@ -25,7 +25,7 @@ export const GrowthPlanSection = () => {
           Three Simple Steps to Get Started
         </h2>
         <p className="text-slate-500 text-[15px] sm:text-[16px] leading-relaxed max-w-2xl mx-auto font-medium">
-          Choose a practical learning topic, move through the course at your own pace, and apply new ideas to your work.
+          Choose a practical learning topic, move through your selected English or German course at your own pace, and apply new ideas to your work.
         </p>
       </div>
 

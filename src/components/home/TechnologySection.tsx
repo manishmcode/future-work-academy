@@ -42,7 +42,7 @@ export const TechnologySection = () => (
           </h2>
           <div className="w-12 h-1 bg-pink-600 mb-6 lg:mb-8 rounded-full"></div>
           <p className="text-slate-500 mb-5 leading-relaxed">
-            Explore practical learning resources designed around everyday productivity, modern AI tools, and online business development.
+            Explore practical learning resources in English and German designed around everyday productivity, modern AI tools, and online business development.
           </p>
           <p className="text-slate-500 mb-8 leading-relaxed">
             Explore practical learning resources focused on everyday productivity, modern AI tools, and professional skills for remote work and online business development.

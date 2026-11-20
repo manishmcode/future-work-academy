@@ -16,6 +16,11 @@ type LibraryPage = {
   pagination: { has_more: boolean };
 };
 const PAGE_SIZE = 10;
+const COURSE_LANGUAGES = [
+  { value: 'de', label: 'German' },
+  { value: 'en', label: 'English' },
+] as const;
+type CourseLanguage = typeof COURSE_LANGUAGES[number]['value'];
 const FEATURED_CATEGORIES = [
   'AI Assistants for Everyday Work',
   'Automate Repetitive Work',
@@ -30,6 +35,7 @@ const orderCategories = (items: LibraryCategory[]) => [...items].sort((left, rig
 });
 
 export const Library = () => {
+  const [language, setLanguage] = useState<CourseLanguage>('de');
   const [categories, setCategories] = useState<LibraryCategory[]>([]);
   // An empty category means ALL and omits the category filter from the API.
   const [activeCategory, setActiveCategory] = useState('');
@@ -61,11 +67,19 @@ export const Library = () => {
     setActiveCategory(category);
   };
 
+  const selectLanguage = (nextLanguage: CourseLanguage) => {
+    if (nextLanguage === language) return;
+    setLanguage(nextLanguage);
+    setActiveCategory('');
+  };
+
   useEffect(() => {
     const controller = new AbortController();
+    setCategories([]);
+    setCategoryError('');
     const loadCategories = async () => {
       try {
-        const response = await authenticatedFetch(API_URLS.library.categories, { signal: controller.signal });
+        const response = await authenticatedFetch(`${API_URLS.library.categories}?language=${language}`, { signal: controller.signal });
         const result = await response.json();
         if (!response.ok || !result.success) throw new Error(result.message || 'Unable to load categories.');
         if (!controller.signal.aborted) setCategories(orderCategories(result.data));
@@ -75,7 +89,7 @@ export const Library = () => {
     };
     void loadCategories();
     return () => controller.abort();
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     const timeout = window.setTimeout(() => setQuery(search.trim()), 250);
@@ -101,7 +115,7 @@ export const Library = () => {
       if (firstPage) setIsLoading(true);
       else setIsLoadingMore(true);
       try {
-        const params = new URLSearchParams({ page: String(page), limit: String(PAGE_SIZE) });
+        const params = new URLSearchParams({ page: String(page), limit: String(PAGE_SIZE), language });
         if (activeCategory) params.set('category', activeCategory);
         if (query) params.set('search', query);
         const fetchPage = async (pageParams: URLSearchParams): Promise<LibraryPage> => {
@@ -114,7 +128,7 @@ export const Library = () => {
         const [data, ...featuredPages] = await Promise.all([
           fetchPage(params),
           ...(shouldFeatureCollections ? featuredCategoryNames.map((category) => {
-            const featuredParams = new URLSearchParams({ page: '1', limit: '60', category });
+            const featuredParams = new URLSearchParams({ page: '1', limit: '60', category, language });
             return fetchPage(featuredParams);
           }) : []),
         ]);
@@ -140,7 +154,7 @@ export const Library = () => {
     nextPageRef.current = () => { void loadNextPage(); };
     void loadNextPage();
     return () => controller.abort();
-  }, [activeCategory, query, featuredCategoryKey]);
+  }, [activeCategory, query, featuredCategoryKey, language]);
 
   useEffect(() => {
     if (!hasMore || isLoading || isLoadingMore || error || !loadMoreRef.current || typeof IntersectionObserver === 'undefined') return;
@@ -195,7 +209,26 @@ export const Library = () => {
               </div>
             </div>
           </div>
-          <LearningResourceTabs />
+          <LearningResourceTabs
+            actions={(
+              <div role="group" aria-label="Course language" className="inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
+                {COURSE_LANGUAGES.map((option) => {
+                  const isActive = option.value === language;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => selectLanguage(option.value)}
+                      aria-pressed={isActive}
+                      className={`rounded-lg px-3.5 py-1.5 text-[13px] font-semibold transition focus:outline-none focus-visible:ring-4 focus-visible:ring-pink-500/20 ${isActive ? 'bg-slate-900 text-white' : 'text-slate-500 hover:text-slate-900'}`}
+                    >
+                      {option.label} courses
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          />
         </header>
 
         <div className="grid items-start gap-8 lg:grid-cols-[240px_minmax(0,1fr)] xl:gap-10">
