@@ -17,7 +17,7 @@ export const canonicalUrl = (path: string) => `${COMPANY.siteUrl}${path === '/' 
 
 export const publicRoutes: Record<string, SeoConfig> = {
   '/': {
-    title: 'AI Productivity Courses & Live Classes | FutureWorkAcademy',
+    title: 'AI Productivity Courses | FutureWorkAcademy',
     description:
       'Video courses and live classes in AI productivity, remote work, freelancing, and online business. Start learning today.',
     path: '/',
